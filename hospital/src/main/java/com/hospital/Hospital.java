@@ -40,15 +40,15 @@ class Hospital {
         }
     }
 
-    public Patient loginPatient(String phone, int patientId){
-        String query = "SELECT * FROM patients WHERE phone = ? AND patientID = ?";
+    public Patient loginPatient(String phone, String name){
+        String query = "SELECT * FROM patients WHERE phone = ? AND name = ?";
 
         try (Connection conn = DriverManager.getConnection(URL, USER, PASSWORD);
              PreparedStatement stmt = conn.prepareStatement(query)) {
 
             // Set parameters
             stmt.setString(1, phone);
-            stmt.setInt(2, patientId);
+            stmt.setString(2, name);
 
             // Execute the query and get the result
             ResultSet rs = stmt.executeQuery();
@@ -57,14 +57,14 @@ class Hospital {
             if (rs.next()) {
                 // Create a new Patient object and populate it with the data from the result set
                 String patientID = rs.getString("patientID");
-                String name = rs.getString("name");
+                String patientName = rs.getString("name");
                 int age = rs.getInt("age");
                 String gender = rs.getString("gender");
                 String address = rs.getString("address");
                 String phoneNumber = rs.getString("phone");
 
                 // Return the populated Patient object
-                return new Patient(patientID, name, age, gender, address, phoneNumber);
+                return new Patient(patientID, patientName, age, gender, address, phoneNumber);
             } else {
                 // No matching patient found
                 return null;
