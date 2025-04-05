@@ -40,30 +40,39 @@ class Hospital {
         }
     }
 
-    public boolean loginPatient(String phone, int patientID){
+    public Patient loginPatient(String phone, int patientId){
         String query = "SELECT * FROM patients WHERE phone = ? AND patientID = ?";
+
         try (Connection conn = DriverManager.getConnection(URL, USER, PASSWORD);
              PreparedStatement stmt = conn.prepareStatement(query)) {
 
             // Set parameters
             stmt.setString(1, phone);
-            stmt.setInt(2, patientID);
+            stmt.setInt(2, patientId);
 
             // Execute the query and get the result
             ResultSet rs = stmt.executeQuery();
 
             // Check if a matching patient was found
             if (rs.next()) {
-                // Patient found, login successful
-                return true;
+                // Create a new Patient object and populate it with the data from the result set
+                String patientID = rs.getString("patientID");
+                String name = rs.getString("name");
+                int age = rs.getInt("age");
+                String gender = rs.getString("gender");
+                String address = rs.getString("address");
+                String phoneNumber = rs.getString("phone");
+
+                // Return the populated Patient object
+                return new Patient(patientID, name, age, gender, address, phoneNumber);
             } else {
                 // No matching patient found
-                return false;
+                return null;
             }
 
         } catch (SQLException e) {
             e.printStackTrace();
-            return false;  // Return false in case of error
+            return null;  // Return null in case of error
         }
     }
 
