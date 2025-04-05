@@ -8,16 +8,15 @@ public class Bill {
     double amount;
     Date billingDate;
 
-    public Bill(long billId, long patientId, double amount) {
+    public Bill(long billId, long patientId, double amount , Date billingDate) {
         this.billId = billId;
         this.patientId = patientId;
         this.amount = amount;
         this.billingDate = billingDate;
     }
 
-    public void display() {
-        System.out.println("Bill ID: " + billId + ", Amount: $" + amount);
-        System.out.println("Billing Date: " + billingDate);
+    public String toString() {
+        return ("Bill ID: " + billId + ", Amount: $" + amount + "Billing Date: " + billingDate);
     }
 
     public long getBillId() {

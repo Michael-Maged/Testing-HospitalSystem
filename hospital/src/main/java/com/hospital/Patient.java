@@ -71,12 +71,12 @@ public class Patient {
 
         System.out.println("\nAppointments:");
         for (Appointment a : appointments) {
-            a.displayAppointmentInfo(); 
+            a.toString(); 
         }
 
         System.out.println("\nBills:");
         for (Bill b : bills) {
-            b.displayBillInfo(); // 
+            b.toString(); // 
         }
     }
 }
