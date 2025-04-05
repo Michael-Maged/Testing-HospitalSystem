@@ -11,17 +11,17 @@ class Hospital {
     // Add methods
     public void registerPatient(Patient p) {
         patients.add(p);
-        System.out.println("Registered patient: " + p.name);
+        System.out.println("Registered patient: " + p.getName());
     }
 
     public void scheduleAppointment(Appointment a) {
         appointments.add(a);
-        System.out.println("Scheduled appointment for patient ID " + a.patientId);
+        System.out.println("Scheduled appointment for patient ID " + a.getPatientID());
     }
 
     public void addMedicalRecord(MedicalRecord r) {
         records.add(r);
-        System.out.println("Added medical record for patient ID " + r.patientId);
+        System.out.println("Added medical record for patient ID " + r.getPatientID());
     }
 
     public void generateBill(Bill b) {
@@ -36,7 +36,7 @@ class Hospital {
 
     public void showPatients() {
         for (Patient p : patients) {
-            p.display();
+            p.toString();
         }
     }
 }
