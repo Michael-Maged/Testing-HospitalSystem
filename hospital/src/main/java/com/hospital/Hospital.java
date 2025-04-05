@@ -39,6 +39,34 @@ class Hospital {
             e.printStackTrace();
         }
     }
+
+    public boolean loginPatient(String phone, int patientID){
+        String query = "SELECT * FROM patients WHERE phone = ? AND patientID = ?";
+        try (Connection conn = DriverManager.getConnection(URL, USER, PASSWORD);
+             PreparedStatement stmt = conn.prepareStatement(query)) {
+
+            // Set parameters
+            stmt.setString(1, phone);
+            stmt.setInt(2, patientID);
+
+            // Execute the query and get the result
+            ResultSet rs = stmt.executeQuery();
+
+            // Check if a matching patient was found
+            if (rs.next()) {
+                // Patient found, login successful
+                return true;
+            } else {
+                // No matching patient found
+                return false;
+            }
+
+        } catch (SQLException e) {
+            e.printStackTrace();
+            return false;  // Return false in case of error
+        }
+    }
+
     public void scheduleAppointment(int appID, long patientID, String type, Date date, Time time) {
         String query = "INSERT INTO Appointments (appID , patientID, type, date, time) VALUES (?, ?, ?, ?, ?)";
         try (Connection conn = DriverManager.getConnection(URL, USER, PASSWORD);
@@ -62,10 +90,6 @@ class Hospital {
         } catch (SQLException e) {
             e.printStackTrace();
         }
-    }
-    public void scheduleAppointment(Appointment a) {
-        appointments.add(a);
-        System.out.println("Scheduled appointment for patient ID " + a.getPatientID());
     }
 
     public void addMedicalRecord(MedicalRecord r) {
