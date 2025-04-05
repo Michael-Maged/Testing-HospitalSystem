@@ -34,7 +34,6 @@ class Hospital {
         System.out.println("Added inventory item: " + i.getName());
     }
 
-    // Example: List all patients
     public void showPatients() {
         for (Patient p : patients) {
             p.display();
