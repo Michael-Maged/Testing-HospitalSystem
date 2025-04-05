@@ -1,6 +1,7 @@
 package com.hospital;
 import java.util.*;
 import java.sql.*;
+import java.sql.Date;
 
 class Hospital {
     private static final String URL = "jdbc:sqlserver://localhost:1433;databaseName=HOSPITAL;encrypt=false";
@@ -38,7 +39,35 @@ class Hospital {
             e.printStackTrace();
         }
     }
-    public void scheduleAppointment(int appID, long patientID, String type , Date date, Time time) {
+
+    public boolean loginPatient(String phone, int patientID){
+        String query = "SELECT * FROM patients WHERE phone = ? AND patientID = ?";
+        try (Connection conn = DriverManager.getConnection(URL, USER, PASSWORD);
+             PreparedStatement stmt = conn.prepareStatement(query)) {
+
+            // Set parameters
+            stmt.setString(1, phone);
+            stmt.setInt(2, patientID);
+
+            // Execute the query and get the result
+            ResultSet rs = stmt.executeQuery();
+
+            // Check if a matching patient was found
+            if (rs.next()) {
+                // Patient found, login successful
+                return true;
+            } else {
+                // No matching patient found
+                return false;
+            }
+
+        } catch (SQLException e) {
+            e.printStackTrace();
+            return false;  // Return false in case of error
+        }
+    }
+
+    public void scheduleAppointment(int appID, long patientID, String type, Date date, Time time) {
         String query = "INSERT INTO Appointments (appID , patientID, type, date, time) VALUES (?, ?, ?, ?, ?)";
         try (Connection conn = DriverManager.getConnection(URL, USER, PASSWORD);
              PreparedStatement stmt = conn.prepareStatement(query)) {
@@ -46,7 +75,7 @@ class Hospital {
             stmt.setInt(1, appID);
             stmt.setLong(2,patientID);
             stmt.setString (3, type);
-            stmt.setdate(4, date);
+            stmt.setDate(4, date);
             stmt.setTime(5, time);
             
 
@@ -62,6 +91,7 @@ class Hospital {
             e.printStackTrace();
         }
     }
+<<<<<<< HEAD
     public void addMedicalRecord(int recordID, long patientID, String diagnosis , String treatment) {
         String query = "INSERT INTO MedicalRecords (recordID , patientID, diagnosis, treatment) VALUES (?, ?, ?, ?)";
         try (Connection conn = DriverManager.getConnection(URL, USER, PASSWORD);
@@ -90,6 +120,8 @@ class Hospital {
         appointments.add(a);
         System.out.println("Scheduled appointment for patient ID " + a.getPatientID());
     }
+=======
+>>>>>>> 3090e6cef238717a844220f0c0d4e98a340f2f35
 
     public void addMedicalRecord(MedicalRecord r) {
         records.add(r);
