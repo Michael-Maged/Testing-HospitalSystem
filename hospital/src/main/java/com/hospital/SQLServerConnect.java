@@ -3,8 +3,8 @@ import java.sql.*;
 
 public class SQLServerConnect {
     public static void main(String[] args) {
-        String user = "johnnazizz";
-        String password = "blabla1";
+        String user = "testing";
+        String password = "mypass";
         String url = "jdbc:sqlserver://localhost:1433;databaseName=HOSPITAL;encrypt=false";
         
         try (Connection conn = DriverManager.getConnection(url, user, password)) {

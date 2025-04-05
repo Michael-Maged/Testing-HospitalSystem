@@ -9,12 +9,9 @@ public class Patient {
     private String gender;
     private String address;
     private String phoneNumber;
-
-    // New attributes for relationships
     private ArrayList<Appointment> appointments;
     private ArrayList<Bill> bills;
 
-    // Constructor
     public Patient(String patientID, String name, int age, String gender, String address, String phoneNumber) {
         this.patientID = patientID;
         this.name = name;
@@ -26,7 +23,6 @@ public class Patient {
         this.bills = new ArrayList<>();
     }
 
-    // Getters
     public String getPatientID() { return patientID; }
     public String getName() { return name; }
     public int getAge() { return age; }
@@ -36,14 +32,12 @@ public class Patient {
     public ArrayList<Appointment> getAppointments() { return appointments; }
     public ArrayList<Bill> getBills() { return bills; }
 
-    // Setters
     public void setName(String name) { this.name = name; }
     public void setAge(int age) { this.age = age; }
     public void setGender(String gender) { this.gender = gender; }
     public void setAddress(String address) { this.address = address; }
     public void setPhoneNumber(String phoneNumber) { this.phoneNumber = phoneNumber; }
 
-    // Functions
     public void addAppointment(Appointment appointment) {
         appointments.add(appointment);
     }
