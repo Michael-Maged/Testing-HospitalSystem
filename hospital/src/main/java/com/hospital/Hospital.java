@@ -14,7 +14,7 @@ class Hospital {
     List<InventoryItem> inventory = new ArrayList<>();
 
     public void registerPatient(int id, String name, int age, String gender, String address, String phone) {
-        String query = "INSERT INTO patients (id, name, age, gender, address, phone) VALUES (?, ?, ?, ?, ?, ?)";
+        String query = "INSERT INTO Patients (id, name, age, gender, address, phone) VALUES (?, ?, ?, ?, ?, ?)";
         try (Connection conn = DriverManager.getConnection(URL, USER, PASSWORD);
              PreparedStatement stmt = conn.prepareStatement(query)) {
 
