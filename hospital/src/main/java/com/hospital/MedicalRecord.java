@@ -45,7 +45,8 @@ public class MedicalRecord {
         this.treatment = treatment;
     }
     
-    public void display() {
-        System.out.println("Patient " + patientID + ": Diagnosis: " + diagnosis + ", Treatment: " + treatment);
+    @Override
+    public String toString() {
+        return "Patient " + patientID + ": Diagnosis: " + diagnosis + ", Treatment: " + treatment;
     }
 }
