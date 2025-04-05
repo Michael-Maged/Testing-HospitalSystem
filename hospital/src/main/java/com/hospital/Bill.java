@@ -4,13 +4,11 @@ import java.util.Date;
 
 public class Bill {
     long billId;
-    long patientId;
     double amount;
     Date billingDate;
 
-    public Bill(long billId, long patientId, double amount , Date billingDate) {
+    public Bill(long billId, double amount , Date billingDate) {
         this.billId = billId;
-        this.patientId = patientId;
         this.amount = amount;
         this.billingDate = billingDate;
     }
@@ -25,14 +23,6 @@ public class Bill {
 
     public void setBillId(long billId) {
         this.billId = billId;
-    }
-
-    public long getPatientId() {
-        return patientId;
-    }
-
-    public void setPatientId(long patientId) {
-        this.patientId = patientId;
     }
 
     public double getAmount() {
