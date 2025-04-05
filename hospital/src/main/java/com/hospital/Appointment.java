@@ -67,8 +67,9 @@ class Appointment {
         this.time = time;
     }
 
-    public void display(){
-        System.out.println("Appointment for patient " + patientID + " with Dr. " + docID + " on " + date);
+    @Override
+    public String toString(){
+        return "Appointment for patient " + patientID + " with Dr. " + docID + " on " + date;
     }
 }
 
