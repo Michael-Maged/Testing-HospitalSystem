@@ -62,6 +62,30 @@ class Hospital {
             e.printStackTrace();
         }
     }
+    public void addMedicalRecord(int recordID, long patientID, String diagnosis , String treatment) {
+        String query = "INSERT INTO MedicalRecords (recordID , patientID, diagnosis, treatment) VALUES (?, ?, ?, ?)";
+        try (Connection conn = DriverManager.getConnection(URL, USER, PASSWORD);
+             PreparedStatement stmt = conn.prepareStatement(query)) {
+            // Set parameters
+            stmt.setInt(1, recordID);
+            stmt.setLong(2,patientID);
+            stmt.setString (3, diagnosis);
+            stmt.setString(4,treatment);
+            
+            
+
+            // Execute the query
+            int rowsAffected = stmt.executeUpdate();
+            if (rowsAffected > 0) {
+                System.out.println(" Medical record has been added successfully!");
+            } else {
+                System.out.println(" Failed to add the medical record.");
+            }
+
+        } catch (SQLException e) {
+            e.printStackTrace();
+        }
+    }
     public void scheduleAppointment(Appointment a) {
         appointments.add(a);
         System.out.println("Scheduled appointment for patient ID " + a.getPatientID());
