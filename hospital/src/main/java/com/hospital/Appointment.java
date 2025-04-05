@@ -12,7 +12,7 @@ class Appointment {
     
     Bill bill;
     
-    public Appointment(long appID, long patientID, long docID, String type, Date date, Time time , Bill bill){
+    public Appointment(long appID, long patientID, String type, Date date, Time time , Bill bill, long docID){
         this.appID = appID;
         this.patientID = patientID;
         this.docID = docID;

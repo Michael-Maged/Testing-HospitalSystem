@@ -56,7 +56,7 @@ class Hospital {
             // Check if a matching patient was found
             if (rs.next()) {
                 // Create a new Patient object and populate it with the data from the result set
-                String patientID = rs.getString("patientID");
+                long patientID = rs.getLong("patientID");
                 String patientName = rs.getString("name");
                 int age = rs.getInt("age");
                 String gender = rs.getString("gender");
