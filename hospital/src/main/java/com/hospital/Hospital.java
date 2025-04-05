@@ -38,7 +38,30 @@ class Hospital {
             e.printStackTrace();
         }
     }
+    public void scheduleAppointment(int appID, long patientID, String type , Date date, Time time) {
+        String query = "INSERT INTO Appointments (appID , patientID, type, date, time) VALUES (?, ?, ?, ?, ?)";
+        try (Connection conn = DriverManager.getConnection(URL, USER, PASSWORD);
+             PreparedStatement stmt = conn.prepareStatement(query)) {
+            // Set parameters
+            stmt.setInt(1, appID);
+            stmt.setLong(2,patientID);
+            stmt.setString (3, type);
+            stmt.setdate(4, date);
+            stmt.setTime(5, time);
+            
 
+            // Execute the query
+            int rowsAffected = stmt.executeUpdate();
+            if (rowsAffected > 0) {
+                System.out.println("Reservation is done  successfully!");
+            } else {
+                System.out.println("Reservation is failed!");
+            }
+
+        } catch (SQLException e) {
+            e.printStackTrace();
+        }
+    }
     public void scheduleAppointment(Appointment a) {
         appointments.add(a);
         System.out.println("Scheduled appointment for patient ID " + a.getPatientID());
