@@ -11,7 +11,6 @@ class Hospital {
     List<Patient> patients = new ArrayList<>();
     List<Appointment> appointments = new ArrayList<>();
     List<MedicalRecord> records = new ArrayList<>();
-    List<Bill> bills = new ArrayList<>();
     List<InventoryItem> inventory = new ArrayList<>();
 
     public void registerPatient(int id, String name, int age, String gender, String address, String phone) {

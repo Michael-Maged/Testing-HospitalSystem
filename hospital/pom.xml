@@ -10,8 +10,8 @@
     <name>junitlab</name>
 
     <properties>
-        <maven.compiler.target>21</maven.compiler.target>
-        <maven.compiler.source>21</maven.compiler.source>
+        <maven.compiler.target>22</maven.compiler.target>
+        <maven.compiler.source>22</maven.compiler.source>
         <junit.jupiter.version>5.4.0</junit.jupiter.version>
     </properties>
 

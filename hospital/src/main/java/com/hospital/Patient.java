@@ -16,13 +16,15 @@ public class Patient {
     private String gender;
     private String address;
     private String phoneNumber;
-
-    // New attributes for relationships
     private ArrayList<Appointment> appointments;
     private ArrayList<Bill> bills;
 
+<<<<<<< HEAD
     // Constructor
     public Patient(long patientID, String name, int age, String gender, String address, String phoneNumber) {
+=======
+    public Patient(String patientID, String name, int age, String gender, String address, String phoneNumber) {
+>>>>>>> 780a40a99a04855e2b93f685cea2457b7ba8057b
         this.patientID = patientID;
         this.name = name;
         this.age = age;
@@ -33,8 +35,12 @@ public class Patient {
         this.bills = new ArrayList<>();
     }
 
+<<<<<<< HEAD
     // Getters
     public long getPatientID() { return patientID; }
+=======
+    public String getPatientID() { return patientID; }
+>>>>>>> 780a40a99a04855e2b93f685cea2457b7ba8057b
     public String getName() { return name; }
     public int getAge() { return age; }
     public String getGender() { return gender; }
@@ -77,14 +83,12 @@ public class Patient {
         return appointments;
     }
 
-    // Setters
     public void setName(String name) { this.name = name; }
     public void setAge(int age) { this.age = age; }
     public void setGender(String gender) { this.gender = gender; }
     public void setAddress(String address) { this.address = address; }
     public void setPhoneNumber(String phoneNumber) { this.phoneNumber = phoneNumber; }
 
-    // Functions
     public void addAppointment(Appointment appointment) {
         appointments.add(appointment);
     }
