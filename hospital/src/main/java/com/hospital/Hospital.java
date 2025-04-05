@@ -1,6 +1,7 @@
 package com.hospital;
 import java.util.*;
 import java.sql.*;
+import java.sql.Date;
 
 class Hospital {
     private static final String URL = "jdbc:sqlserver://localhost:1433;databaseName=HOSPITAL;encrypt=false";
@@ -38,7 +39,7 @@ class Hospital {
             e.printStackTrace();
         }
     }
-    public void scheduleAppointment(int appID, long patientID, String type , Date date, Time time) {
+    public void scheduleAppointment(int appID, long patientID, String type, Date date, Time time) {
         String query = "INSERT INTO Appointments (appID , patientID, type, date, time) VALUES (?, ?, ?, ?, ?)";
         try (Connection conn = DriverManager.getConnection(URL, USER, PASSWORD);
              PreparedStatement stmt = conn.prepareStatement(query)) {
@@ -46,7 +47,7 @@ class Hospital {
             stmt.setInt(1, appID);
             stmt.setLong(2,patientID);
             stmt.setString (3, type);
-            stmt.setdate(4, date);
+            stmt.setDate(4, date);
             stmt.setTime(5, time);
             
 
