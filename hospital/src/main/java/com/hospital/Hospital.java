@@ -40,7 +40,7 @@ class Hospital {
         }
     }
 
-    public Patient loginPatient(String phone, String name){
+    public void loginPatient(String phone, String name){
         String query = "SELECT * FROM patients WHERE phone = ? AND name = ?";
 
         try (Connection conn = DriverManager.getConnection(URL, USER, PASSWORD);
@@ -64,15 +64,12 @@ class Hospital {
                 String phoneNumber = rs.getString("phone");
 
                 // Return the populated Patient object
-                return new Patient(patientID, patientName, age, gender, address, phoneNumber);
-            } else {
-                // No matching patient found
-                return null;
+                Patient loggedInPatient = new Patient(patientID, patientName, age, gender, address, phoneNumber);
+                Session.getInstance().setCurrentPatient(loggedInPatient);
             }
 
         } catch (SQLException e) {
-            e.printStackTrace();
-            return null;  // Return null in case of error
+            e.printStackTrace(); // Return null in case of error
         }
     }
 
