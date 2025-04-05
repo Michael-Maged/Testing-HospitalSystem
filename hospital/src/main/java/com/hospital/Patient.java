@@ -1,4 +1,3 @@
-package com.hospital;
 import java.util.ArrayList;
 
 public class Patient {
@@ -60,23 +59,28 @@ public class Patient {
         bills.add(bill);
     }
 
-    public void displayPatientInfo() {
-        System.out.println("Patient ID: " + patientID);
-        System.out.println("Name: " + name);
-        System.out.println("Age: " + age);
-        System.out.println("Gender: " + gender);
-        System.out.println("Address: " + address);
-        System.out.println("Phone Number: " + phoneNumber);
-        System.out.println("Medical History: " + medicalHistory);
+    @Override
+    public String toString() {
+        StringBuilder sb = new StringBuilder();
 
-        System.out.println("\nAppointments:");
+        sb.append("Patient ID: ").append(patientID).append("\n");
+        sb.append("Name: ").append(name).append("\n");
+        sb.append("Age: ").append(age).append("\n");
+        sb.append("Gender: ").append(gender).append("\n");
+        sb.append("Address: ").append(address).append("\n");
+        sb.append("Phone Number: ").append(phoneNumber).append("\n");
+        sb.append("Medical History: ").append(medicalHistory).append("\n");
+
+        sb.append("\nAppointments:\n");
         for (Appointment a : appointments) {
-            a.toString(); 
+            sb.append(a.toString()).append("\n");
         }
 
-        System.out.println("\nBills:");
+        sb.append("\nBills:\n");
         for (Bill b : bills) {
-            b.toString(); // 
+            sb.append(b.toString()).append("\n");
         }
+
+        return sb.toString();
     }
 }
