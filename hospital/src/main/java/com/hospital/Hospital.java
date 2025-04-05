@@ -100,7 +100,7 @@ class Hospital {
             e.printStackTrace();
         }
     }
-<<<<<<< HEAD
+
     public void addMedicalRecord(int recordID, long patientID, String diagnosis , String treatment) {
         String query = "INSERT INTO MedicalRecords (recordID , patientID, diagnosis, treatment) VALUES (?, ?, ?, ?)";
         try (Connection conn = DriverManager.getConnection(URL, USER, PASSWORD);
@@ -124,17 +124,6 @@ class Hospital {
         } catch (SQLException e) {
             e.printStackTrace();
         }
-    }
-    public void scheduleAppointment(Appointment a) {
-        appointments.add(a);
-        System.out.println("Scheduled appointment for patient ID " + a.getPatientID());
-    }
-=======
->>>>>>> 3090e6cef238717a844220f0c0d4e98a340f2f35
-
-    public void addMedicalRecord(MedicalRecord r) {
-        records.add(r);
-        System.out.println("Added medical record for patient ID " + r.getPatientID());
     }
 
     public void addInventoryItem(InventoryItem i) {
