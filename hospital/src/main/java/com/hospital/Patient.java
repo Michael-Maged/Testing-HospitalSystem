@@ -1,3 +1,4 @@
+package com.hospital;
 import java.util.ArrayList;
 
 public class Patient {
