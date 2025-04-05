@@ -8,7 +8,6 @@ class Hospital {
     List<Bill> bills = new ArrayList<>();
     List<InventoryItem> inventory = new ArrayList<>();
 
-    // Add methods
     public void registerPatient(Patient p) {
         patients.add(p);
         System.out.println("Registered patient: " + p.getName());
@@ -22,11 +21,6 @@ class Hospital {
     public void addMedicalRecord(MedicalRecord r) {
         records.add(r);
         System.out.println("Added medical record for patient ID " + r.getPatientID());
-    }
-
-    public void generateBill(Bill b) {
-        bills.add(b);
-        System.out.println("Generated bill for patient ID " + b.patientId);
     }
 
     public void addInventoryItem(InventoryItem i) {
