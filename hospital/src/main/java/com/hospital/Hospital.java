@@ -11,7 +11,6 @@ class Hospital {
     List<Patient> patients = new ArrayList<>();
     List<Appointment> appointments = new ArrayList<>();
     List<MedicalRecord> records = new ArrayList<>();
-    List<Bill> bills = new ArrayList<>();
     List<InventoryItem> inventory = new ArrayList<>();
 
     public void registerPatient(int id, String name, int age, String gender, String address, String phone) {
@@ -56,7 +55,7 @@ class Hospital {
             // Check if a matching patient was found
             if (rs.next()) {
                 // Create a new Patient object and populate it with the data from the result set
-                String patientID = rs.getString("patientID");
+                long patientID = rs.getLong("patientID");
                 String patientName = rs.getString("name");
                 int age = rs.getInt("age");
                 String gender = rs.getString("gender");
