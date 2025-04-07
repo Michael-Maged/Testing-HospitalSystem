@@ -27,11 +27,13 @@
 
         <div class="appointments-section">
             <h3>Upcoming Appointments</h3>
-            <div th:if="${appointments.isEmpty()}">
+
+            <!-- ✅ Safer condition to avoid null pointer error -->
+            <div th:if="${appointments == null or appointments.isEmpty()}">
                 <p>No upcoming appointments.</p>
             </div>
 
-            <ul>
+            <ul th:if="${appointments != null and !appointments.isEmpty()}">
                 <li th:each="appointment : ${appointments}">
                     <div class="appointment">
                         <p><strong>Appointment ID:</strong> <span th:text="${appointment.appointmentId}">Appointment ID</span></p>
