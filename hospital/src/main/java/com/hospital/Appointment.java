@@ -2,7 +2,7 @@ package com.hospital;
 import java.sql.Time;
 import java.util.*;
 
-class Appointment {
+public class Appointment {
     long appID;
     long patientID;
     long docID;
