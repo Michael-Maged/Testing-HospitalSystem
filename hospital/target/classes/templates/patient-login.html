@@ -1,0 +1,57 @@
+<!DOCTYPE html>
+<html xmlns:th="http://www.thymeleaf.org">
+<head>
+    <title>Patient Login</title>
+    <style>
+        body { font-family: Arial; padding: 20px; background: #f0f0f0; }
+        .login-box {
+            background: white;
+            padding: 25px;
+            max-width: 400px;
+            margin: 50px auto;
+            border-radius: 8px;
+            box-shadow: 0 0 10px rgba(0,0,0,0.1);
+        }
+        .login-box h2 { margin-bottom: 20px; }
+        .form-input { margin-bottom: 15px; width: 100%; }
+        .form-input input {
+            width: 100%;
+            padding: 10px;
+            border: 1px solid #ccc;
+            border-radius: 4px;
+        }
+        .btn {
+            background: #007bff;
+            color: white;
+            padding: 10px;
+            border: none;
+            width: 100%;
+            border-radius: 4px;
+            cursor: pointer;
+        }
+        .btn:hover { background: #0056b3; }
+        .error { color: red; margin-bottom: 10px; }
+    </style>
+</head>
+<body>
+
+<div class="login-box">
+    <h2>Patient Login</h2>
+
+    <div th:if="${error}" class="error" th:text="${error}"></div>
+
+    <form method="post" th:action="@{/login}">
+        <div class="form-input">
+            <label for="phone">Phone:</label>
+            <input type="text" id="phone" name="phone" required />
+        </div>
+        <div class="form-input">
+            <label for="name">Name:</label>
+            <input type="text" id="name" name="name" required />
+        </div>
+        <button type="submit" class="btn">Login</button>
+    </form>
+</div>
+
+</body>
+</html>

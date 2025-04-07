@@ -3,7 +3,7 @@ import java.util.*;
 import java.sql.*;
 import java.sql.Date;
 
-class Hospital {
+public class Hospital {
     private static final String URL = "jdbc:sqlserver://localhost:1433;databaseName=HOSPITAL;encrypt=false";
     private static final String USER = "johnnazizz";
     private static final String PASSWORD = "blabla1";
