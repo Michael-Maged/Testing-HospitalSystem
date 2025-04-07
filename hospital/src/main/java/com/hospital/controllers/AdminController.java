@@ -2,7 +2,6 @@ package com.hospital.controllers;
 
 import com.hospital.*;
 
-import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.*;
@@ -23,6 +22,7 @@ public class AdminController {
         return "adminPage";
     }
 
+    //TODO: Function te automate el docID w el itemID mn el database 
     // POST: Add doctor
     @PostMapping("/add-doctor")
     public String addDoctor(@RequestParam int age,

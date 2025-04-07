@@ -49,7 +49,9 @@ public class Hospital {
                 int recordID = rs.getInt("recordID");
                 String diagnosis = rs.getString("diagnosis");
                 String treatment = rs.getString("treatment");
-                records.add(new MedicalRecord(recordID, patientID, diagnosis, treatment));
+                Date date = rs.getDate("Date");
+                //TODO:azawed f el database column lel date f table el records w azbat ay functions liha 3elaka b el date 
+                records.add(new MedicalRecord(recordID, patientID, diagnosis, treatment,date));
             }
             System.out.println("Fetched medical records for patient ID " + patientID);
 
@@ -265,6 +267,32 @@ public class Hospital {
 
        return newId;
    }
+
+   
+   //TODO: astakhdmha f el controller 
+   public int getNextAppointmentId(String type) {
+    int newId = 0;
+    String query = "SELECT COALESCE(MAX(appID), 0) + 1 AS next_id FROM Appointments WHERE type = ?";
+
+    try (Connection conn = DriverManager.getConnection(URL, USER, PASSWORD);
+         PreparedStatement pstmt = conn.prepareStatement(query)) {
+
+        // Set the type parameter in the query
+        pstmt.setString(1, type);
+        
+        // Execute the query and get the result
+        try (ResultSet rs = pstmt.executeQuery()) {
+            if (rs.next()) {
+                newId = rs.getInt("next_id");
+            }
+        }
+
+    } catch (SQLException e) {
+        e.printStackTrace(); // Handle exception
+    }
+
+        return newId;
+    }
 
    public List<Patient> getPatients() {
     return patients;

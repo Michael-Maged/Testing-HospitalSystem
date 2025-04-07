@@ -126,5 +126,40 @@
             </ul>
         </div>
     </div>
+
+    <!-- Form Container -->
+<div style="display: flex; flex-direction: column; align-items: center; margin-top: 30px;">
+    
+    <!-- Button to toggle form -->
+    <button onclick="document.getElementById('addForm').style.display='block'" 
+        style="background-color: #4f46e5; color: white; padding: 10px 15px; border: none; border-radius: 8px; cursor: pointer;">
+        Add Appointment
+    </button>
+
+    <!-- Hidden Form -->
+    <div id="addForm" style="display: none; margin-top: 20px; background-color: #eef2ff; padding: 25px; border-radius: 12px; width: 100%; max-width: 500px; box-shadow: 0 2px 6px rgba(0,0,0,0.1);">
+        <form th:action="@{/appointments/add}" method="post" style="display: flex; flex-direction: column;">
+            <input type="hidden" name="patientID" th:value="${patient.patientID}" />
+
+            <label>Type:</label>
+            <input type="text" name="type" required style="margin-bottom: 15px; padding: 8px;" />
+
+            <label>Date:</label>
+            <input type="date" name="date" required style="margin-bottom: 15px; padding: 8px;" />
+
+            <label>Time:</label>
+            <input type="time" name="time" required style="margin-bottom: 15px; padding: 8px;" />
+
+            <label>Doctor ID:</label>
+            <input type="number" name="docID" required style="margin-bottom: 15px; padding: 8px;" />
+
+            <button type="submit" 
+                style="background-color: #10b981; color: white; padding: 10px; border: none; border-radius: 6px;">
+                Submit
+            </button>
+        </form>
+    </div>
+</div>
+
 </body>
 </html>

@@ -7,7 +7,7 @@ public class Admin {
     private static final String USER = "testing";
     private static final String PASSWORD = "mypass";
     
-    // Add Doctor
+    // TODO: a3mel table lel DR 
     public void addDoctor(long docID, String name, int age, String gender, String specialty) {
         String query = "INSERT INTO Doctors (docID, name, age, gender, specialty) VALUES (?, ?, ?, ?, ?)";
         
@@ -98,7 +98,7 @@ public class Admin {
     }
 
     // Add Medical Record
-    public void addMedicalRecord(long recordID, long patientID, String diagnosis, String treatment) {
+    public void addMedicalRecord(long recordID, long patientID, String diagnosis, String treatment , Date date) {
         String query = "INSERT INTO MedicalRecords (recordID, patientID, diagnosis, treatment) VALUES (?, ?, ?, ?)";
         
         try (Connection conn = DriverManager.getConnection(URL, USER, PASSWORD);
