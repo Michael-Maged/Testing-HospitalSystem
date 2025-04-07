@@ -1,6 +1,6 @@
-package models;
+package Models;
 
-package com.hospital;
+import com.hospital.*;
 
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
