@@ -4,7 +4,6 @@ import java.sql.DriverManager;
 import java.sql.PreparedStatement;
 import java.sql.ResultSet;
 import java.sql.SQLException;
-import java.util.ArrayList;
 import java.util.*;
 import java.sql.Time;
 
@@ -17,6 +16,7 @@ public class Patient {
     private String address;
     private String phoneNumber;
     private ArrayList<Appointment> appointments;
+    private ArrayList<MedicalRecord> records;
     private ArrayList<Bill> bills;
 
     // Constructor
@@ -47,7 +47,7 @@ public class Patient {
         String query = "SELECT appID, type, date, time FROM appointments WHERE patientID?";
 
         // Connect to the database and execute the query
-        try (Connection conn = DriverManager.getConnection("jdbc:sqlserver://localhost:1433;databaseName=HOSPITAL;encrypt=false", "johnnazizz", "blabla1");
+        try (Connection conn = DriverManager.getConnection("jdbc:sqlserver://localhost:1433;databaseName=HOSPITAL;encrypt=false", "testing", "mypass");
              PreparedStatement stmt = conn.prepareStatement(query)) {
 
             // Set the patient ID as the parameter for the query
@@ -75,6 +75,39 @@ public class Patient {
 
         // Return the list of appointments
         return appointments;
+    }
+
+    public ArrayList<MedicalRecord> getRecords() {
+        records.clear();
+
+        String query = "SELECT * FROM MedicalRecords WHERE patientID = ?";
+        
+        try (Connection conn = DriverManager.getConnection("jdbc:sqlserver://localhost:1433;databaseName=HOSPITAL;encrypt=false", "testing", "mypass");
+             PreparedStatement stmt = conn.prepareStatement(query)) {
+
+            // Set the patientID parameter
+            stmt.setLong(1, this.patientID);
+
+            // Execute the query
+            ResultSet rs = stmt.executeQuery();
+
+            // Process the result set
+            while (rs.next()) {
+                long recordID = rs.getLong("recordID");
+                long patientID = rs.getLong("patientID");
+                String diagnosis = rs.getString("diagnosis");
+                String treatment = rs.getString("treatment");
+                Date recordDate = rs.getDate("recordDate"); // Assuming this is a Date column
+
+                // Create a new MedicalRecord and add it to the list
+                MedicalRecord record = new MedicalRecord(recordID, patientID, diagnosis, treatment, recordDate);
+                records.add(record);
+            }
+        } catch (SQLException e) {
+            e.printStackTrace();
+        }
+
+        return records;
     }
 
     public void setName(String name) { this.name = name; }
