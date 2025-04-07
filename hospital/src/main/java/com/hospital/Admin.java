@@ -1,5 +1,4 @@
 package com.hospital;
-
 import java.sql.*;
 
 public class Admin {
@@ -57,8 +56,8 @@ public class Admin {
     }
 
     // Method to add a new medical record to the database
-    public void addMedicalRecord(long recordID, long patientID, String diagnosis, String treatment) {
-        String query = "INSERT INTO MedicalRecords (recordID, patientID, diagnosis, treatment) VALUES (?, ?, ?, ?)";
+    public void addMedicalRecord(long recordID, long patientID, String diagnosis, String treatment, Date date) {
+        String query = "INSERT INTO MedicalRecords (recordID, patientID, diagnosis, treatment, date) VALUES (?, ?, ?, ?, ?)";
         
         try (Connection conn = DriverManager.getConnection(URL, USER, PASSWORD);
              PreparedStatement stmt = conn.prepareStatement(query)) {
@@ -67,6 +66,7 @@ public class Admin {
             stmt.setLong(2, patientID);
             stmt.setString(3, diagnosis);
             stmt.setString(4, treatment);
+            stmt.setDate(5, date);
             
             int rowsAffected = stmt.executeUpdate();
             if (rowsAffected > 0) {
