@@ -1,10 +1,48 @@
 <!DOCTYPE html>
-<html xmlns:th="http://www.thymeleaf.org">
+<html lang="en">
 <head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Patient Dashboard</title>
+    <link rel="stylesheet" href="/css/styles.css"> <!-- Include your CSS file here -->
 </head>
 <body>
-    <h1>Welcome, patient!</h1>
-    <p>You're now logged in.</p>
+    <div class="dashboard-container">
+        <div class="profile-section">
+            <!-- Avatar/Profile Picture -->
+            <img src="/images/avatar.png" alt="Avatar" class="profile-avatar">
+            <h2>Welcome, <span th:text="${patient.name}">Patient Name</span></h2>
+        </div>
+
+        <div class="patient-details">
+            <h3>Patient Information</h3>
+            <ul>
+                <li><strong>ID:</strong> <span th:text="${patient.patientID}">ID</span></li>
+                <li><strong>Age:</strong> <span th:text="${patient.age}">Age</span></li>
+                <li><strong>Gender:</strong> <span th:text="${patient.gender}">Gender</span></li>
+                <li><strong>Address:</strong> <span th:text="${patient.address}">Address</span></li>
+                <li><strong>Phone Number:</strong> <span th:text="${patient.phoneNumber}">Phone Number</span></li>
+            </ul>
+        </div>
+
+        <div class="appointments-section">
+            <h3>Upcoming Appointments</h3>
+            <div th:if="${appointments.isEmpty()}">
+                <p>No upcoming appointments.</p>
+            </div>
+
+            <ul>
+                <li th:each="appointment : ${appointments}">
+                    <div class="appointment">
+                        <p><strong>Appointment ID:</strong> <span th:text="${appointment.appointmentId}">Appointment ID</span></p>
+                        <p><strong>Type:</strong> <span th:text="${appointment.type}">Type</span></p>
+                        <p><strong>Date:</strong> <span th:text="${appointment.date}">Date</span></p>
+                        <p><strong>Time:</strong> <span th:text="${appointment.time}">Time</span></p>
+                        <p><strong>Doctor ID:</strong> <span th:text="${appointment.docID}">Doctor ID</span></p>
+                    </div>
+                </li>
+            </ul>
+        </div>
+    </div>
 </body>
 </html>
