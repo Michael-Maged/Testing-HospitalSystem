@@ -39,6 +39,7 @@ public class Patient {
     public String getAddress() { return address; }
     public String getPhoneNumber() { return phoneNumber; }
     public ArrayList<Bill> getBills() { return bills; }
+    
     public ArrayList<Appointment> getAppointments() { 
         appointments.clear();
 
@@ -58,12 +59,13 @@ public class Patient {
             // Loop through the result set and create Appointment objects
             while (rs.next()) {
                 long appointmentId = rs.getInt("appID");
+                long docID = rs.getInt("docID");
                 String type = rs.getString("type");
                 Date date = rs.getDate("date");
                 Time time = rs.getTime("time");
 
                 // Create an Appointment object and add it to the list
-                Appointment appointment = new Appointment(appointmentId, this.patientID, type, date, time);
+                Appointment appointment = new Appointment(appointmentId, this.patientID, type, date, time, docID);
                 appointments.add(appointment);
             }
 

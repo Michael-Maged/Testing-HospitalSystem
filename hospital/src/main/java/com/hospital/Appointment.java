@@ -10,16 +10,13 @@ class Appointment {
     Date date;
     Time time;
     
-    Bill bill;
-    
-    public Appointment(long appID, long patientID, String type, Date date, Time time , Bill bill, long docID){
+    public Appointment(long appID, long patientID, String type, Date date, Time time, long docID){
         this.appID = appID;
         this.patientID = patientID;
         this.docID = docID;
         this.type = type;
         this.date = date;
         this.time = time;
-        this.bill = bill;
     }
     
     public long getAppID() {
@@ -68,14 +65,6 @@ class Appointment {
     
     public void setTime(Time time) {
         this.time = time;
-    }
-    
-    public Bill getBill() {
-        return bill;
-    }
-    
-    public void setBill(Bill bill) {
-        this.bill = bill;
     }
     
     @Override
