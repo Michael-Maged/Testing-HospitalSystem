@@ -15,7 +15,7 @@ public class Hospital {
 
     public void registerPatient(String name, int age, String gender, String address, String phone)
      {  int newId = this.getNextPatientId();
-        String query = "INSERT INTO Patients (patientId, name, age, gender, address, phone) VALUES (?, ?, ?, ?, ?, ?)";
+        String query = "INSERT INTO Patients (patientID, name, age, gender, address, phone) VALUES (?, ?, ?, ?, ?, ?)";
         try (Connection conn = DriverManager.getConnection(URL, USER, PASSWORD);
              PreparedStatement stmt = conn.prepareStatement(query)) {
 
