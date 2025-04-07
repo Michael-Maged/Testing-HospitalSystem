@@ -15,7 +15,7 @@ public class PatientRegistrationController {
         return "patient-registration";
     }
 
-    @PostMapping("/login")
+    @PostMapping("/register")
     public String registerPatient(
             @RequestParam("name") String name,
             @RequestParam("age") int age,

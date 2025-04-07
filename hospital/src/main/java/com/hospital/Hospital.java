@@ -5,8 +5,8 @@ import java.sql.Date;
 
 public class Hospital {
     private static final String URL = "jdbc:sqlserver://localhost:1433;databaseName=HOSPITAL;encrypt=false";
-    private static final String USER = "testing";
-    private static final String PASSWORD = "mypass";
+    private static final String USER = "johnnazizz";
+    private static final String PASSWORD = "blabla1";
 
     List<Patient> patients = new ArrayList<>();
     List<Appointment> appointments = new ArrayList<>();
