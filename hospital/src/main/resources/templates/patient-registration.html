@@ -1,0 +1,43 @@
+<!DOCTYPE html>
+<html xmlns:th="http://www.thymeleaf.org">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Patient Registration</title>
+  <link rel="stylesheet" th:href="@{/registration.css}" />
+</head>
+<body>
+  <div class="login-container">
+    <h2>Patient Registration</h2>
+
+    <form th:action="@{/register}" method="post" class="login-form">
+      <label for="patientID">Patient ID</label>
+      <input type="text" id="patientID" name="patientID" placeholder="Enter patient ID" required />
+
+      <label for="name">Name</label>
+      <input type="text" id="name" name="name" placeholder="Enter full name" required />
+
+      <label for="age">Age</label>
+      <input type="number" id="age" name="age" placeholder="Enter age" required />
+
+      <label for="gender">Gender</label>
+      <select id="gender" name="gender" required>
+        <option value="">Select gender</option>
+        <option>Male</option>
+        <option>Female</option>
+        <option>Other</option>
+      </select>
+
+      <label for="address">Address</label>
+      <input type="text" id="address" name="address" placeholder="Enter address" required />
+
+      <label for="phoneNumber">Phone Number</label>
+      <input type="text" id="phoneNumber" name="phoneNumber" placeholder="Enter phone number" required />
+
+      <button type="submit">Register</button>
+    </form>
+
+    <p class="footer-text">© 2025 HMS. All rights reserved.</p>
+  </div>
+</body>
+</html>
