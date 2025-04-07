@@ -28,6 +28,7 @@
             width: 100%;
             border-radius: 4px;
             cursor: pointer;
+            text-align: center;
         }
         .btn:hover { background: #0056b3; }
         .error { color: red; margin-bottom: 10px; }
@@ -51,6 +52,10 @@
         </div>
         <button type="submit" class="btn">Login</button>
     </form>
+
+    <div style="text-align: center; margin-top: 15px;">
+        <a th:href="@{/register}" class="btn" style="display: inline-block; text-decoration: none;">Register</a>
+    </div>
 </div>
 
 </body>

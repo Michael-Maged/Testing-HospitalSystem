@@ -5,21 +5,22 @@ import java.sql.Date;
 
 public class Hospital {
     private static final String URL = "jdbc:sqlserver://localhost:1433;databaseName=HOSPITAL;encrypt=false";
-    private static final String USER = "johnnazizz";
-    private static final String PASSWORD = "blabla1";
+    private static final String USER = "testing";
+    private static final String PASSWORD = "mypass";
 
     List<Patient> patients = new ArrayList<>();
     List<Appointment> appointments = new ArrayList<>();
     List<MedicalRecord> records = new ArrayList<>();
     List<InventoryItem> inventory = new ArrayList<>();
 
-    public void registerPatient(int id, String name, int age, String gender, String address, String phone) {
-        String query = "INSERT INTO Patients (id, name, age, gender, address, phone) VALUES (?, ?, ?, ?, ?, ?)";
+    public void registerPatient(String name, int age, String gender, String address, String phone)
+     {  int newId = this.getNextPatientId();
+        String query = "INSERT INTO Patients (patientId, name, age, gender, address, phone) VALUES (?, ?, ?, ?, ?, ?)";
         try (Connection conn = DriverManager.getConnection(URL, USER, PASSWORD);
              PreparedStatement stmt = conn.prepareStatement(query)) {
 
             // Set parameters
-            stmt.setInt(1, id);
+            stmt.setInt(1, newId);  // Automatically generated ID
             stmt.setString(2, name);
             stmt.setInt(3, age);
             stmt.setString(4, gender);
@@ -132,4 +133,28 @@ public class Hospital {
             p.toString();
         }
     }
+
+    public int getNextPatientId() {
+        int newId = 0;
+        String query = "SELECT MAX(id) + 1 AS next_id FROM Patients";
+
+        try (Connection conn = DriverManager.getConnection(URL, USER, PASSWORD);
+             Statement stmt = conn.createStatement();
+             ResultSet rs = stmt.executeQuery(query)) {
+
+            if (rs.next()) {
+                newId = rs.getInt("next_id");
+                if (newId == 0) {
+                    // If there are no patients, start from 1
+                    newId = 1;
+                }
+            }
+
+        } catch (SQLException e) {
+            e.printStackTrace();
+        }
+
+        return newId;
+    }
+
 }
