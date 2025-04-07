@@ -19,22 +19,21 @@ public class PatientLoginController {
     }
 
     @PostMapping("/login")
-    public String handleLogin(@RequestParam String name, @RequestParam String phone, Model model) {
-        try {
-            hospital.loginPatient(phone, name);
-            Patient patient = Session.getInstance().getCurrentPatient();
-            if (patient != null) {
-                model.addAttribute("patient", patient);
-                return "dashboard";
-            } else {
-                model.addAttribute("error", "Invalid name or phone");
-                return "patient-login";
-            }
-        } catch (Exception e) {
-            e.printStackTrace(); // You'll see this in the console
-            model.addAttribute("error", "Something went wrong");
+public String handleLogin(@RequestParam String name, @RequestParam String phone, Model model) {
+    try {
+        hospital.loginPatient(phone, name);
+        Patient patient = Session.getInstance().getCurrentPatient();
+        if (patient != null) {
+            return "redirect:/dashboard";
+        } else {
+            model.addAttribute("error", "Invalid name or phone");
             return "patient-login";
         }
+    } catch (Exception e) {
+        e.printStackTrace();
+        model.addAttribute("error", "Something went wrong");
+        return "patient-login";
     }
+}
 
 }
