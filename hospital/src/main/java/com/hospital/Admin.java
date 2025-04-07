@@ -8,7 +8,7 @@ public class Admin {
     private static final String USER = "testing";
     private static final String PASSWORD = "mypass";
     
-    // Method to add a new doctor to the database
+    // Add Doctor
     public void addDoctor(long docID, String name, int age, String gender, String specialty) {
         String query = "INSERT INTO Doctors (docID, name, age, gender, specialty) VALUES (?, ?, ?, ?, ?)";
         
@@ -33,14 +33,35 @@ public class Admin {
         }
     }
 
-    // Method to add a new inventory item to the database
-    public void addInventoryItem(int itemID, String name, int quantity) {
+    // Delete Doctor
+    public void deleteDoctor(long docID) {
+        String query = "DELETE FROM Doctors WHERE docID = ?";
+        
+        try (Connection conn = DriverManager.getConnection(URL, USER, PASSWORD);
+             PreparedStatement stmt = conn.prepareStatement(query)) {
+            
+            stmt.setLong(1, docID);
+            
+            int rowsAffected = stmt.executeUpdate();
+            if (rowsAffected > 0) {
+                System.out.println("Doctor deleted successfully!");
+            } else {
+                System.out.println("No doctor found with the given ID.");
+            }
+            
+        } catch (SQLException e) {
+            e.printStackTrace();
+        }
+    }
+
+    // Add Inventory Item
+    public void addInventoryItem(Long itemID, String name, int quantity) {
         String query = "INSERT INTO InventoryItems (itemID, name, quantity) VALUES (?, ?, ?)";
         
         try (Connection conn = DriverManager.getConnection(URL, USER, PASSWORD);
              PreparedStatement stmt = conn.prepareStatement(query)) {
             
-            stmt.setInt(1, itemID);
+            stmt.setLong(1, itemID);
             stmt.setString(2, name);
             stmt.setInt(3, quantity);
             
@@ -56,7 +77,28 @@ public class Admin {
         }
     }
 
-    // Method to add a new medical record to the database
+    // Delete Inventory Item
+    public void deleteInventoryItem(int itemID) {
+        String query = "DELETE FROM InventoryItems WHERE itemID = ?";
+        
+        try (Connection conn = DriverManager.getConnection(URL, USER, PASSWORD);
+             PreparedStatement stmt = conn.prepareStatement(query)) {
+            
+            stmt.setInt(1, itemID);
+            
+            int rowsAffected = stmt.executeUpdate();
+            if (rowsAffected > 0) {
+                System.out.println("Inventory item deleted successfully!");
+            } else {
+                System.out.println("No inventory item found with the given ID.");
+            }
+            
+        } catch (SQLException e) {
+            e.printStackTrace();
+        }
+    }
+
+    // Add Medical Record
     public void addMedicalRecord(long recordID, long patientID, String diagnosis, String treatment) {
         String query = "INSERT INTO MedicalRecords (recordID, patientID, diagnosis, treatment) VALUES (?, ?, ?, ?)";
         
@@ -73,6 +115,27 @@ public class Admin {
                 System.out.println("Medical record added successfully!");
             } else {
                 System.out.println("Failed to add medical record.");
+            }
+            
+        } catch (SQLException e) {
+            e.printStackTrace();
+        }
+    }
+
+    // Delete Medical Record
+    public void deleteMedicalRecord(long recordID) {
+        String query = "DELETE FROM MedicalRecords WHERE recordID = ?";
+        
+        try (Connection conn = DriverManager.getConnection(URL, USER, PASSWORD);
+             PreparedStatement stmt = conn.prepareStatement(query)) {
+            
+            stmt.setLong(1, recordID);
+            
+            int rowsAffected = stmt.executeUpdate();
+            if (rowsAffected > 0) {
+                System.out.println("Medical record deleted successfully!");
+            } else {
+                System.out.println("No medical record found with the given ID.");
             }
             
         } catch (SQLException e) {
