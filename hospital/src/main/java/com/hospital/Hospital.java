@@ -5,8 +5,8 @@ import java.sql.Date;
 
 public class Hospital {
     private static final String URL = "jdbc:sqlserver://localhost:1433;databaseName=HOSPITAL;encrypt=false";
-    private static final String USER = "johnnazizz";
-    private static final String PASSWORD = "blabla1";
+    private static final String USER = "testing";
+    private static final String PASSWORD = "mypass";
 
     List<Patient> patients = new ArrayList<>();
     List<Appointment> appointments = new ArrayList<>();
@@ -136,7 +136,7 @@ public class Hospital {
 
     public int getNextPatientId() {
         int newId = 0;
-        String query = "SELECT MAX(id) + 1 AS next_id FROM Patients";
+        String query = "SELECT MAX(patientID) + 1 AS next_id FROM Patients";
 
         try (Connection conn = DriverManager.getConnection(URL, USER, PASSWORD);
              Statement stmt = conn.createStatement();
