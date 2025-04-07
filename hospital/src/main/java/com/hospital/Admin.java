@@ -1,5 +1,4 @@
 package com.hospital;
-
 import java.sql.*;
 
 public class Admin {
@@ -109,6 +108,7 @@ public class Admin {
             stmt.setLong(2, patientID);
             stmt.setString(3, diagnosis);
             stmt.setString(4, treatment);
+            stmt.setDate(5, date);
             
             int rowsAffected = stmt.executeUpdate();
             if (rowsAffected > 0) {
