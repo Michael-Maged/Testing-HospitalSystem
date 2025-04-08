@@ -10,7 +10,7 @@ public class InventoryItemTest {
     public void testConstructorAndGetters() {
         InventoryItem item = new InventoryItem(1, "Gloves", 100);
 
-        assertEquals(1L, item.getItemId());
+        assertEquals(1, item.getItemId());
         assertEquals("Gloves", item.getName());
         assertEquals(100, item.getQuantity());
     }
