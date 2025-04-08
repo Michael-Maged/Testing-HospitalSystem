@@ -189,16 +189,17 @@ public class Hospital {
        }
    }
 
-   public void scheduleAppointment(int appID, int patientID, String type, Date date, Time time) {
-       String query = "INSERT INTO Appointments (appID , patientID, type, date, time) VALUES (?, ?, ?, ?, ?)";
+   public void scheduleAppointment(int appID, int patientID, String type, Date date, Time time, int docID) {
+       String query = "INSERT INTO Appointments (appID , patientID, docID, type, date, time) VALUES (?, ?, ?, ?, ?, ?)";
        try (Connection conn = DriverManager.getConnection(URL, USER, PASSWORD);
             PreparedStatement stmt = conn.prepareStatement(query)) {
            // Set parameters
            stmt.setInt(1, appID);
-           stmt.setLong(2,patientID);
-           stmt.setString (3, type);
-           stmt.setDate(4, date);
-           stmt.setTime(5, time);
+           stmt.setInt(2,patientID);
+           stmt.setInt(3,docID);
+           stmt.setString (4, type);
+           stmt.setDate(5, date);
+           stmt.setTime(6, time);
            
 
            // Execute the query
