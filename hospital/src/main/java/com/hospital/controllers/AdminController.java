@@ -31,7 +31,7 @@ public class AdminController {
                             @RequestParam String gender,
                             @RequestParam String specialty) {
         admin.addDoctor(Docid,name,age,gender,specialty);
-        hospital.getDoctors().add(new Doctor(age, name, gender, specialty));
+        hospital.getDoctors().add(new Doctor(Docid, name, age, gender, specialty));
         return "redirect:/admin";
     }
 
