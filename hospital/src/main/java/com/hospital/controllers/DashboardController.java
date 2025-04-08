@@ -1,8 +1,6 @@
 package com.hospital.controllers;
 
-import java.time.LocalDate;
-import java.time.LocalTime;
-
+import java.sql.*;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.GetMapping;
@@ -35,14 +33,14 @@ public class DashboardController {
     //TODO:lesa el function di makhelsetsh
     @PostMapping("/appointments/add")
     public String addAppointment(@RequestParam String type,
-                                @RequestParam String date,
-                                @RequestParam String time,
-                                @RequestParam String docID,
+                                @RequestParam Date date,
+                                @RequestParam Time time,
+                                @RequestParam int docID,
                                 Model model) {
         Patient patient = Session.getInstance().getCurrentPatient();
 
         if (patient != null) {
-
+            
             Appointment appointment = new Appointment(hospital.getNextAppointmentId(type),patient.getPatientID(),type,date,time,docID);
 
             patient.addAppointment(appointment); 

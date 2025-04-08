@@ -8,7 +8,7 @@ public class Admin {
     private static final String PASSWORD = "mypass";
     
     // TODO: a3mel table lel DR 
-    public void addDoctor(long docID, String name, int age, String gender, String specialty) {
+    public void addDoctor(int docID, String name, int age, String gender, String specialty) {
         String query = "INSERT INTO Doctors (docID, name, age, gender, specialty) VALUES (?, ?, ?, ?, ?)";
         
         try (Connection conn = DriverManager.getConnection(URL, USER, PASSWORD);
@@ -33,7 +33,7 @@ public class Admin {
     }
 
     // Delete Doctor
-    public void deleteDoctor(long docID) {
+    public void deleteDoctor(int docID) {
         String query = "DELETE FROM Doctors WHERE docID = ?";
         
         try (Connection conn = DriverManager.getConnection(URL, USER, PASSWORD);
@@ -54,7 +54,7 @@ public class Admin {
     }
 
     // Add Inventory Item
-    public void addInventoryItem(Long itemID, String name, int quantity) {
+    public void addInventoryItem(int itemID, String name, int quantity) {
         String query = "INSERT INTO InventoryItems (itemID, name, quantity) VALUES (?, ?, ?)";
         
         try (Connection conn = DriverManager.getConnection(URL, USER, PASSWORD);
@@ -98,7 +98,7 @@ public class Admin {
     }
 
     // Add Medical Record
-    public void addMedicalRecord(long recordID, long patientID, String diagnosis, String treatment , Date date) {
+    public void addMedicalRecord(int recordID, int patientID, String diagnosis, String treatment , Date date) {
         String query = "INSERT INTO MedicalRecords (recordID, patientID, diagnosis, treatment) VALUES (?, ?, ?, ?)";
         
         try (Connection conn = DriverManager.getConnection(URL, USER, PASSWORD);

@@ -3,14 +3,14 @@ import java.sql.Time;
 import java.util.*;
 
 public class Appointment {
-    long appID;
-    long patientID;
-    long docID;
+    int appID;
+    int patientID;
+    int docID;
     String type;
     Date date;
     Time time;
     
-    public Appointment(long appID, long patientID, String type, Date date, Time time, long docID){
+    public Appointment(int appID, int patientID, String type, Date date, Time time, int docID){
         this.appID = appID;
         this.patientID = patientID;
         this.docID = docID;
@@ -19,27 +19,27 @@ public class Appointment {
         this.time = time;
     }
     
-    public long getAppID() {
+    public int getAppID() {
         return appID;
     }
     
-    public void setAppID(long appID) {
+    public void setAppID(int appID) {
         this.appID = appID;
     }
     
-    public long getPatientID() {
+    public int getPatientID() {
         return patientID;
     }
     
-    public void setPatientID(long patientID) {
+    public void setPatientID(int patientID) {
         this.patientID = patientID;
     }
     
-    public long getDocID() {
+    public int getDocID() {
         return docID;
     }
     
-    public void setDocID(long docID) {
+    public void setDocID(int docID) {
         this.docID = docID;
     }
     

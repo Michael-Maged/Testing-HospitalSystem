@@ -9,7 +9,7 @@ import java.sql.Time;
 
 public class Patient {
     // Attributes
-    private long patientID;
+    private int patientID;
     private String name;
     private int age;
     private String gender;
@@ -20,7 +20,7 @@ public class Patient {
     private ArrayList<Bill> bills;
 
     // Constructor
-    public Patient(long patientID, String name, int age, String gender, String address, String phoneNumber) {
+    public Patient(int patientID, String name, int age, String gender, String address, String phoneNumber) {
         this.patientID = patientID;
         this.name = name;
         this.age = age;
@@ -32,7 +32,7 @@ public class Patient {
     }
 
     // Getters
-    public long getPatientID() { return patientID; }
+    public int getPatientID() { return patientID; }
     public String getName() { return name; }
     public int getAge() { return age; }
     public String getGender() { return gender; }
@@ -58,8 +58,8 @@ public class Patient {
 
             // Loop through the result set and create Appointment objects
             while (rs.next()) {
-                long appointmentId = rs.getInt("appID");
-                long docID = rs.getInt("docID");
+                int appointmentId = rs.getInt("appID");
+                int docID = rs.getInt("docID");
                 String type = rs.getString("type");
                 Date date = rs.getDate("date");
                 Time time = rs.getTime("time");
@@ -93,8 +93,8 @@ public class Patient {
 
             // Process the result set
             while (rs.next()) {
-                long recordID = rs.getLong("recordID");
-                long patientID = rs.getLong("patientID");
+                int recordID = rs.getInt("recordID");
+                int patientID = rs.getInt("patientID");
                 String diagnosis = rs.getString("diagnosis");
                 String treatment = rs.getString("treatment");
                 Date recordDate = rs.getDate("recordDate"); // Assuming this is a Date column

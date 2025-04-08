@@ -26,7 +26,7 @@ public class AdminController {
     // POST: Add doctor
     @PostMapping("/add-doctor")
     public String addDoctor(@RequestParam int age,
-                            @RequestParam Long Docid,
+                            @RequestParam int Docid,
                             @RequestParam String name,
                             @RequestParam String gender,
                             @RequestParam String specialty) {
@@ -37,7 +37,7 @@ public class AdminController {
 
     // POST: Delete doctor
     @PostMapping("/delete-doctor")
-    public String deleteDoctor(@RequestParam Long id) {
+    public String deleteDoctor(@RequestParam int id) {
         admin.deleteDoctor(id);
         hospital.getDoctors().remove(hospital.findById(hospital.getDoctors(), id));
         return "redirect:/admin";
@@ -45,7 +45,7 @@ public class AdminController {
 
 // POST: Add inventory item
 @PostMapping("/add-inventory")
-public String addInventory(@RequestParam Long itemID,
+public String addInventory(@RequestParam int itemID,
                            @RequestParam String name,
                            @RequestParam int quantity) {
     admin.addInventoryItem(itemID, name, quantity);
