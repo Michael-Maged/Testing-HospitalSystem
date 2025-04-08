@@ -16,9 +16,9 @@ public class AppointmentTest {
             new Date(System.currentTimeMillis()), new Time(System.currentTimeMillis()), 201);
 
         // Verify the values are correctly set
-        assertEquals(1L, appointment.getAppID());
-        assertEquals(101L, appointment.getPatientID());
-        assertEquals(201L, appointment.getDocID());
+        assertEquals(1, appointment.getAppID());
+        assertEquals(101, appointment.getPatientID());
+        assertEquals(201, appointment.getDocID());
         assertEquals("Consultation", appointment.getType());
         assertNotNull(appointment.getDate());
         assertNotNull(appointment.getTime());
@@ -39,9 +39,9 @@ public class AppointmentTest {
         appointment.setTime(new Time(System.currentTimeMillis() + 100000));
 
         // Verify that setters correctly update the values
-        assertEquals(3L, appointment.getAppID());
-        assertEquals(103L, appointment.getPatientID());
-        assertEquals(203L, appointment.getDocID());
+        assertEquals(3, appointment.getAppID());
+        assertEquals(103, appointment.getPatientID());
+        assertEquals(203, appointment.getDocID());
         assertEquals("Surgery", appointment.getType());
         assertNotNull(appointment.getDate());
         assertNotNull(appointment.getTime());
