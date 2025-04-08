@@ -215,6 +215,26 @@ public class Hospital {
        }
    }
 
+   public void cancelAppointment(int appID){
+        String query = "DELETE FROM Appointments WHERE appID = ?";
+            
+        try (Connection conn = DriverManager.getConnection(URL, USER, PASSWORD);
+                PreparedStatement stmt = conn.prepareStatement(query)) {
+            
+            stmt.setInt(1, appID);
+            
+            int rowsAffected = stmt.executeUpdate();
+            if (rowsAffected > 0) {
+                System.out.println("Doctor deleted successfully!");
+            } else {
+                System.out.println("No doctor found with the given ID.");
+            }
+            
+        } catch (SQLException e) {
+            e.printStackTrace();
+        }
+   }
+
    public void addMedicalRecord(int recordID, int patientID, String diagnosis , String treatment, Date date) {
        String query = "INSERT INTO MedicalRecords (recordID , patientID, diagnosis, treatment, date) VALUES (?, ?, ?, ?, ?)";
        try (Connection conn = DriverManager.getConnection(URL, USER, PASSWORD);

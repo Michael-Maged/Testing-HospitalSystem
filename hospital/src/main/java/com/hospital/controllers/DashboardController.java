@@ -57,4 +57,11 @@ public class DashboardController {
         }
     }
 
+    @PostMapping("/appointments/cancel")
+    public String deleteAppointment(@RequestParam int id){
+        hospital.cancelAppointment(id);
+        hospital.getAppointments().remove(hospital.findById(hospital.getAppointments(), id));
+        return "redirect:/dashboard";
+    }
+
 }

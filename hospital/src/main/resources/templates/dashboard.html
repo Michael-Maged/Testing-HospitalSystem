@@ -119,6 +119,14 @@
                         <p><strong>Type:</strong> <span th:text="${appointment.type}">Type</span></p>
                         <p><strong>Date:</strong> <span th:text="${appointment.date}">Date</span></p>
                         <p><strong>Time:</strong> <span th:text="${appointment.time}">Time</span></p>
+
+                        <form th:action="@{/appointments/cancel}" method="post" style="margin-top: 10px;">
+                            <input type="hidden" name="id" th:value="${appointment.appID}" />
+                            <button type="submit"
+                                    style="background-color: #ef4444; color: white; padding: 8px 12px; border: none; border-radius: 6px; cursor: pointer;">
+                                Cancel
+                            </button>
+                        </form>
                     </div>
                 </li>
             </ul>

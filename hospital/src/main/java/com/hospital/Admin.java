@@ -13,7 +13,7 @@ public class Admin {
         try (Connection conn = DriverManager.getConnection(URL, USER, PASSWORD);
              PreparedStatement stmt = conn.prepareStatement(query)) {
             
-            stmt.setLong(1, docID);
+            stmt.setInt(1, docID);
             stmt.setString(2, name);
             stmt.setInt(3, age);
             stmt.setString(4, gender);
@@ -38,7 +38,7 @@ public class Admin {
         try (Connection conn = DriverManager.getConnection(URL, USER, PASSWORD);
              PreparedStatement stmt = conn.prepareStatement(query)) {
             
-            stmt.setLong(1, docID);
+            stmt.setInt(1, docID);
             
             int rowsAffected = stmt.executeUpdate();
             if (rowsAffected > 0) {
@@ -59,7 +59,7 @@ public class Admin {
         try (Connection conn = DriverManager.getConnection(URL, USER, PASSWORD);
              PreparedStatement stmt = conn.prepareStatement(query)) {
             
-            stmt.setLong(1, itemID);
+            stmt.setInt(1, itemID);
             stmt.setString(2, name);
             stmt.setInt(3, quantity);
             
@@ -103,8 +103,8 @@ public class Admin {
         try (Connection conn = DriverManager.getConnection(URL, USER, PASSWORD);
              PreparedStatement stmt = conn.prepareStatement(query)) {
             
-            stmt.setLong(1, recordID);
-            stmt.setLong(2, patientID);
+            stmt.setInt(1, recordID);
+            stmt.setInt(2, patientID);
             stmt.setString(3, diagnosis);
             stmt.setString(4, treatment);
             stmt.setDate(5, date);
@@ -122,13 +122,13 @@ public class Admin {
     }
 
     // Delete Medical Record
-    public void deleteMedicalRecord(long recordID) {
+    public void deleteMedicalRecord(int recordID) {
         String query = "DELETE FROM MedicalRecords WHERE recordID = ?";
         
         try (Connection conn = DriverManager.getConnection(URL, USER, PASSWORD);
              PreparedStatement stmt = conn.prepareStatement(query)) {
             
-            stmt.setLong(1, recordID);
+            stmt.setInt(1, recordID);
             
             int rowsAffected = stmt.executeUpdate();
             if (rowsAffected > 0) {

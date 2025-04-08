@@ -3,7 +3,6 @@ package Models;  // Correct package declaration based on your directory structur
 import org.junit.jupiter.api.Test;
 import static org.mockito.ArgumentMatchers.any;
 import static org.mockito.ArgumentMatchers.anyInt; // Import the Admin class from your project
-import static org.mockito.ArgumentMatchers.anyLong;
 import static org.mockito.ArgumentMatchers.anyString;
 import static org.mockito.Mockito.doNothing;
 import static org.mockito.Mockito.mock;
@@ -86,12 +85,12 @@ public class AdminTest {
         Admin adminMock = mock(Admin.class);
         
         // Define behavior for the mock if needed
-        doNothing().when(adminMock).deleteMedicalRecord(anyLong());
+        doNothing().when(adminMock).deleteMedicalRecord(anyInt());
         
         // Call the method on the mock
-        adminMock.deleteMedicalRecord(1L);
+        adminMock.deleteMedicalRecord(1);
         
         // Verify interaction with the mock
-        verify(adminMock, times(1)).deleteMedicalRecord(anyLong());
+        verify(adminMock, times(1)).deleteMedicalRecord(anyInt());
     }
 }
