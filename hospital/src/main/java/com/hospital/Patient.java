@@ -29,6 +29,8 @@ public class Patient {
         this.phoneNumber = phoneNumber;
         this.appointments = new ArrayList<>();
         this.bills = new ArrayList<>();
+        this.records = new ArrayList<>();
+
     }
 
     // Getters
@@ -39,8 +41,10 @@ public class Patient {
     public String getAddress() { return address; }
     public String getPhoneNumber() { return phoneNumber; }
     public ArrayList<Bill> getBills() { return bills; }
+    public ArrayList<Appointment> getAppointments() { return appointments; }
+    public ArrayList<MedicalRecord> getMedicalRecords() { return records; }
     
-    public ArrayList<Appointment> getAppointments() { 
+    public ArrayList<Appointment> FetchUserAppointments() { 
         appointments.clear();
 
         // Query to get appointments for this patient
@@ -51,7 +55,7 @@ public class Patient {
              PreparedStatement stmt = conn.prepareStatement(query)) {
 
             // Set the patient ID as the parameter for the query
-            stmt.setLong(1, this.patientID);
+            stmt.setInt(1, this.patientID);
 
             // Execute the query
             ResultSet rs = stmt.executeQuery();
@@ -77,7 +81,9 @@ public class Patient {
         return appointments;
     }
 
-    public ArrayList<MedicalRecord> getRecords() {
+
+
+    public ArrayList<MedicalRecord> FetchUserRecords() {
         records.clear();
 
         String query = "SELECT * FROM MedicalRecords WHERE patientID = ?";
@@ -122,6 +128,10 @@ public class Patient {
 
     public void addBill(Bill bill) {
         bills.add(bill);
+    }
+
+    public void addrecord(MedicalRecord record) {
+        records.add(record);
     }
 
     @Override

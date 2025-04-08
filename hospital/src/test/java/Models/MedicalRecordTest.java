@@ -16,8 +16,8 @@ public class MedicalRecordTest {
         MedicalRecord record = new MedicalRecord(1, 1001, "Flu", "Rest and hydration", Date.valueOf("2025-04-07"));
 
         // Verify the values are correctly set
-        assertEquals(1L, record.getRecordID());
-        assertEquals(1001L, record.getPatientID());
+        assertEquals(1, record.getRecordID());
+        assertEquals(1001, record.getPatientID());
         assertEquals("Flu", record.getDiagnosis());
         assertEquals("Rest and hydration", record.getTreatment());
     }
@@ -34,8 +34,8 @@ public class MedicalRecordTest {
         record.setTreatment("Antibiotics");
 
         // Verify that setters correctly update the values
-        assertEquals(3L, record.getRecordID());
-        assertEquals(1003L, record.getPatientID());
+        assertEquals(3, record.getRecordID());
+        assertEquals(1003, record.getPatientID());
         assertEquals("Pneumonia", record.getDiagnosis());
         assertEquals("Antibiotics", record.getTreatment());
     }
