@@ -2,6 +2,9 @@ package com.hospital.controllers;
 
 import com.hospital.*;
 
+
+import java.sql.Date;
+
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.*;
@@ -42,20 +45,30 @@ public class AdminController {
         return "redirect:/admin";
     }
 
-// POST: Add inventory item
-@PostMapping("/add-inventory")
-public String addInventory(@RequestParam String name,
-                           @RequestParam int quantity) {
-    admin.addInventoryItem(hospital.getNextInventoryId(), name, quantity);
-    hospital.getInventory().add(new InventoryItem(hospital.getNextInventoryId(), name, quantity));
-    return "redirect:/admin";
-}
+    // POST: Add inventory item
+    @PostMapping("/add-inventory")
+    public String addInventory(@RequestParam String name,
+                            @RequestParam int quantity) {
+        admin.addInventoryItem(hospital.getNextInventoryId(), name, quantity);
+        hospital.getInventory().add(new InventoryItem(hospital.getNextInventoryId(), name, quantity));
+        return "redirect:/admin";
+    }
 
-// POST: Delete inventory item
-@PostMapping("/delete-inventory")
-public String deleteInventory(@RequestParam int id) {
-    admin.deleteInventoryItem(id);
-    hospital.getInventory().remove(hospital.findById(hospital.getInventory(), id));
+    // POST: Delete inventory item
+    @PostMapping("/delete-inventory")
+    public String deleteInventory(@RequestParam int id) {
+        admin.deleteInventoryItem(id);
+        hospital.getInventory().remove(hospital.findById(hospital.getInventory(), id));
+        return "redirect:/admin";
+    }
+
+    @PostMapping("/add-medical-record")
+    public String addMedicalRecord(@RequestParam int patientId,
+                               @RequestParam String diagnosis,
+                               @RequestParam String treatment, 
+                               @RequestParam Date date
+                               ) {
+    hospital.addMedicalRecord(hospital.getNextRecordId(), patientId, diagnosis, treatment, date);
     return "redirect:/admin";
-}
+    }
 }

@@ -215,15 +215,16 @@ public class Hospital {
        }
    }
 
-   public void addMedicalRecord(int recordID, int patientID, String diagnosis , String treatment) {
-       String query = "INSERT INTO MedicalRecords (recordID , patientID, diagnosis, treatment) VALUES (?, ?, ?, ?)";
+   public void addMedicalRecord(int recordID, int patientID, String diagnosis , String treatment, Date date) {
+       String query = "INSERT INTO MedicalRecords (recordID , patientID, diagnosis, treatment, date) VALUES (?, ?, ?, ?, ?)";
        try (Connection conn = DriverManager.getConnection(URL, USER, PASSWORD);
             PreparedStatement stmt = conn.prepareStatement(query)) {
            // Set parameters
            stmt.setInt(1, recordID);
-           stmt.setLong(2,patientID);
+           stmt.setInt(2,patientID);
            stmt.setString (3, diagnosis);
            stmt.setString(4,treatment);
+           stmt.setDate(5,date);
            
            
 
@@ -312,28 +313,51 @@ public class Hospital {
         }
     
         return newId;
-        }
-   public int getNextAppointmentId(String type) {
-    int newId = 0;
-    String query = "SELECT COALESCE(MAX(appID), 0) + 1 AS next_id FROM Appointments WHERE type = ?";
+    }
+    
+    public int getNextAppointmentId(String type) {
+        int newId = 0;
+        String query = "SELECT COALESCE(MAX(appID), 0) + 1 AS next_id FROM Appointments WHERE type = ?";
 
-    try (Connection conn = DriverManager.getConnection(URL, USER, PASSWORD);
-         PreparedStatement pstmt = conn.prepareStatement(query)) {
+        try (Connection conn = DriverManager.getConnection(URL, USER, PASSWORD);
+            PreparedStatement pstmt = conn.prepareStatement(query)) {
 
-        // Set the type parameter in the query
-        pstmt.setString(1, type);
-        
-        // Execute the query and get the result
-        try (ResultSet rs = pstmt.executeQuery()) {
-            if (rs.next()) {
-                newId = rs.getInt("next_id");
+            // Set the type parameter in the query
+            pstmt.setString(1, type);
+            
+            // Execute the query and get the result
+            try (ResultSet rs = pstmt.executeQuery()) {
+                if (rs.next()) {
+                    newId = rs.getInt("next_id");
+                }
             }
+
+        } catch (SQLException e) {
+            e.printStackTrace(); // Handle exception
         }
 
-    } catch (SQLException e) {
-        e.printStackTrace(); // Handle exception
+            return newId;
     }
 
+    public int getNextRecordId() {
+        int newId = 0;
+        String query = "SELECT MAX(recordID) + 1 AS next_id FROM MedicalRecords";
+    
+        try (Connection conn = DriverManager.getConnection(URL, USER, PASSWORD);
+             Statement stmt = conn.createStatement();
+             ResultSet rs = stmt.executeQuery(query)) {
+    
+            if (rs.next()) {
+                newId = rs.getInt("next_id");
+                if (newId == 0) {
+                    newId = 1;
+                }
+            }
+    
+        } catch (SQLException e) {
+            e.printStackTrace();
+        }
+    
         return newId;
     }
 

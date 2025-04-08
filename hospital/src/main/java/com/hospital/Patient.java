@@ -92,7 +92,7 @@ public class Patient {
              PreparedStatement stmt = conn.prepareStatement(query)) {
 
             // Set the patientID parameter
-            stmt.setLong(1, this.patientID);
+            stmt.setInt(1, this.patientID);
 
             // Execute the query
             ResultSet rs = stmt.executeQuery();
@@ -103,7 +103,7 @@ public class Patient {
                 int patientID = rs.getInt("patientID");
                 String diagnosis = rs.getString("diagnosis");
                 String treatment = rs.getString("treatment");
-                Date recordDate = rs.getDate("recordDate"); // Assuming this is a Date column
+                Date recordDate = rs.getDate("date"); // Assuming this is a Date column
 
                 // Create a new MedicalRecord and add it to the list
                 MedicalRecord record = new MedicalRecord(recordID, patientID, diagnosis, treatment, recordDate);

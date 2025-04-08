@@ -129,14 +129,13 @@
         <div class="medical-records-section">
             <h3>Medical Records</h3>
 
-            <div th:if="${medicalRecords == null or medicalRecords.isEmpty()}">
+            <div th:if="${records == null or records.isEmpty()}">
                 <p>No medical records available.</p>
             </div>
 
-            <ul th:if="${medicalRecords != null and !medicalRecords.isEmpty()}">
-                <li th:each="record : ${medicalRecords}">
+            <ul th:if="${records != null and !records.isEmpty()}">
+                <li th:each="record : ${records}">
                     <div class="appointment">
-                        <p><strong>Record ID:</strong> <span th:text="${record.recordID}">Record ID</span></p>
                         <p><strong>Diagnosis:</strong> <span th:text="${record.diagnosis}">Diagnosis</span></p>
                         <p><strong>Treatment:</strong> <span th:text="${record.treatment}">Treatment</span></p>
                         <p><strong>Date:</strong> <span th:text="${record.date}">Date</span></p>

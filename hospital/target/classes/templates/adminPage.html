@@ -112,23 +112,23 @@
 
         <table>
             <thead>
-                <tr>
-                    <th>Doctor Name</th>
-                    <th>Specialty</th>
-                    <th>Action</th>
-                </tr>
+            <tr>
+                <th>Doctor Name</th>
+                <th>Specialty</th>
+                <th>Action</th>
+            </tr>
             </thead>
             <tbody>
-                <tr th:each="doctor : ${doctors}">
-                    <td th:text="${doctor.name}"></td>
-                    <td th:text="${doctor.specialty}"></td>
-                    <td>
-                        <form th:action="@{/admin/delete-doctor}" method="post">
-                            <input type="hidden" name="id" th:value="${doctor.doctorID}">
-                            <button type="submit" class="btn delete-btn">Delete</button>
-                        </form>
-                    </td>
-                </tr>
+            <tr th:each="doctor : ${doctors}">
+                <td th:text="${doctor.name}"></td>
+                <td th:text="${doctor.specialty}"></td>
+                <td>
+                    <form th:action="@{/admin/delete-doctor}" method="post">
+                        <input type="hidden" name="id" th:value="${doctor.doctorID}">
+                        <button type="submit" class="btn delete-btn">Delete</button>
+                    </form>
+                </td>
+            </tr>
             </tbody>
         </table>
     </section>
@@ -149,25 +149,45 @@
 
         <table>
             <thead>
-                <tr>
-                    <th>Item Name</th>
-                    <th>Quantity</th>
-                    <th>Action</th>
-                </tr>
+            <tr>
+                <th>Item Name</th>
+                <th>Quantity</th>
+                <th>Action</th>
+            </tr>
             </thead>
             <tbody>
-                <tr th:each="item : ${inventory}">
-                    <td th:text="${item.name}"></td>
-                    <td th:text="${item.quantity}"></td>
-                    <td>
-                        <form th:action="@{/admin/delete-inventory}" method="post">
-                            <input type="hidden" name="id" th:value="${item.itemId}">
-                            <button type="submit" class="btn delete-btn">Delete</button>
-                        </form>
-                    </td>
-                </tr>
+            <tr th:each="item : ${inventory}">
+                <td th:text="${item.name}"></td>
+                <td th:text="${item.quantity}"></td>
+                <td>
+                    <form th:action="@{/admin/delete-inventory}" method="post">
+                        <input type="hidden" name="id" th:value="${item.itemId}">
+                        <button type="submit" class="btn delete-btn">Delete</button>
+                    </form>
+                </td>
+            </tr>
             </tbody>
         </table>
+    </section>
+
+    <!-- Medical Record Management -->
+    <section>
+        <h2>Add Medical Record</h2>
+        <form th:action="@{/admin/add-medical-record}" method="post">
+            <label for="patientId">Patient ID:</label>
+            <input type="number" id="patientId" name="patientId" required>
+
+            <label for="diagnosis">Diagnosis:</label>
+            <input type="text" id="diagnosis" name="diagnosis" required>
+
+            <label for="treatment">Treatment:</label>
+            <input type="text" id="treatment" name="treatment" required>
+
+            <label for="date">Date:</label>
+            <input type="date" id="date" name="date" required>
+
+            <button type="submit" class="btn">Add Medical Record</button>
+        </form>
     </section>
 
 </div>
