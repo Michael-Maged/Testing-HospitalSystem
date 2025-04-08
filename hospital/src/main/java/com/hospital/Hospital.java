@@ -68,11 +68,12 @@ public class Hospital {
              ResultSet rs = stmt.executeQuery(query)) {
 
             while (rs.next()) {
-                int doctorID = rs.getInt("doctorID");
+                int doctorID = rs.getInt("docID");
                 String name = rs.getString("name");
+                int age = rs.getInt("age");
+                String address = rs.getString("address");
                 String specialty = rs.getString("specialty");
-                String phone = rs.getString("phone");
-                doctors.add(new Doctor(doctorID, name, specialty, phone));
+                doctors.add(new Doctor(doctorID, name, age, address, specialty));
             }
             System.out.println("Fetched doctors from DB.");
 

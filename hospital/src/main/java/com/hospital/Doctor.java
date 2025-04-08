@@ -3,15 +3,17 @@ package com.hospital;
 public class Doctor {
     private int doctorID;
     private String name;
+    private int age;
+    private String gender;
     private String specialty;
-    private String phone;
 
     // Constructor
-    public Doctor(int doctorID, String name, String specialty, String phone) {
+    public Doctor(int doctorID, String name, int age, String gender, String specialty) {
         this.doctorID = doctorID;
         this.name = name;
+        this.age = age;
+        this.gender = gender;
         this.specialty = specialty;
-        this.phone = phone;
     }
 
     // Getters
@@ -27,10 +29,6 @@ public class Doctor {
         return specialty;
     }
 
-    public String getPhone() {
-        return phone;
-    }
-
     // Setters
     public void setDoctorID(int doctorID) {
         this.doctorID = doctorID;
@@ -43,11 +41,6 @@ public class Doctor {
     public void setSpecialty(String specialty) {
         this.specialty = specialty;
     }
-
-    public void setPhone(String phone) {
-        this.phone = phone;
-    }
-
     // toString
     @Override
     public String toString() {
@@ -55,7 +48,22 @@ public class Doctor {
                 "doctorID=" + doctorID +
                 ", name='" + name + '\'' +
                 ", specialty='" + specialty + '\'' +
-                ", phone='" + phone + '\'' +
                 '}';
+    }
+
+    public int getAge() {
+        return age;
+    }
+
+    public void setAge(int age) {
+        this.age = age;
+    }
+
+    public String getGender() {
+        return gender;
+    }
+
+    public void setGender(String gender) {
+        this.gender = gender;
     }
 }
