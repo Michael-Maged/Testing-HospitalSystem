@@ -116,6 +116,7 @@
             <ul th:if="${appointments != null and !appointments.isEmpty()}">
                 <li th:each="appointment : ${appointments}">
                     <div class="appointment">
+                        <p><strong>Appointment ID:</strong> <span th:text="${appointment.appointmentId}">Appointment ID</span></p>
                         <p><strong>Type:</strong> <span th:text="${appointment.type}">Type</span></p>
                         <p><strong>Date:</strong> <span th:text="${appointment.date}">Date</span></p>
                         <p><strong>Time:</strong> <span th:text="${appointment.time}">Time</span></p>

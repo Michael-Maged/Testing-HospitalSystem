@@ -48,7 +48,7 @@ public class Patient {
         appointments.clear();
 
         // Query to get appointments for this patient
-        String query = "SELECT appID, docID , type, date, time FROM Appointments WHERE patientID = ?";
+        String query = "SELECT appID, type, date, time FROM appointments WHERE patientID?";
 
         // Connect to the database and execute the query
         try (Connection conn = DriverManager.getConnection("jdbc:sqlserver://localhost:1433;databaseName=HOSPITAL;encrypt=false", "testing", "mypass");
@@ -70,7 +70,6 @@ public class Patient {
 
                 // Create an Appointment object and add it to the list
                 Appointment appointment = new Appointment(appointmentId, this.patientID, type, date, time, docID);
-                System.out.println(appointment.toString());
                 appointments.add(appointment);
             }
 
@@ -93,7 +92,7 @@ public class Patient {
              PreparedStatement stmt = conn.prepareStatement(query)) {
 
             // Set the patientID parameter
-            stmt.setInt(1, this.patientID);
+            stmt.setLong(1, this.patientID);
 
             // Execute the query
             ResultSet rs = stmt.executeQuery();
