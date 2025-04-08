@@ -1,5 +1,7 @@
 package Models;
 
+import org.junit.jupiter.api.BeforeEach;
+import org.junit.jupiter.api.AfterEach;
 import org.junit.jupiter.api.Test;
 
 import com.hospital.Appointment;
@@ -9,9 +11,10 @@ import com.hospital.Patient;
 import com.hospital.Hospital;
 import com.hospital.Session;
 
-import java.sql.Date;
-import java.sql.Time;
+import java.sql.*;
 import java.util.*;
+
+
 
 import static org.junit.jupiter.api.Assertions.*;
 
@@ -19,7 +22,7 @@ public class HospitalTest {
 
     private Hospital hospital;
 
-    @Before
+    @BeforeEach
     public void setUp() throws Exception {
         hospital = new Hospital();
         clearDatabase();
@@ -56,7 +59,7 @@ public class HospitalTest {
         hospital.registerPatient("Bob", 30, "Male", "Giza", "0123456789");
         int patientId = hospital.getPatients().get(0).getPatientID();
 
-        hospital.scheduleAppointment(1, patientId, "Checkup", Date.valueOf("2025-04-09"), Time.valueOf("12:30:00"), 1);
+        hospital.scheduleAppointment(1, patientId, "Checkup", java.sql.Date.valueOf("2025-04-09"), Time.valueOf("12:30:00"), 1);
         hospital.fetchAppointments();
         List<Appointment> appointments = hospital.getAppointments();
 
@@ -97,7 +100,7 @@ public class HospitalTest {
         assertEquals("Test", result.getName());
     }
 
-    @After
+    @AfterEach
     public void tearDown() {
         Session.getInstance().setCurrentPatient(null);
     }
