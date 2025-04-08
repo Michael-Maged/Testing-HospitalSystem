@@ -22,7 +22,8 @@ public class DashboardController {
 
         if (patient != null) {
             model.addAttribute("patient", patient);
-            model.addAttribute("appointments", patient.getAppointments());
+            model.addAttribute("appointments", patient.FetchUserAppointments());
+            model.addAttribute("records", patient.FetchUserRecords());
             return "dashboard";
         } else {
             model.addAttribute("error", "No patient logged in");
