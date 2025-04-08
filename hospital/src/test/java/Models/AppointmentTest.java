@@ -12,8 +12,8 @@ public class AppointmentTest {
 
     public void testConstructorAndGetters() {
         // Create an Appointment instance
-        Appointment appointment = new Appointment(1L, 101L, "Consultation", 
-            new Date(System.currentTimeMillis()), new Time(System.currentTimeMillis()), 201L);
+        Appointment appointment = new Appointment(1, 101, "Consultation", 
+            new Date(System.currentTimeMillis()), new Time(System.currentTimeMillis()), 201);
 
         // Verify the values are correctly set
         assertEquals(1L, appointment.getAppID());
@@ -27,13 +27,13 @@ public class AppointmentTest {
     @Test
     public void testSetters() {
         // Create an Appointment instance
-        Appointment appointment = new Appointment(2L, 102L, "Checkup", 
-            new Date(System.currentTimeMillis()), new Time(System.currentTimeMillis()), 202L);
+        Appointment appointment = new Appointment(2, 102, "Checkup", 
+            new Date(System.currentTimeMillis()), new Time(System.currentTimeMillis()), 202);
 
         // Use setters to update values
-        appointment.setAppID(3L);
-        appointment.setPatientID(103L);
-        appointment.setDocID(203L);
+        appointment.setAppID(3);
+        appointment.setPatientID(103);
+        appointment.setDocID(203);
         appointment.setType("Surgery");
         appointment.setDate(new Date(System.currentTimeMillis() + 100000));
         appointment.setTime(new Time(System.currentTimeMillis() + 100000));
@@ -50,8 +50,8 @@ public class AppointmentTest {
     @Test
     public void testToString() {
         // Create an Appointment instance
-        Appointment appointment = new Appointment(4L, 104L, "Emergency", 
-            new Date(System.currentTimeMillis()), new Time(System.currentTimeMillis()), 204L);
+        Appointment appointment = new Appointment(4, 104, "Emergency", 
+            new Date(System.currentTimeMillis()), new Time(System.currentTimeMillis()), 204);
 
         // Expected string representation
         String expectedString = "Appointment for patient 104 with Dr. 204 on " + appointment.getDate();
