@@ -50,7 +50,6 @@ public class Hospital {
                 String diagnosis = rs.getString("diagnosis");
                 String treatment = rs.getString("treatment");
                 Date date = rs.getDate("Date");
-                //TODO:azawed f el database column lel date f table el records w azbat ay functions liha 3elaka b el date 
                 records.add(new MedicalRecord(recordID, patientID, diagnosis, treatment,date));
             }
             System.out.println("Fetched medical records for patient ID " + patientID);
@@ -269,8 +268,6 @@ public class Hospital {
        return newId;
    }
 
-   
-   //TODO: astakhdmha f el controller 
    public int getNextAppointmentId(String type) {
     int newId = 0;
     String query = "SELECT COALESCE(MAX(appID), 0) + 1 AS next_id FROM Appointments WHERE type = ?";

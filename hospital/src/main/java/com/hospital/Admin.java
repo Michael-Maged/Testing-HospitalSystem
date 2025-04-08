@@ -7,7 +7,6 @@ public class Admin {
     private static final String USER = "testing";
     private static final String PASSWORD = "mypass";
     
-    // TODO: a3mel table lel DR 
     public void addDoctor(int docID, String name, int age, String gender, String specialty) {
         String query = "INSERT INTO Doctors (docID, name, age, gender, specialty) VALUES (?, ?, ?, ?, ?)";
         

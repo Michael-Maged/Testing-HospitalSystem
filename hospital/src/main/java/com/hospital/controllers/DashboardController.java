@@ -30,7 +30,6 @@ public class DashboardController {
         }
     }
 
-    //TODO:lesa el function di makhelsetsh
     @PostMapping("/appointments/add")
     public String addAppointment(@RequestParam String type,
                                 @RequestParam Date date,
