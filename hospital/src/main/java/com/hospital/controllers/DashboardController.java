@@ -30,7 +30,6 @@ public class DashboardController {
         }
     }
 
-    //TODO:lesa el function di makhelsetsh
     @PostMapping("/appointments/add")
     public String addAppointment(@RequestParam String type,
                                 @RequestParam Date date,
@@ -43,7 +42,8 @@ public class DashboardController {
             
             Appointment appointment = new Appointment(hospital.getNextAppointmentId(type),patient.getPatientID(),type,date,time,docID);
 
-            patient.addAppointment(appointment); 
+            hospital.scheduleAppointment(hospital.getNextAppointmentId(type),patient.getPatientID(),type,date,time,docID); 
+            patient.addAppointment(appointment);
             return "redirect:/dashboard";
         } else {
             model.addAttribute("error", "No patient logged in");

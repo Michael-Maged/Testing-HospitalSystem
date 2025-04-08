@@ -50,7 +50,6 @@ public class Hospital {
                 String diagnosis = rs.getString("diagnosis");
                 String treatment = rs.getString("treatment");
                 Date date = rs.getDate("Date");
-                //TODO:azawed f el database column lel date f table el records w azbat ay functions liha 3elaka b el date 
                 records.add(new MedicalRecord(recordID, patientID, diagnosis, treatment,date));
             }
             System.out.println("Fetched medical records for patient ID " + patientID);
@@ -71,9 +70,9 @@ public class Hospital {
                 int doctorID = rs.getInt("docID");
                 String name = rs.getString("name");
                 int age = rs.getInt("age");
-                String address = rs.getString("address");
+                String gender = rs.getString("gender");
                 String specialty = rs.getString("specialty");
-                doctors.add(new Doctor(doctorID, name, age, address, specialty));
+                doctors.add(new Doctor(doctorID, name, age, gender, specialty));
             }
             System.out.println("Fetched doctors from DB.");
 
@@ -190,16 +189,17 @@ public class Hospital {
        }
    }
 
-   public void scheduleAppointment(int appID, long patientID, String type, Date date, Time time) {
-       String query = "INSERT INTO Appointments (appID , patientID, type, date, time) VALUES (?, ?, ?, ?, ?)";
+   public void scheduleAppointment(int appID, int patientID, String type, Date date, Time time, int docID) {
+       String query = "INSERT INTO Appointments (appID , patientID, docID, type, date, time) VALUES (?, ?, ?, ?, ?, ?)";
        try (Connection conn = DriverManager.getConnection(URL, USER, PASSWORD);
             PreparedStatement stmt = conn.prepareStatement(query)) {
            // Set parameters
            stmt.setInt(1, appID);
-           stmt.setLong(2,patientID);
-           stmt.setString (3, type);
-           stmt.setDate(4, date);
-           stmt.setTime(5, time);
+           stmt.setInt(2,patientID);
+           stmt.setInt(3,docID);
+           stmt.setString (4, type);
+           stmt.setDate(5, date);
+           stmt.setTime(6, time);
            
 
            // Execute the query
@@ -215,7 +215,7 @@ public class Hospital {
        }
    }
 
-   public void addMedicalRecord(int recordID, long patientID, String diagnosis , String treatment) {
+   public void addMedicalRecord(int recordID, int patientID, String diagnosis , String treatment) {
        String query = "INSERT INTO MedicalRecords (recordID , patientID, diagnosis, treatment) VALUES (?, ?, ?, ?)";
        try (Connection conn = DriverManager.getConnection(URL, USER, PASSWORD);
             PreparedStatement stmt = conn.prepareStatement(query)) {
@@ -269,8 +269,6 @@ public class Hospital {
        return newId;
    }
 
-   
-   //TODO: astakhdmha f el controller 
    public int getNextAppointmentId(String type) {
     int newId = 0;
     String query = "SELECT COALESCE(MAX(appID), 0) + 1 AS next_id FROM Appointments WHERE type = ?";

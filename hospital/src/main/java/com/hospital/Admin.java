@@ -7,7 +7,6 @@ public class Admin {
     private static final String USER = "testing";
     private static final String PASSWORD = "mypass";
     
-    // TODO: a3mel table lel DR 
     public void addDoctor(int docID, String name, int age, String gender, String specialty) {
         String query = "INSERT INTO Doctors (docID, name, age, gender, specialty) VALUES (?, ?, ?, ?, ?)";
         
@@ -55,7 +54,7 @@ public class Admin {
 
     // Add Inventory Item
     public void addInventoryItem(int itemID, String name, int quantity) {
-        String query = "INSERT INTO InventoryItems (itemID, name, quantity) VALUES (?, ?, ?)";
+        String query = "INSERT INTO Inventory (itemID, name, quantity) VALUES (?, ?, ?)";
         
         try (Connection conn = DriverManager.getConnection(URL, USER, PASSWORD);
              PreparedStatement stmt = conn.prepareStatement(query)) {
@@ -78,7 +77,7 @@ public class Admin {
 
     // Delete Inventory Item
     public void deleteInventoryItem(int itemID) {
-        String query = "DELETE FROM InventoryItems WHERE itemID = ?";
+        String query = "DELETE FROM Inventory WHERE itemID = ?";
         
         try (Connection conn = DriverManager.getConnection(URL, USER, PASSWORD);
              PreparedStatement stmt = conn.prepareStatement(query)) {

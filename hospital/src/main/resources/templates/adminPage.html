@@ -127,7 +127,7 @@
                     <td th:text="${doctor.specialty}"></td>
                     <td>
                         <form th:action="@{/admin/delete-doctor}" method="post">
-                            <input type="hidden" name="id" th:value="${doctor.id}">
+                            <input type="hidden" name="id" th:value="${doctor.doctorID}">
                             <button type="submit" class="btn delete-btn">Delete</button>
                         </form>
                     </td>
@@ -166,7 +166,7 @@
                     <td th:text="${item.quantity}"></td>
                     <td>
                         <form th:action="@{/admin/delete-inventory}" method="post">
-                            <input type="hidden" name="id" th:value="${item.id}">
+                            <input type="hidden" name="id" th:value="${item.itemID}">
                             <button type="submit" class="btn delete-btn">Delete</button>
                         </form>
                     </td>
