@@ -10,9 +10,9 @@ import com.hospital.Hospital;
 public class PatientRegistrationController {
 
     private Hospital hospital = new Hospital();
-
     @GetMapping("/register")
     public String showRegistrationForm() {
+        hospital.fetchPatients();
         return "patient-registration";
     }
 

@@ -165,8 +165,13 @@ public class Hospital {
     }
 
     public boolean phoneExists(String phoneNumber) {
-    return patients.stream()
-            .anyMatch(p -> p.getPhoneNumber().equals(phoneNumber));
+        for(Patient d: patients){
+            System.out.println(d.toString());
+            if (d.getPhoneNumber().equals(phoneNumber))
+                return true;
+        }
+        return false;
+
     }
 
     public void loginPatient(String phone, String name){
@@ -348,29 +353,28 @@ public class Hospital {
         return newId;
     }
     
-    public int getNextAppointmentId(String type) {
-        int newId = 0;
-        String query = "SELECT COALESCE(MAX(appID), 0) + 1 AS next_id FROM Appointments WHERE type = ?";
-
+    public int getNextAppointmentId() {
+        int newId = 1; // Start from 1 by default
+        String query = "SELECT MAX(appID) AS max_id FROM Appointments";
+    
         try (Connection conn = DriverManager.getConnection(URL, USER, PASSWORD);
-            PreparedStatement pstmt = conn.prepareStatement(query)) {
-
-            // Set the type parameter in the query
-            pstmt.setString(1, type);
+             PreparedStatement pstmt = conn.prepareStatement(query);
+             ResultSet rs = pstmt.executeQuery()) {
             
-            // Execute the query and get the result
-            try (ResultSet rs = pstmt.executeQuery()) {
-                if (rs.next()) {
-                    newId = rs.getInt("next_id");
+            if (rs.next()) {
+                int maxId = rs.getInt("max_id");
+                if (!rs.wasNull()) {
+                    newId = maxId + 1;
                 }
             }
-
+    
         } catch (SQLException e) {
-            e.printStackTrace(); // Handle exception
+            e.printStackTrace(); // Better to log this in production
         }
-
-            return newId;
+    
+        return newId;
     }
+    
 
     public int getNextRecordId() {
         int newId = 0;
@@ -418,10 +422,10 @@ public class Hospital {
     return departments;
    }
 
-   public <T> T findById(List<T> list, long id) {
+   public <T> T findById(List<T> list, int id) {
     for (T item : list) {
         try {
-            long itemId = (long) item.getClass().getMethod("getId").invoke(item);
+            int itemId = (int) item.getClass().getMethod("getId").invoke(item);
             if (itemId == id) {
                 return item;
             }
@@ -429,6 +433,17 @@ public class Hospital {
             e.printStackTrace();
         }
     }
-    return null;
-}
+        return null;
+    }
+
+    public Doctor findDoctorByName(String name) {
+        for (Doctor doctor : doctors) {
+            if (name.equals(doctor.getName())) {
+                return doctor;
+            }
+        }
+        System.out.println("errrrrrrrrrrrrrrrrrrrrrrrrrrrrrr"+doctors.size());
+        return null;
+    }
+    
 }

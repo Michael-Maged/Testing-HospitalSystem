@@ -24,6 +24,7 @@ public class DashboardController {
             model.addAttribute("patient", patient);
             model.addAttribute("appointments", patient.FetchUserAppointments());
             model.addAttribute("records", patient.FetchUserRecords());
+            hospital.fetchDoctors();
             return "dashboard";
         } else {
             model.addAttribute("error", "No patient logged in");
@@ -35,7 +36,7 @@ public class DashboardController {
     public String addAppointment(@RequestParam String type,
                                 @RequestParam Date date,
                                 @RequestParam String time,
-                                @RequestParam int docID,
+                                @RequestParam String docname,
                                 Model model) {
         Patient patient = Session.getInstance().getCurrentPatient();
 
@@ -46,9 +47,8 @@ public class DashboardController {
         
             Time sqlTime = Time.valueOf(time);
         
-            Appointment appointment = new Appointment(hospital.getNextAppointmentId(type),patient.getPatientID(),type,date,sqlTime,docID);
-            hospital.scheduleAppointment(hospital.getNextAppointmentId(type),patient.getPatientID(),type,date,sqlTime,docID);
-        
+            Appointment appointment = new Appointment(hospital.getNextAppointmentId(),patient.getPatientID(),type,date,sqlTime,hospital.findDoctorByName( docname).getDoctorID());
+            hospital.scheduleAppointment(hospital.getNextAppointmentId(),patient.getPatientID(),type,date,sqlTime,hospital.findDoctorByName(docname).getDoctorID());
             patient.addAppointment(appointment);
             return "redirect:/dashboard";
         } else {
