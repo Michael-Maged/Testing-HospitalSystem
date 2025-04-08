@@ -26,7 +26,6 @@ public class AdminController {
     // POST: Add doctor
     @PostMapping("/add-doctor")
     public String addDoctor(@RequestParam int age,
-                            @RequestParam int Docid,
                             @RequestParam String name,
                             @RequestParam String gender,
                             @RequestParam String specialty) {
@@ -45,8 +44,7 @@ public class AdminController {
 
 // POST: Add inventory item
 @PostMapping("/add-inventory")
-public String addInventory(@RequestParam int itemID,
-                           @RequestParam String name,
+public String addInventory(@RequestParam String name,
                            @RequestParam int quantity) {
     admin.addInventoryItem(hospital.getNextInventoryId(), name, quantity);
     hospital.getInventory().add(new InventoryItem(hospital.getNextInventoryId(), name, quantity));
