@@ -74,6 +74,10 @@
   <div class="login-container">
     <h2>Patient Registration</h2>
 
+    <div th:if="${error}" style="color: red; text-align: center; margin-bottom: 15px;">
+      <p th:text="${error}"></p>
+    </div>
+
     <form th:action="@{/register}" method="post" class="login-form">
 
       <label for="name">Name</label>
