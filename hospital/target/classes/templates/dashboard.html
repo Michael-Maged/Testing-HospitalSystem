@@ -164,17 +164,17 @@
             <form th:action="@{/appointments/add}" method="post" style="display: flex; flex-direction: column;">
                 <input type="hidden" name="patientID" th:value="${patient.patientID}" />
 
-                <label>Type:</label>
-                <input type="text" name="type" required style="margin-bottom: 15px; padding: 8px;" />
+                <label>Doctor:</label>
+                <select name="Docname" required style="margin-bottom: 15px; padding: 8px;">
+                    <option value="" disabled selected>Select a doctor</option>
+                    <option th:each="doctor : ${doctors}" th:value="${doctor.name}" th:text="${doctor.name} + ' - ' + ${doctor.specialty}"></option>
+                </select>
 
                 <label>Date:</label>
                 <input type="date" name="date" required style="margin-bottom: 15px; padding: 8px;" />
 
                 <label>Time:</label>
                 <input type="time" name="time" required style="margin-bottom: 15px; padding: 8px;" />
-
-                <label>Doctor Name:</label>
-                <input type="text" name="docname" required style="margin-bottom: 15px; padding: 8px;" />
 
                 <button type="submit" 
                     style="background-color: #10b981; color: white; padding: 10px; border: none; border-radius: 6px;">
