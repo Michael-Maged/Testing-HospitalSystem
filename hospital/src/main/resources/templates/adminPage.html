@@ -188,6 +188,32 @@
 
             <button type="submit" class="btn">Add Medical Record</button>
         </form>
+
+        <table>
+            <thead>
+            <tr>
+                <th>Patient Name</th>
+                <th>Diagnosis</th>
+                <th>Treatment</th>
+                <th>Date</th>
+                <th>Action</th>
+            </tr>
+            </thead>
+            <tbody>
+            <tr th:each="record : ${records}">
+                <td th:text="${record.patientID}">Patient ID</td>
+                <td th:text="${record.diagnosis}">Diagnosis</td>
+                <td th:text="${record.treatment}">Treatment</td>
+                <td th:text="${record.date}">Date</td>
+                <td>
+                    <form th:action="@{/admin/delete-record}" method="post">
+                        <input type="hidden" name="id" th:value="${record.recordID}">
+                        <button type="submit" class="btn delete-btn">Delete</button>
+                    </form>
+                </td>
+            </tr>
+            </tbody>
+        </table>
     </section>
 
 </div>

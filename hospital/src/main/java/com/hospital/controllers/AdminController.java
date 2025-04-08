@@ -20,8 +20,10 @@ public class AdminController {
     public String getAdminDashboard(Model model) {
         hospital.fetchAppointments();
         hospital.fetchDoctors();
+        hospital.fetchMedicalRecords();
         model.addAttribute("doctors", hospital.getDoctors());
         model.addAttribute("inventory", hospital.getInventory());
+        model.addAttribute("records", hospital.getRecords());
         return "adminPage";
     }
 
@@ -70,5 +72,12 @@ public class AdminController {
                                ) {
     hospital.addMedicalRecord(hospital.getNextRecordId(), patientId, diagnosis, treatment, date);
     return "redirect:/admin";
+    }
+
+    @PostMapping("/delete-record")
+    public String deleteRecord(@RequestParam int id) {
+        admin.deleteMedicalRecord(id);
+        hospital.getRecords().remove(hospital.findById(hospital.getRecords(), id));
+        return "redirect:/admin";
     }
 }

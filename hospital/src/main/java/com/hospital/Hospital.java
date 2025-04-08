@@ -36,23 +36,24 @@ public class Hospital {
         }
     }
 
-    public void fetchMedicalRecords(int patientID) {
+    public void fetchMedicalRecords() {
         records.clear();
-        String query = "SELECT * FROM MedicalRecords WHERE patientID = ?";
-        try (Connection conn = DriverManager.getConnection(URL, USER, PASSWORD);
-             PreparedStatement stmt = conn.prepareStatement(query)) {
+        String query = "SELECT * FROM MedicalRecords";
 
-            stmt.setLong(1, patientID);
-            ResultSet rs = stmt.executeQuery();
+        try (Connection conn = DriverManager.getConnection(URL, USER, PASSWORD);
+            PreparedStatement stmt = conn.prepareStatement(query);
+            ResultSet rs = stmt.executeQuery()) {
 
             while (rs.next()) {
                 int recordID = rs.getInt("recordID");
+                int patientID = rs.getInt("patientID");
                 String diagnosis = rs.getString("diagnosis");
                 String treatment = rs.getString("treatment");
                 Date date = rs.getDate("Date");
-                records.add(new MedicalRecord(recordID, patientID, diagnosis, treatment,date));
+
+                records.add(new MedicalRecord(recordID, patientID, diagnosis, treatment, date));
             }
-            System.out.println("Fetched medical records for patient ID " + patientID);
+            System.out.println("Fetched all medical records.");
 
         } catch (SQLException e) {
             e.printStackTrace();
