@@ -71,9 +71,9 @@ public class Hospital {
                 int doctorID = rs.getInt("docID");
                 String name = rs.getString("name");
                 int age = rs.getInt("age");
-                String address = rs.getString("address");
+                String gender = rs.getString("gender");
                 String specialty = rs.getString("specialty");
-                doctors.add(new Doctor(doctorID, name, age, address, specialty));
+                doctors.add(new Doctor(doctorID, name, age, gender, specialty));
             }
             System.out.println("Fetched doctors from DB.");
 
