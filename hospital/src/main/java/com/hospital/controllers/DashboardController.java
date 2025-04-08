@@ -34,16 +34,21 @@ public class DashboardController {
     @PostMapping("/appointments/add")
     public String addAppointment(@RequestParam String type,
                                 @RequestParam Date date,
-                                @RequestParam Time time,
+                                @RequestParam String time,
                                 @RequestParam int docID,
                                 Model model) {
         Patient patient = Session.getInstance().getCurrentPatient();
 
         if (patient != null) {
-            
-            Appointment appointment = new Appointment(hospital.getNextAppointmentId(type),patient.getPatientID(),type,date,time,docID);
-
-            hospital.scheduleAppointment(hospital.getNextAppointmentId(type),patient.getPatientID(),type,date,time,docID); 
+            if (time.length() == 5) {
+                time += ":00";
+            }
+        
+            Time sqlTime = Time.valueOf(time);
+        
+            Appointment appointment = new Appointment(hospital.getNextAppointmentId(type),patient.getPatientID(),type,date,sqlTime,docID);
+            hospital.scheduleAppointment(hospital.getNextAppointmentId(type),patient.getPatientID(),type,date,sqlTime,docID);
+        
             patient.addAppointment(appointment);
             return "redirect:/dashboard";
         } else {
