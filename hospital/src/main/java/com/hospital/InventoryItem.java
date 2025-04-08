@@ -1,21 +1,21 @@
 package com.hospital;
 
 public class InventoryItem {
-    private Long itemId;
+    private int itemId;
     private String name;
     private int quantity;
 
-    public InventoryItem(Long itemId, String name, int quantity) {
+    public InventoryItem(int itemId, String name, int quantity) {
         this.itemId = itemId;
         this.name = name;
         this.quantity = quantity;
     }
 
-    public Long getItemId() {
+    public int getItemId() {
         return itemId;
     }
 
-    public void setItemId(Long itemId) {
+    public void setItemId(int itemId) {
         this.itemId = itemId;
     }
 

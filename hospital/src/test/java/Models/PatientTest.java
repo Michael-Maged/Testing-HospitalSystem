@@ -1,5 +1,6 @@
 package Models;
 
+import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
 
 import com.hospital.Appointment;
@@ -8,7 +9,7 @@ import com.hospital.Patient;
 
 import java.sql.Date;
 import java.sql.Time;
-import java.util.ArrayList;
+import java.util.*;
 
 import static org.junit.jupiter.api.Assertions.*;
 
@@ -16,9 +17,9 @@ public class PatientTest {
 
     @Test
     public void testConstructorAndGetters() {
-        Patient patient = new Patient(1L, "Alice", 25, "Female", "123 Main St", "555-1234");
+        Patient patient = new Patient(1, "Alice", 25, "Female", "123 Main St", "555-1234");
 
-        assertEquals(1L, patient.getPatientID());
+        assertEquals(1, patient.getPatientID());
         assertEquals("Alice", patient.getName());
         assertEquals(25, patient.getAge());
         assertEquals("Female", patient.getGender());
@@ -30,7 +31,7 @@ public class PatientTest {
 
     @Test
     public void testSetters() {
-        Patient patient = new Patient(2L, "Bob", 30, "Male", "456 Elm St", "555-5678");
+        Patient patient = new Patient(2, "Bob", 30, "Male", "456 Elm St", "555-5678");
 
         patient.setName("Bobby");
         patient.setAge(31);
@@ -45,25 +46,30 @@ public class PatientTest {
         assertEquals("555-0000", patient.getPhoneNumber());
     }
 
+
     @Test
     public void testAddAppointment() {
-        Patient patient = new Patient(3L, "Charlie", 40, "Male", "999 Maple Ave", "555-7890");
+        Patient patient = new Patient(3, "Charlie", 40, "Male", "999 Maple Ave", "555-7890");
 
-        Appointment app = new Appointment(10L, 3L, "Checkup",
-                new Date(System.currentTimeMillis()), new Time(System.currentTimeMillis()), 200L);
+        Appointment app = new Appointment(10, 3, "Checkup",
+                new Date(System.currentTimeMillis()), new Time(System.currentTimeMillis()), 200);
 
         patient.addAppointment(app);
         ArrayList<Appointment> appointments = patient.getAppointments();
 
         assertEquals(1, appointments.size());
         assertEquals(app, appointments.get(0));
+        Appointment appointment = new Appointment(201, 1, "Checkup", new java.util.Date(), new java.sql.Time(System.currentTimeMillis()), 501);
+        patient.addAppointment(appointment);
+        assertEquals(1, patient.getAppointments().size());
+        assertEquals(appointment.getAppID(), patient.getAppointments().get(0).getAppID());
     }
 
     @Test
     public void testAddBill() {
-        Patient patient = new Patient(4L, "Dana", 35, "Female", "234 Cedar Rd", "555-4444");
+        Patient patient = new Patient(4, "Dana", 35, "Female", "234 Cedar Rd", "555-4444");
 
-        Bill bill = new Bill(101L, 250.0, new Date(System.currentTimeMillis()));
+        Bill bill = new Bill(101, 250.0, new Date(System.currentTimeMillis()));
 
         patient.addBill(bill);
         ArrayList<Bill> bills = patient.getBills();
@@ -74,13 +80,13 @@ public class PatientTest {
 
     @Test
     public void testToString() {
-        Patient patient = new Patient(5L, "Eva", 28, "Female", "12 River St", "555-6789");
+        Patient patient = new Patient(5, "Eva", 28, "Female", "12 River St", "555-6789");
 
-        Appointment app = new Appointment(20L, 5L, "Consultation",
-                new Date(System.currentTimeMillis()), new Time(System.currentTimeMillis()), 101L);
+        Appointment app = new Appointment(20, 5, "Consultation",
+                new Date(System.currentTimeMillis()), new Time(System.currentTimeMillis()), 101);
         patient.addAppointment(app);
 
-        Bill bill = new Bill(101L, 250.0, new Date(System.currentTimeMillis()));
+        Bill bill = new Bill(101, 250.0, new Date(System.currentTimeMillis()));
         patient.addBill(bill);
 
         String result = patient.toString();

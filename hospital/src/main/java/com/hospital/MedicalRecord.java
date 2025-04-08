@@ -2,14 +2,14 @@ package com.hospital;
 import java.util.*;
 
 public class MedicalRecord {
-    long recordID;
-    long patientID;
+    int recordID;
+    int patientID;
     String diagnosis;
     String treatment;
     Date date;
 
 
-    public MedicalRecord(long recordID, long patientID, String diagnosis, String treatment, Date date) {
+    public MedicalRecord(int recordID, int patientID, String diagnosis, String treatment, Date date) {
         this.recordID = recordID;
         this.patientID = patientID;
         this.diagnosis = diagnosis;
@@ -17,19 +17,19 @@ public class MedicalRecord {
         this.date = date;
     }
 
-    public long getRecordID() {
+    public int getRecordID() {
         return recordID;
     }
 
-    public void setRecordID(long recordID) {
+    public void setRecordID(int recordID) {
         this.recordID = recordID;
     }
 
-    public long getPatientID() {
+    public int getPatientID() {
         return patientID;
     }
 
-    public void setPatientID(long patientID) {
+    public void setPatientID(int patientID) {
         this.patientID = patientID;
     }
 

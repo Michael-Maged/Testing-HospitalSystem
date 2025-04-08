@@ -24,7 +24,7 @@ public class Hospital {
              ResultSet rs = stmt.executeQuery(query)) {
 
             while (rs.next()) {
-                Long itemID = rs.getLong("itemID");
+                int itemID = rs.getInt("itemID");
                 String name = rs.getString("name");
                 int quantity = rs.getInt("quantity");
                 inventory.add(new InventoryItem(itemID, name, quantity));
@@ -36,7 +36,7 @@ public class Hospital {
         }
     }
 
-    public void fetchMedicalRecords(long patientID) {
+    public void fetchMedicalRecords(int patientID) {
         records.clear();
         String query = "SELECT * FROM MedicalRecords WHERE patientID = ?";
         try (Connection conn = DriverManager.getConnection(URL, USER, PASSWORD);
@@ -89,7 +89,7 @@ public class Hospital {
              ResultSet rs = stmt.executeQuery(query)) {
     
             while (rs.next()) {
-                long patientID = rs.getLong("patientID");
+                int patientID = rs.getInt("patientID");
                 String name = rs.getString("name");
                 int age = rs.getInt("age");
                 String gender = rs.getString("gender");
@@ -114,9 +114,9 @@ public class Hospital {
     
             while (rs.next()) {
                 int appID = rs.getInt("appID");
-                long patientID = rs.getLong("patientID");
+                int patientID = rs.getInt("patientID");
                 String type = rs.getString("type");
-                Long Docid = rs.getLong("docID");
+                int Docid = rs.getInt("docID");
                 Date date = rs.getDate("date");
                 Time time = rs.getTime("time");
     
@@ -172,7 +172,7 @@ public class Hospital {
            // Check if a matching patient was found
            if (rs.next()) {
                // Create a new Patient object and populate it with the data from the result set
-               long patientID = rs.getLong("patientID");
+               int patientID = rs.getInt("patientID");
                String patientName = rs.getString("name");
                int age = rs.getInt("age");
                String gender = rs.getString("gender");

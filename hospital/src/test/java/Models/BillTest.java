@@ -11,7 +11,7 @@ public class BillTest {
     public void testBillConstructorAndGetters() {
         // Create a new Bill instance
         Date billingDate = new Date();
-        Bill bill = new Bill(1L, 500.0, billingDate);
+        Bill bill = new Bill(1, 500.0, billingDate);
 
         // Verify the values are correctly set
         assertEquals(1L, bill.getBillId());
@@ -22,11 +22,11 @@ public class BillTest {
     @Test
     public void testBillSetters() {
         // Create a new Bill instance
-        Bill bill = new Bill(0L, 0.0, new Date());
+        Bill bill = new Bill(0, 0.0, new Date());
 
         // Set the values using setters
         Date billingDate = new Date();
-        bill.setBillId(2L);
+        bill.setBillId(2);
         bill.setAmount(350.0);
         bill.setBillingDate(billingDate);
 
@@ -40,7 +40,7 @@ public class BillTest {
     public void testToString() {
         // Create a new Bill instance
         Date billingDate = new Date();
-        Bill bill = new Bill(1L, 500.0, billingDate);
+        Bill bill = new Bill(1, 500.0, billingDate);
 
         // Verify the toString() method works as expected
         String expectedOutput = "Bill ID: 1, Amount: $500.0Billing Date: " + billingDate;
