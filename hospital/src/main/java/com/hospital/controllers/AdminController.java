@@ -21,17 +21,17 @@ public class AdminController {
         model.addAttribute("doctors", hospital.getDoctors());
         model.addAttribute("inventory", hospital.getInventory());
         model.addAttribute("records", hospital.getRecords());
+        model.addAttribute("departments", hospital.getDepartments());
         return "adminPage";
     }
 
-    //TODO: Function te automate el docID w el itemID mn el database 
     // POST: Add doctor
     @PostMapping("/add-doctor")
     public String addDoctor(@RequestParam int age,
                             @RequestParam String name,
                             @RequestParam String gender,
                             @RequestParam String specialty) {
-        admin.addDoctor(hospital.getNextDoctorId(),name,age,gender,specialty);
+        admin.addDoctor(hospital.getNextDoctorId(), name, age, gender, specialty);
         hospital.getDoctors().add(new Doctor(hospital.getNextDoctorId(), name, age, gender, specialty));
         return "redirect:/admin";
     }

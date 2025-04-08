@@ -8,6 +8,13 @@ public class Hospital {
     private static final String USER = "testing";
     private static final String PASSWORD = "mypass";
 
+    final List<String> departments = Arrays.asList(
+        "Cardiology",    // Heart-related health issues
+        "Orthopedics",   // Bone and joint problems
+        "Pediatrics",    // Child health
+        "Neurology",     // Brain and nervous system
+        "Dermatology"    // Skin-related issues
+    );
     List<Patient> patients = new ArrayList<>();
     List<Appointment> appointments = new ArrayList<>();
     List<MedicalRecord> records = new ArrayList<>();
@@ -405,6 +412,10 @@ public class Hospital {
 
    public List<Doctor> getDoctors() {
     return doctors;
+   }
+   
+   public List<String> getDepartments(){
+    return departments;
    }
 
    public <T> T findById(List<T> list, long id) {
