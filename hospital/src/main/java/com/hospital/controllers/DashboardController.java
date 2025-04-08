@@ -50,6 +50,7 @@ public class DashboardController {
             hospital.scheduleAppointment(hospital.getNextAppointmentId(type),patient.getPatientID(),type,date,sqlTime,docID);
         
             patient.addAppointment(appointment);
+            System.out.println(patient.getAppointments().size());
             return "redirect:/dashboard";
         } else {
             model.addAttribute("error", "No patient logged in");
