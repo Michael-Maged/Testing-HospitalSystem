@@ -5,7 +5,6 @@ import org.junit.jupiter.api.AfterEach;
 import org.junit.jupiter.api.Test;
 
 import com.hospital.Appointment;
-import com.hospital.Bill;
 import com.hospital.MedicalRecord;
 import com.hospital.Patient;
 import com.hospital.Hospital;
