@@ -189,7 +189,7 @@ public class Hospital {
        }
    }
 
-   public void scheduleAppointment(int appID, long patientID, String type, Date date, Time time) {
+   public void scheduleAppointment(int appID, int patientID, String type, Date date, Time time) {
        String query = "INSERT INTO Appointments (appID , patientID, type, date, time) VALUES (?, ?, ?, ?, ?)";
        try (Connection conn = DriverManager.getConnection(URL, USER, PASSWORD);
             PreparedStatement stmt = conn.prepareStatement(query)) {
@@ -214,7 +214,7 @@ public class Hospital {
        }
    }
 
-   public void addMedicalRecord(int recordID, long patientID, String diagnosis , String treatment) {
+   public void addMedicalRecord(int recordID, int patientID, String diagnosis , String treatment) {
        String query = "INSERT INTO MedicalRecords (recordID , patientID, diagnosis, treatment) VALUES (?, ?, ?, ?)";
        try (Connection conn = DriverManager.getConnection(URL, USER, PASSWORD);
             PreparedStatement stmt = conn.prepareStatement(query)) {
