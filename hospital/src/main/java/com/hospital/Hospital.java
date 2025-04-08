@@ -269,6 +269,50 @@ public class Hospital {
        return newId;
    }
 
+   public int getNextDoctorId() {
+    int newId = 0;
+    String query = "SELECT MAX(docID) + 1 AS next_id FROM Doctors";
+
+    try (Connection conn = DriverManager.getConnection(URL, USER, PASSWORD);
+         Statement stmt = conn.createStatement();
+         ResultSet rs = stmt.executeQuery(query)) {
+
+        if (rs.next()) {
+            newId = rs.getInt("next_id");
+            if (newId == 0) {
+                newId = 1;
+            }
+        }
+
+    } catch (SQLException e) {
+        e.printStackTrace();
+    }
+
+    return newId;
+    }
+
+
+    public int getNextInventoryId() {
+        int newId = 0;
+        String query = "SELECT MAX(itemID) + 1 AS next_id FROM Inventory";
+    
+        try (Connection conn = DriverManager.getConnection(URL, USER, PASSWORD);
+             Statement stmt = conn.createStatement();
+             ResultSet rs = stmt.executeQuery(query)) {
+    
+            if (rs.next()) {
+                newId = rs.getInt("next_id");
+                if (newId == 0) {
+                    newId = 1;
+                }
+            }
+    
+        } catch (SQLException e) {
+            e.printStackTrace();
+        }
+    
+        return newId;
+        }
    public int getNextAppointmentId(String type) {
     int newId = 0;
     String query = "SELECT MAX(appID) + 1 AS next_id FROM Appointments";

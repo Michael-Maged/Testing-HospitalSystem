@@ -95,9 +95,6 @@
     <section>
         <h2>Manage Doctors</h2>
         <form th:action="@{/admin/add-doctor}" method="post">
-            <label for="Docid">Doctor ID:</label>
-            <input type="number" id="Docid" name="Docid" required>
-
             <label for="doctorName">Name:</label>
             <input type="text" id="doctorName" name="name" required>
 
@@ -140,11 +137,9 @@
     <section>
         <h2>Manage Inventory</h2>
         <form th:action="@{/admin/add-inventory}" method="post">
-            <label for="itemID">Item ID:</label>
-            <input type="number" id="itemID" name="itemID" required>
 
             <label for="itemName">Item Name:</label>
-            <input type="text" id="itemName" name="name" required>
+            <input type="text" id="name" name="name" required>
 
             <label for="quantity">Quantity:</label>
             <input type="number" id="quantity" name="quantity" required>

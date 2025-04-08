@@ -30,8 +30,8 @@ public class AdminController {
                             @RequestParam String name,
                             @RequestParam String gender,
                             @RequestParam String specialty) {
-        admin.addDoctor(Docid,name,age,gender,specialty);
-        hospital.getDoctors().add(new Doctor(Docid, name, age, gender, specialty));
+        admin.addDoctor(hospital.getNextDoctorId(),name,age,gender,specialty);
+        hospital.getDoctors().add(new Doctor(hospital.getNextDoctorId(), name, age, gender, specialty));
         return "redirect:/admin";
     }
 
@@ -48,8 +48,8 @@ public class AdminController {
 public String addInventory(@RequestParam int itemID,
                            @RequestParam String name,
                            @RequestParam int quantity) {
-    admin.addInventoryItem(itemID, name, quantity);
-    hospital.getInventory().add(new InventoryItem(itemID, name, quantity));
+    admin.addInventoryItem(hospital.getNextInventoryId(), name, quantity);
+    hospital.getInventory().add(new InventoryItem(hospital.getNextInventoryId(), name, quantity));
     return "redirect:/admin";
 }
 
