@@ -158,8 +158,13 @@ public class Hospital {
     }
 
     public boolean phoneExists(String phoneNumber) {
-    return patients.stream()
-            .anyMatch(p -> p.getPhoneNumber().equals(phoneNumber));
+        for(Patient d: patients){
+            System.out.println(d.toString());
+            if (d.getPhoneNumber().equals(phoneNumber))
+                return true;
+        }
+        return false;
+
     }
 
     public void loginPatient(String phone, String name){
