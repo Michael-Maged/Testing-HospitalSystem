@@ -155,9 +155,14 @@ public class Hospital {
        } catch (SQLException e) {
            e.printStackTrace();
        }
-   }
+    }
 
-   public void loginPatient(String phone, String name){
+    public boolean phoneExists(String phoneNumber) {
+    return patients.stream()
+            .anyMatch(p -> p.getPhoneNumber().equals(phoneNumber));
+    }
+
+    public void loginPatient(String phone, String name){
        String query = "SELECT * FROM patients WHERE phone = ? AND name = ?";
 
        try (Connection conn = DriverManager.getConnection(URL, USER, PASSWORD);

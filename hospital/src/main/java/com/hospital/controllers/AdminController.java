@@ -18,9 +18,6 @@ public class AdminController {
 
     @GetMapping
     public String getAdminDashboard(Model model) {
-        hospital.fetchAppointments();
-        hospital.fetchDoctors();
-        hospital.fetchMedicalRecords();
         model.addAttribute("doctors", hospital.getDoctors());
         model.addAttribute("inventory", hospital.getInventory());
         model.addAttribute("records", hospital.getRecords());
