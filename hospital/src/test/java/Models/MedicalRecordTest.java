@@ -13,7 +13,7 @@ public class MedicalRecordTest {
 @Test
     public void testConstructorAndGetters() {
         // Create a MedicalRecord instance
-        MedicalRecord record = new MedicalRecord(1L, 1001L, "Flu", "Rest and hydration", Date.valueOf("2025-04-07"));
+        MedicalRecord record = new MedicalRecord(1, 1001, "Flu", "Rest and hydration", Date.valueOf("2025-04-07"));
 
         // Verify the values are correctly set
         assertEquals(1L, record.getRecordID());
@@ -25,11 +25,11 @@ public class MedicalRecordTest {
     @Test
     public void testSetters() {
         // Create a MedicalRecord instance
-        MedicalRecord record = new MedicalRecord(2L, 1002L, "Cold", "Rest and fluids", Date.valueOf("2025-04-07"));
+        MedicalRecord record = new MedicalRecord(2, 1002, "Cold", "Rest and fluids", Date.valueOf("2025-04-07"));
 
         // Use setters to update values
-        record.setRecordID(3L);
-        record.setPatientID(1003L);
+        record.setRecordID(3);
+        record.setPatientID(1003);
         record.setDiagnosis("Pneumonia");
         record.setTreatment("Antibiotics");
 
@@ -43,7 +43,7 @@ public class MedicalRecordTest {
     @Test
     public void testToString() {
         // Create a MedicalRecord instance
-        MedicalRecord record = new MedicalRecord(1L, 1001L, "Flu", "Rest and hydration", Date.valueOf("2025-04-07"));
+        MedicalRecord record = new MedicalRecord(1, 1001, "Flu", "Rest and hydration", Date.valueOf("2025-04-07"));
 
         // Expected string format
         String expectedOutput = "Patient 1001: Diagnosis: Flu, Treatment: Rest and hydration";

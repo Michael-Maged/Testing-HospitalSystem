@@ -8,7 +8,7 @@ import static org.junit.jupiter.api.Assertions.*;
 public class InventoryItemTest {
     @Test
     public void testConstructorAndGetters() {
-        InventoryItem item = new InventoryItem(1L, "Gloves", 100);
+        InventoryItem item = new InventoryItem(1, "Gloves", 100);
 
         assertEquals(1L, item.getItemId());
         assertEquals("Gloves", item.getName());
@@ -17,9 +17,9 @@ public class InventoryItemTest {
 
     @Test
     public void testSetters() {
-        InventoryItem item = new InventoryItem(2L, "Masks", 50);
+        InventoryItem item = new InventoryItem(2, "Masks", 50);
 
-        item.setItemId(3L);
+        item.setItemId(3);
         item.setName("Sanitizer");
         item.setQuantity(200);
 
@@ -30,7 +30,7 @@ public class InventoryItemTest {
 
     @Test
     public void testNegativeQuantityThrowsException() {
-        InventoryItem item = new InventoryItem(4L, "Syringes", 30);
+        InventoryItem item = new InventoryItem(4, "Syringes", 30);
 
         Exception exception = assertThrows(IllegalArgumentException.class, () -> {
             item.setQuantity(-10);
@@ -41,7 +41,7 @@ public class InventoryItemTest {
 
     @Test
     public void testToString() {
-        InventoryItem item = new InventoryItem(5L, "Bandages", 20);
+        InventoryItem item = new InventoryItem(5, "Bandages", 20);
 
         String expectedOutput = "Item: Bandages | Quantity: 20";
         assertEquals(expectedOutput, item.toString());

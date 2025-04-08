@@ -15,7 +15,7 @@ public class PatientTest {
 
     @BeforeEach
     public void setUp() {
-        patient = new Patient(1L, "John Doe", 30, "Male", "123 Street", "01001234567");
+        patient = new Patient(1, "John Doe", 30, "Male", "123 Street", "01001234567");
     }
 
     @Test
@@ -45,7 +45,7 @@ public class PatientTest {
 
     @Test
     public void testAddBill() {
-        Bill bill = new Bill(101L, 200.5, new Date());
+        Bill bill = new Bill(101, 200.5, new Date());
         patient.addBill(bill);
         assertEquals(1, patient.getBills().size());
         assertEquals(bill, patient.getBills().get(0));
@@ -53,7 +53,7 @@ public class PatientTest {
 
     @Test
     public void testAddAppointment() {
-        Appointment appointment = new Appointment(201L, 1L, "Checkup", new Date(), new java.sql.Time(System.currentTimeMillis()), 501L);
+        Appointment appointment = new Appointment(201, 1, "Checkup", new Date(), new java.sql.Time(System.currentTimeMillis()), 501);
         patient.addAppointment(appointment);
         assertEquals(1, patient.getAppointments().size());
         assertEquals(appointment.getAppID(), patient.getAppointments().get(0).getAppID());
