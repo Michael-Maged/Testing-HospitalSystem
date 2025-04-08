@@ -9,6 +9,7 @@
             font-family: Arial, sans-serif;
             text-align: center;
             margin-top: 10%;
+            position: relative;
         }
 
         h1 {
@@ -30,11 +31,92 @@
         .btn:hover {
             background-color: #0056b3;
         }
+
+        .admin-btn {
+            position: fixed;
+            bottom: 20px;
+            left: 50%;
+            transform: translateX(-50%);
+            background-color: #6b7280;
+            color: white;
+            padding: 10px 20px;
+            border-radius: 6px;
+            cursor: pointer;
+        }
+
+        #admin-login {
+            display: none;
+            margin-top: 20px;
+        }
+
+        .admin-form {
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+            margin-top: 15px;
+        }
+
+        .admin-form input {
+            padding: 10px;
+            margin: 8px 0;
+            width: 250px;
+        }
+
+        .admin-form button {
+            padding: 10px 20px;
+            background-color: #10b981;
+            color: white;
+            border: none;
+            border-radius: 6px;
+            cursor: pointer;
+        }
+
+        .admin-form button:hover {
+            background-color: #059669;
+        }
+
+        .error-msg {
+            color: red;
+            font-size: 14px;
+            margin-top: 5px;
+        }
     </style>
 </head>
 <body>
     <h1>Welcome to the Hospital Management System</h1>
     <a class="btn" th:href="@{/login}">Login</a>
     <a class="btn" th:href="@{/register}">Register</a>
+
+    <!-- Admin Button -->
+    <div class="admin-btn" onclick="toggleAdminLogin()">Admin</div>
+
+    <!-- Admin Login Form -->
+    <div id="admin-login">
+        <form class="admin-form" onsubmit="return checkAdminCredentials(event)">
+            <input type="text" id="adminUsername" placeholder="Admin Username" required>
+            <input type="password" id="adminPassword" placeholder="Admin Password" required>
+            <button type="submit">Submit</button>
+            <div class="error-msg" id="adminError" style="display: none;">Invalid credentials</div>
+        </form>
+    </div>
+
+    <script>
+        function toggleAdminLogin() {
+            const form = document.getElementById('admin-login');
+            form.style.display = form.style.display === 'none' ? 'block' : 'none';
+        }
+
+        function checkAdminCredentials(event) {
+            event.preventDefault();
+            const username = document.getElementById('adminUsername').value;
+            const password = document.getElementById('adminPassword').value;
+
+            if (username === 'admin' && password === 'admin') {
+                window.location.href = '/admin';
+            } else {
+                document.getElementById('adminError').style.display = 'block';
+            }
+        }
+    </script>
 </body>
 </html>
