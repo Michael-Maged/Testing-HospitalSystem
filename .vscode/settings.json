@@ -1,4 +1,8 @@
 {
     "java.configuration.updateBuildConfiguration": "automatic",
-    "java.compile.nullAnalysis.mode": "automatic"
+    "java.compile.nullAnalysis.mode": "automatic",
+    "java.project.sourcePaths": [],
+    "java.project.referencedLibraries": [
+        "d:\\Junior semester2\\Testing\\project\\junit-4.13.2-javadoc.jar"
+    ]
 }
