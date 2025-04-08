@@ -14,8 +14,8 @@ Base Classes: -
     addMedicalRecord: adds a new record in the DB
 
 - Patient(patientID, name, age, gender, address, phoneNumber, appointments, records, bills)
-    getAppointments: get the current patient's appointments from the DB
-    getRecords:  get the current patient's medical records from the DB
+    fetchUserAppointments: get the current patient's appointments from the DB
+    fetchUserRecords:  get the current patient's medical records from the DB
 
 - Admin(URL, USER, PASSWORD)
     addDoctor: adds a doctor to the DB
