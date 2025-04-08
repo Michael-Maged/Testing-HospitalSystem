@@ -1,61 +1,96 @@
 package Models;
 
-import com.hospital.*;
-
-import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
 
-import java.util.Date;
+import com.hospital.Appointment;
+import com.hospital.Bill;
+import com.hospital.Patient;
+
+import java.sql.Date;
+import java.sql.Time;
+import java.util.ArrayList;
 
 import static org.junit.jupiter.api.Assertions.*;
 
 public class PatientTest {
 
-    private Patient patient;
-
-    @BeforeEach
-    public void setUp() {
-        patient = new Patient(1L, "John Doe", 30, "Male", "123 Street", "01001234567");
-    }
-
     @Test
-    public void testPatientInitialization() {
+    public void testConstructorAndGetters() {
+        Patient patient = new Patient(1L, "Alice", 25, "Female", "123 Main St", "555-1234");
+
         assertEquals(1L, patient.getPatientID());
-        assertEquals("John Doe", patient.getName());
-        assertEquals(30, patient.getAge());
-        assertEquals("Male", patient.getGender());
-        assertEquals("123 Street", patient.getAddress());
-        assertEquals("01001234567", patient.getPhoneNumber());
+        assertEquals("Alice", patient.getName());
+        assertEquals(25, patient.getAge());
+        assertEquals("Female", patient.getGender());
+        assertEquals("123 Main St", patient.getAddress());
+        assertEquals("555-1234", patient.getPhoneNumber());
+        assertEquals(0, patient.getAppointments().size());
+        assertEquals(0, patient.getBills().size());
     }
 
     @Test
     public void testSetters() {
-        patient.setName("Jane Smith");
-        patient.setAge(40);
-        patient.setGender("Female");
-        patient.setAddress("456 Avenue");
-        patient.setPhoneNumber("0111222333");
+        Patient patient = new Patient(2L, "Bob", 30, "Male", "456 Elm St", "555-5678");
 
-        assertEquals("Jane Smith", patient.getName());
-        assertEquals(40, patient.getAge());
-        assertEquals("Female", patient.getGender());
-        assertEquals("456 Avenue", patient.getAddress());
-        assertEquals("0111222333", patient.getPhoneNumber());
-    }
+        patient.setName("Bobby");
+        patient.setAge(31);
+        patient.setGender("Other");
+        patient.setAddress("789 Oak St");
+        patient.setPhoneNumber("555-0000");
 
-    @Test
-    public void testAddBill() {
-        Bill bill = new Bill(101L, 200.5, new Date());
-        patient.addBill(bill);
-        assertEquals(1, patient.getBills().size());
-        assertEquals(bill, patient.getBills().get(0));
+        assertEquals("Bobby", patient.getName());
+        assertEquals(31, patient.getAge());
+        assertEquals("Other", patient.getGender());
+        assertEquals("789 Oak St", patient.getAddress());
+        assertEquals("555-0000", patient.getPhoneNumber());
     }
 
     @Test
     public void testAddAppointment() {
-        Appointment appointment = new Appointment(201L, 1L, "Checkup", new Date(), new java.sql.Time(System.currentTimeMillis()), 501L);
-        patient.addAppointment(appointment);
-        assertEquals(1, patient.getAppointments().size());
-        assertEquals(appointment.getAppID(), patient.getAppointments().get(0).getAppID());
+        Patient patient = new Patient(3L, "Charlie", 40, "Male", "999 Maple Ave", "555-7890");
+
+        Appointment app = new Appointment(10L, 3L, "Checkup",
+                new Date(System.currentTimeMillis()), new Time(System.currentTimeMillis()), 200L);
+
+        patient.addAppointment(app);
+        ArrayList<Appointment> appointments = patient.getAppointments();
+
+        assertEquals(1, appointments.size());
+        assertEquals(app, appointments.get(0));
     }
+
+    @Test
+    public void testAddBill() {
+        Patient patient = new Patient(4L, "Dana", 35, "Female", "234 Cedar Rd", "555-4444");
+
+        Bill bill = new Bill(101L, 250.0, new Date(System.currentTimeMillis()));
+
+        patient.addBill(bill);
+        ArrayList<Bill> bills = patient.getBills();
+
+        assertEquals(1, bills.size());
+        assertEquals(bill, bills.get(0));
+    }
+
+    @Test
+    public void testToString() {
+        Patient patient = new Patient(5L, "Eva", 28, "Female", "12 River St", "555-6789");
+
+        Appointment app = new Appointment(20L, 5L, "Consultation",
+                new Date(System.currentTimeMillis()), new Time(System.currentTimeMillis()), 101L);
+        patient.addAppointment(app);
+
+        Bill bill = new Bill(101L, 250.0, new Date(System.currentTimeMillis()));
+        patient.addBill(bill);
+
+        String result = patient.toString();
+
+        assertTrue(result.contains("Patient ID: 5"));
+        assertTrue(result.contains("Name: Eva"));
+        assertTrue(result.contains("Appointments:"));
+        assertTrue(result.contains("Bills:"));
+    }
+
+    // Note: The methods getAppointments() and getRecords() rely on a database.
+    // You would typically test these using a mocking framework like Mockito or H2 in-memory DB.
 }
