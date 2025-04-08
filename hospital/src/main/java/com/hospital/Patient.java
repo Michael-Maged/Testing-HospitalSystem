@@ -48,7 +48,7 @@ public class Patient {
         appointments.clear();
 
         // Query to get appointments for this patient
-        String query = "SELECT appID, docID , type, date, time FROM Appointments WHERE patient = ID?";
+        String query = "SELECT appID, docID , type, date, time FROM Appointments WHERE patientID = ?";
 
         // Connect to the database and execute the query
         try (Connection conn = DriverManager.getConnection("jdbc:sqlserver://localhost:1433;databaseName=HOSPITAL;encrypt=false", "testing", "mypass");
