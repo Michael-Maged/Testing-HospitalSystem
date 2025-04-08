@@ -271,10 +271,13 @@ public class Hospital {
 
    public int getNextAppointmentId(String type) {
     int newId = 0;
-    String query = "SELECT MAX(appID) + 1 AS next_id FROM Appointments";
+    String query = "SELECT COALESCE(MAX(appID), 0) + 1 AS next_id FROM Appointments WHERE type = ?";
 
     try (Connection conn = DriverManager.getConnection(URL, USER, PASSWORD);
          PreparedStatement pstmt = conn.prepareStatement(query)) {
+
+        // Set the type parameter in the query
+        pstmt.setString(1, type);
         
         // Execute the query and get the result
         try (ResultSet rs = pstmt.executeQuery()) {
