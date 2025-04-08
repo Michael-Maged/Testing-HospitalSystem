@@ -1,9 +1,8 @@
 package com.hospital.controllers;
 
 import com.hospital.*;
-
-
 import java.sql.Date;
+import java.util.regex.*;
 
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
@@ -16,21 +15,44 @@ public class AdminController {
     Hospital hospital = new Hospital();
     Admin admin = new Admin();
 
+    // Regex patterns for validation
+    private static final Pattern NAME_PATTERN = Pattern.compile("^[a-zA-Z ]+$");
+    private static final Pattern ITEM_NAME_PATTERN = Pattern.compile("^[a-zA-Z ]+$");
+
     @GetMapping
     public String getAdminDashboard(Model model) {
+        hospital.fetchAppointments();
+        hospital.fetchDoctors();
+        hospital.fetchMedicalRecords();
+        hospital.fetchPatients();
+        hospital.fetchInventoryItems();
         model.addAttribute("doctors", hospital.getDoctors());
         model.addAttribute("inventory", hospital.getInventory());
         model.addAttribute("records", hospital.getRecords());
+        model.addAttribute("departments", hospital.getDepartments());
         return "adminPage";
     }
 
-    // POST: Add doctor
+    // POST: Add doctor with validation
     @PostMapping("/add-doctor")
     public String addDoctor(@RequestParam int age,
                             @RequestParam String name,
                             @RequestParam String gender,
-                            @RequestParam String specialty) {
-        admin.addDoctor(hospital.getNextDoctorId(),name,age,gender,specialty);
+                            @RequestParam String specialty,
+                            Model model) {
+        // Validate doctor name
+        if (!NAME_PATTERN.matcher(name).matches()) {
+            model.addAttribute("error", "Doctor name should only contain letters and spaces.");
+            return "redirect:/admin";
+        }
+
+        // Validate doctor age (must be greater than 25)
+        if (age <= 25) {
+            model.addAttribute("error", "Doctor's age should be greater than 25.");
+            return "redirect:/admin";
+        }
+
+        admin.addDoctor(hospital.getNextDoctorId(), name, age, gender, specialty);
         hospital.getDoctors().add(new Doctor(hospital.getNextDoctorId(), name, age, gender, specialty));
         return "redirect:/admin";
     }
@@ -43,10 +65,23 @@ public class AdminController {
         return "redirect:/admin";
     }
 
-    // POST: Add inventory item
+    // POST: Add inventory item with validation
     @PostMapping("/add-inventory")
     public String addInventory(@RequestParam String name,
-                            @RequestParam int quantity) {
+                            @RequestParam int quantity,
+                            Model model) {
+        // Validate item name
+        if (!ITEM_NAME_PATTERN.matcher(name).matches()) {
+            model.addAttribute("error", "Item name should only contain letters and spaces.");
+            return "redirect:/admin";
+        }
+
+        // Validate item quantity (should be 0 or more)
+        if (quantity < 0) {
+            model.addAttribute("error", "Item quantity should be 0 or more.");
+            return "redirect:/admin";
+        }
+
         admin.addInventoryItem(hospital.getNextInventoryId(), name, quantity);
         hospital.getInventory().add(new InventoryItem(hospital.getNextInventoryId(), name, quantity));
         return "redirect:/admin";
@@ -60,6 +95,7 @@ public class AdminController {
         return "redirect:/admin";
     }
 
+    // POST: Add medical record
     @PostMapping("/add-medical-record")
     public String addMedicalRecord(@RequestParam int patientId,
                                @RequestParam String diagnosis,
@@ -70,6 +106,7 @@ public class AdminController {
     return "redirect:/admin";
     }
 
+    // POST: Delete record
     @PostMapping("/delete-record")
     public String deleteRecord(@RequestParam int id) {
         admin.deleteMedicalRecord(id);
