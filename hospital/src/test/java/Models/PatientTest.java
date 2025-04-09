@@ -73,7 +73,7 @@ public class PatientTest {
     public void testAddBill() {
         Patient patient = new Patient(4, "Dana", 35, "Female", "234 Cedar Rd", "555-4444");
 
-        Bill bill = new Bill(101, 250.0, new Date(System.currentTimeMillis()));
+        Bill bill = new Bill(101,200, 250.0, new Date(System.currentTimeMillis()));
 
         patient.addBill(bill);
         ArrayList<Bill> bills = patient.getBills();
@@ -102,7 +102,7 @@ public class PatientTest {
                 new Date(System.currentTimeMillis()), new Time(System.currentTimeMillis()), 101);
         patient.addAppointment(app);
 
-        Bill bill = new Bill(101, 250.0, new Date(System.currentTimeMillis()));
+        Bill bill = new Bill(101,200, 250.0, new Date(System.currentTimeMillis()));
         patient.addBill(bill);
 
         String result = patient.toString();
@@ -113,6 +113,4 @@ public class PatientTest {
         assertTrue(result.contains("Bills:"));
     }
 
-    // Note: The methods getAppointments() and getRecords() rely on a database.
-    // You would typically test these using a mocking framework like Mockito or H2 in-memory DB.
 }
