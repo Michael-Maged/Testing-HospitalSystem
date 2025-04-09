@@ -12,6 +12,20 @@
             border-radius: 8px;
             box-shadow: 0 0 10px rgba(0,0,0,0.1);
         }
+
+            /* Add a transparent overlay */
+    body::before {
+        content: "";
+        position: fixed;
+        top: 0;
+        left: 0;
+        width: 100%;
+        height: 100%;
+        background: url('/image.png') no-repeat center center fixed; /* Set the background image */
+        background-size: cover; /* Ensure the image covers the entire background */
+        opacity: 0.3; /* Set transparency (80% visible) */
+        z-index: -1; /* Place it behind the content */
+    }
         .login-box h2 { margin-bottom: 20px; }
         .form-input { margin-bottom: 15px; width: 100%; }
         .form-input input {
