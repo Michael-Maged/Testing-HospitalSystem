@@ -79,12 +79,12 @@
         table {
             width: 100%;
             border-collapse: collapse;
-            margin-top: 15px;
+            margin-top: 10px;
         }
 
         th, td {
             border: 1px solid #ccc;
-            padding: 10px;
+            padding: 7px;
             text-align: left;
         }
 
@@ -254,7 +254,55 @@
             </tbody>
         </table>
     </section>
-
+    <section>
+        <h2>Add Bill</h2>
+    
+        <!-- Display Error Message -->
+        <div th:if="${error}" class="error" th:text="${error}"></div>
+    
+        <form th:action="@{/admin/add-bill}" method="post">
+            <label for="patientId">Patient ID:</label>
+            <input type="number" id="patientId" name="patientID" required>
+    
+            <label for="amount">Amount:</label>
+            <input type="number" id="amount" name="amount" step="0.01" required>
+    
+            <label for="billingDate">Billing Date:</label>
+            <input type="date" id="billingDate" name="billingDate" required>
+    
+            <button type="submit" class="btn">Add Bill</button>
+        </form>
+    </section>
+    
+    <section>
+        <h2>View Bills</h2>
+    
+        <table>
+            <thead>
+                <tr>
+                    <th>Patient ID</th>
+                    <th>Patient Name</th>
+                    <th>Amount</th>
+                    <th>Billing Date</th>
+                    <th>Action</th>
+                </tr>
+            </thead>
+            <tbody>
+                <tr th:each="bill : ${bills}">
+                    <td th:text="${bill.patientID}">Patient ID</td>
+                    <td th:text="${hospital.findPatientById(bill.patientID).name}">Patient Name</td>
+                    <td th:text="${bill.amount}">Amount</td>
+                    <td th:text="${bill.billingDate}">Billing Date</td>
+                    <td>
+                        <form th:action="@{/admin/delete-bill}" method="post">
+                            <input type="hidden" name="id" th:value="${bill.billId}">
+                            <button type="submit" class="btn delete-btn">Delete</button>
+                        </form>
+                    </td>
+                </tr>
+            </tbody>
+        </table>
+    </section>
 </div>
 </body>
 </html>

@@ -26,10 +26,14 @@ public class AdminController {
         hospital.fetchMedicalRecords();
         hospital.fetchPatients();
         hospital.fetchInventoryItems();
+        hospital.fetchBills();
         model.addAttribute("doctors", hospital.getDoctors());
         model.addAttribute("inventory", hospital.getInventory());
         model.addAttribute("records", hospital.getRecords());
         model.addAttribute("departments", hospital.getDepartments());
+        model.addAttribute("patients", hospital.getPatients());
+        model.addAttribute("hospital", hospital);
+        model.addAttribute("bills", hospital.getBills());
         return "adminPage";
     }
 
@@ -113,4 +117,37 @@ public class AdminController {
         hospital.getRecords().remove(hospital.findById(hospital.getRecords(), id));
         return "redirect:/admin";
     }
+
+        // POST: Add a new bill
+    @PostMapping("/add-bill")
+    public String addBill(@RequestParam int patientID,
+                        @RequestParam double amount,
+                        @RequestParam Date billingDate,
+                        Model model) {
+        // Validate the amount
+        if (amount <= 0) {
+            model.addAttribute("error", "Amount must be greater than 0.");
+            return "redirect:/admin";
+        }
+
+        // Check if the patient exists
+        Patient patient = hospital.findPatientById(patientID);
+        if (patient == null) {
+            model.addAttribute("error", "Patient ID not found.");
+            return "redirect:/admin";
+        }
+
+        // Create a new Bill object and add it to the hospital's records
+        admin.addBill(patientID, amount, billingDate);
+        return "redirect:/admin";
+    }
+
+        // POST: Delete a bill
+    @PostMapping("/delete-bill")
+    public String deleteBill(@RequestParam int id) {
+        // Find and remove the bill by ID
+        admin.deleteBill(id);
+        return "redirect:/admin";
+    }
+
 }

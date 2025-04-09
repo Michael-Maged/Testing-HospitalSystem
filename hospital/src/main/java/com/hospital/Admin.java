@@ -141,4 +141,46 @@ public class Admin {
             e.printStackTrace();
         }
     }
+        // Add Bill
+    public void addBill(int patientID, double amount, Date billDate) {
+        String query = "INSERT INTO Bills (patientID, amount, billDate) VALUES (?,?, ?)";
+
+        try (Connection conn = DriverManager.getConnection(URL, USER, PASSWORD);
+            PreparedStatement stmt = conn.prepareStatement(query)) {
+
+            stmt.setInt(1, patientID);
+            stmt.setDouble(2, amount);
+            stmt.setDate(3, billDate);
+
+            int rowsAffected = stmt.executeUpdate();
+            if (rowsAffected > 0) {
+                System.out.println("Bill added successfully!");
+            } else {
+                System.out.println("Failed to add bill.");
+            }
+
+        } catch (SQLException e) {
+            e.printStackTrace();
+        }
+    }
+    // Delete Bill
+    public void deleteBill(int billId) {
+        String query = "DELETE FROM Bills WHERE billId = ?";
+
+        try (Connection conn = DriverManager.getConnection(URL, USER, PASSWORD);
+            PreparedStatement stmt = conn.prepareStatement(query)) {
+
+            stmt.setInt(1, billId);
+
+            int rowsAffected = stmt.executeUpdate();
+            if (rowsAffected > 0) {
+                System.out.println("Bill deleted successfully!");
+            } else {
+                System.out.println("No bill found with the given ID.");
+            }
+
+        } catch (SQLException e) {
+            e.printStackTrace();
+        }
+    }
 }

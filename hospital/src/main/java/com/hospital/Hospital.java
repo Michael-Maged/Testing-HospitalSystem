@@ -20,6 +20,7 @@ public class Hospital {
     List<MedicalRecord> records = new ArrayList<>();
     List<InventoryItem> inventory = new ArrayList<>();
     List<Doctor> doctors = new ArrayList<>();
+    List<Bill> bills = new ArrayList<>();
 
     // --- Inventory ---
 
@@ -131,6 +132,27 @@ public class Hospital {
                 appointments.add(new Appointment(appID, patientID, type, date, time,Docid));
             }
             System.out.println("Fetched appointments from DB.");
+    
+        } catch (SQLException e) {
+            e.printStackTrace();
+        }
+    }
+
+    public void fetchBills() {
+        bills.clear();
+        String query = "SELECT * FROM Bills";
+        try (Connection conn = DriverManager.getConnection(URL, USER, PASSWORD);
+             Statement stmt = conn.createStatement();
+             ResultSet rs = stmt.executeQuery(query)) {
+    
+            while (rs.next()) {
+                int billId = rs.getInt("billId");
+                int patientID = rs.getInt("patientID");
+                double amount = rs.getFloat("amount");
+                Date date = rs.getDate("billDate");    
+                bills.add(new Bill(billId, patientID, amount, date));
+            }
+            System.out.println("Fetched Bills from DB.");
     
         } catch (SQLException e) {
             e.printStackTrace();
@@ -398,6 +420,28 @@ public class Hospital {
         return newId;
     }
 
+    public int getNextBillId() {
+        int newId = 0;
+        String query = "SELECT MAX(billId) + 1 AS next_id FROM Bills";
+    
+        try (Connection conn = DriverManager.getConnection(URL, USER, PASSWORD);
+             Statement stmt = conn.createStatement();
+             ResultSet rs = stmt.executeQuery(query)) {
+    
+            if (rs.next()) {
+                newId = rs.getInt("next_id");
+                if (newId == 0) {
+                    newId = 1;
+                }
+            }
+    
+        } catch (SQLException e) {
+            e.printStackTrace();
+        }
+    
+        return newId;
+    }
+
    public List<Patient> getPatients() {
     return patients;
    }
@@ -422,6 +466,10 @@ public class Hospital {
     return departments;
    }
 
+   public List<Bill> getBills() {
+    return bills;
+    }
+
    public <T> T findById(List<T> list, int id) {
     for (T item : list) {
         try {
@@ -444,6 +492,15 @@ public class Hospital {
         }
         System.out.println("errrrrrrrrrrrrrrrrrrrrrrrrrrrrrr"+doctors.size());
         return null;
+    }
+
+    public Patient findPatientById(int patientID) {
+        for (Patient patient : patients) {
+            if (patient.getPatientID() == patientID) {
+                return patient;
+            }
+        }
+        return null; // Return null if no patient with the given ID is found
     }
     
 }
