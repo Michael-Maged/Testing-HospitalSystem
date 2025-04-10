@@ -180,7 +180,7 @@
         <h2>Manage Doctors</h2>
 
         <!-- Display Error Message -->
-        <div th:if="${error}" class="error" th:text="${error}"></div>
+        <div th:if="${errorDoctors}" class="error" th:text="${errorDoctors}"></div>
 
         <form th:action="@{/admin/add-doctor}" method="post">
             <label for="doctorName">Name:</label>
@@ -233,7 +233,7 @@
         <h2>Manage Inventory</h2>
 
         <!-- Display Error Message -->
-        <div th:if="${error}" class="error" th:text="${error}"></div>
+        <div th:if="${errorInventory}" class="error" th:text="${errorInventory}"></div>
 
         <form th:action="@{/admin/add-inventory}" method="post">
 
@@ -274,7 +274,7 @@
         <h2>Add Medical Record</h2>
 
         <!-- Display Error Message -->
-        <div th:if="${error}" class="error" th:text="${error}"></div>
+        <div th:if="${errorMedical}" class="error" th:text="${errorMedical}"></div>
 
         <form th:action="@{/admin/add-medical-record}" method="post">
             <label for="patientId">Patient ID:</label>
@@ -322,7 +322,7 @@
         <h2>Add Bill</h2>
     
         <!-- Display Error Message -->
-        <div th:if="${error}" class="error" th:text="${error}"></div>
+        <div th:if="${errorBill}" class="error" th:text="${errorBill}"></div>
     
         <form th:action="@{/admin/add-bill}" method="post">
             <label for="patientId">Patient ID:</label>
