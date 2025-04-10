@@ -24,6 +24,7 @@ public class DashboardController {
             model.addAttribute("patient", patient);
             model.addAttribute("appointments", patient.FetchUserAppointments());
             model.addAttribute("records", patient.FetchUserRecords());
+            model.addAttribute("hospital", hospital);
             hospital.fetchDoctors();
             model.addAttribute("doctors", hospital.getDoctors()); // Pass doctors list for dropdown
 

@@ -320,7 +320,7 @@
                     </thead>
                     <tbody>
                         <tr th:each="record : ${records}">
-                            <td th:text="${record.patientID}">Patient ID</td>
+                            <td th:text="${hospital.findPatientById(record.patientID).name}">Patient Name</td>
                             <td th:text="${record.diagnosis}">Diagnosis</td>
                             <td th:text="${record.treatment}">Treatment</td>
                             <td th:text="${record.date}">Date</td>

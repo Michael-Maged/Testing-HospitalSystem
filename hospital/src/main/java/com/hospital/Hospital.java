@@ -475,5 +475,13 @@ public class Hospital {
         }
         return null; // Return null if no patient with the given ID is found
     }
+    public Doctor findDoctorById(int doctorID) {
+        for (Doctor dr : doctors) {
+            if (dr.getDoctorID() == doctorID) {
+                return dr;
+            }
+        }
+        return null; // Return null if no doctor with the given ID is found
+    }
 
 }

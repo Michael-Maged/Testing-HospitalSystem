@@ -130,6 +130,7 @@
             <ul th:if="${appointments != null and !appointments.isEmpty()}">
                 <li th:each="appointment : ${appointments}">
                     <div class="appointment">
+                        <p><strong>Dr.</strong> <span th:text="${hospital.findDoctorById(appointment.docID) != null ? hospital.findDoctorById(appointment.docID).name : 'Doctor not found'}">Name</span></p>
                         <p><strong>Type:</strong> <span th:text="${appointment.type}">Type</span></p>
                         <p><strong>Date:</strong> <span th:text="${appointment.date}">Date</span></p>
                         <p><strong>Time:</strong> <span th:text="${appointment.time}">Time</span></p>
@@ -185,10 +186,10 @@
                 </select>
 
                 <label>Date:</label>
-                <input type="date" name="date" required style="margin-bottom: 15px; padding: 8px;" />
+                <input type="date" name="date" required style="margin-bottom: 15px; padding: 8px;"  min="" id="appointmentDate"/>
 
                 <label>Time:</label>
-                <input type="time" name="time" required style="margin-bottom: 15px; padding: 8px;" />
+                <input type="time" name="time" required style="margin-bottom: 15px; padding: 8px;" min="12:00" max="18:00" />
 
                 <button type="submit" 
                     style="background-color: #10b981; color: white; padding: 10px; border: none; border-radius: 6px;">
@@ -197,5 +198,10 @@
             </form>
         </div>
     </div>
+    <script>
+        // Set the minimum date to today
+        const today = new Date().toISOString().split('T')[0]; // Get today's date in YYYY-MM-DD format
+        document.getElementById('appointmentDate').setAttribute('min', today);
+    </script>
 </body>
 </html>
