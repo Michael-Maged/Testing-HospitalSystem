@@ -5,7 +5,8 @@ public class Session {
     private Patient currentPatient;
 
     // Private constructor to prevent instantiation
-    private Session() {}
+    private Session() {
+    }
 
     // Get the singleton instance of the session
     public static Session getInstance() {

@@ -1,4 +1,5 @@
 package com.hospital;
+
 import java.sql.Connection;
 import java.sql.DriverManager;
 import java.sql.PreparedStatement;
@@ -34,25 +35,52 @@ public class Patient {
     }
 
     // Getters
-    public int getPatientID() { return patientID; }
-    public String getName() { return name; }
-    public int getAge() { return age; }
-    public String getGender() { return gender; }
-    public String getAddress() { return address; }
-    public String getPhoneNumber() { return phoneNumber; }
-    public ArrayList<Bill> getBills() { return bills; }
-    public ArrayList<Appointment> getAppointments() { return appointments; }
-    public ArrayList<MedicalRecord> getMedicalRecords() { return records; }
-    
-    public ArrayList<Appointment> FetchUserAppointments() { 
+    public int getPatientID() {
+        return patientID;
+    }
+
+    public String getName() {
+        return name;
+    }
+
+    public int getAge() {
+        return age;
+    }
+
+    public String getGender() {
+        return gender;
+    }
+
+    public String getAddress() {
+        return address;
+    }
+
+    public String getPhoneNumber() {
+        return phoneNumber;
+    }
+
+    public ArrayList<Bill> getBills() {
+        return bills;
+    }
+
+    public ArrayList<Appointment> getAppointments() {
+        return appointments;
+    }
+
+    public ArrayList<MedicalRecord> getMedicalRecords() {
+        return records;
+    }
+
+    public ArrayList<Appointment> FetchUserAppointments() {
         appointments.clear();
 
         // Query to get appointments for this patient
         String query = "SELECT appID, docID ,type, date, time FROM Appointments WHERE patientID = ?";
 
         // Connect to the database and execute the query
-        try (Connection conn = DriverManager.getConnection("jdbc:sqlserver://localhost:1433;databaseName=HOSPITAL;encrypt=false", "testing", "mypass");
-             PreparedStatement stmt = conn.prepareStatement(query)) {
+        try (Connection conn = DriverManager.getConnection(
+                "jdbc:sqlserver://localhost:1433;databaseName=HOSPITAL;encrypt=false", "testing", "mypass");
+                PreparedStatement stmt = conn.prepareStatement(query)) {
 
             // Set the patient ID as the parameter for the query
             stmt.setInt(1, this.patientID);
@@ -81,15 +109,14 @@ public class Patient {
         return appointments;
     }
 
-
-
     public ArrayList<MedicalRecord> FetchUserRecords() {
         records.clear();
 
         String query = "SELECT * FROM MedicalRecords WHERE patientID = ?";
-        
-        try (Connection conn = DriverManager.getConnection("jdbc:sqlserver://localhost:1433;databaseName=HOSPITAL;encrypt=false", "testing", "mypass");
-             PreparedStatement stmt = conn.prepareStatement(query)) {
+
+        try (Connection conn = DriverManager.getConnection(
+                "jdbc:sqlserver://localhost:1433;databaseName=HOSPITAL;encrypt=false", "testing", "mypass");
+                PreparedStatement stmt = conn.prepareStatement(query)) {
 
             // Set the patientID parameter
             stmt.setInt(1, this.patientID);
@@ -116,11 +143,25 @@ public class Patient {
         return records;
     }
 
-    public void setName(String name) { this.name = name; }
-    public void setAge(int age) { this.age = age; }
-    public void setGender(String gender) { this.gender = gender; }
-    public void setAddress(String address) { this.address = address; }
-    public void setPhoneNumber(String phoneNumber) { this.phoneNumber = phoneNumber; }
+    public void setName(String name) {
+        this.name = name;
+    }
+
+    public void setAge(int age) {
+        this.age = age;
+    }
+
+    public void setGender(String gender) {
+        this.gender = gender;
+    }
+
+    public void setAddress(String address) {
+        this.address = address;
+    }
+
+    public void setPhoneNumber(String phoneNumber) {
+        this.phoneNumber = phoneNumber;
+    }
 
     public void addAppointment(Appointment appointment) {
         appointments.add(appointment);

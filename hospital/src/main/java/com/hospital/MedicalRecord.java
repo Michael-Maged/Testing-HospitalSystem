@@ -1,4 +1,5 @@
 package com.hospital;
+
 import java.util.*;
 
 public class MedicalRecord {
@@ -7,7 +8,6 @@ public class MedicalRecord {
     String diagnosis;
     String treatment;
     Date date;
-
 
     public MedicalRecord(int recordID, int patientID, String diagnosis, String treatment, Date date) {
         this.recordID = recordID;

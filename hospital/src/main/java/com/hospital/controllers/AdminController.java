@@ -40,10 +40,10 @@ public class AdminController {
     // POST: Add doctor with validation
     @PostMapping("/add-doctor")
     public String addDoctor(@RequestParam int age,
-                            @RequestParam String name,
-                            @RequestParam String gender,
-                            @RequestParam String specialty,
-                            Model model) {
+            @RequestParam String name,
+            @RequestParam String gender,
+            @RequestParam String specialty,
+            Model model) {
         // Validate doctor name
         if (!NAME_PATTERN.matcher(name).matches()) {
             model.addAttribute("error", "Doctor name should only contain letters and spaces.");
@@ -72,8 +72,8 @@ public class AdminController {
     // POST: Add inventory item with validation
     @PostMapping("/add-inventory")
     public String addInventory(@RequestParam String name,
-                            @RequestParam int quantity,
-                            Model model) {
+            @RequestParam int quantity,
+            Model model) {
         // Validate item name
         if (!ITEM_NAME_PATTERN.matcher(name).matches()) {
             model.addAttribute("error", "Item name should only contain letters and spaces.");
@@ -102,12 +102,11 @@ public class AdminController {
     // POST: Add medical record
     @PostMapping("/add-medical-record")
     public String addMedicalRecord(@RequestParam int patientId,
-                               @RequestParam String diagnosis,
-                               @RequestParam String treatment, 
-                               @RequestParam Date date
-                               ) {
-    hospital.addMedicalRecord(hospital.getNextRecordId(), patientId, diagnosis, treatment, date);
-    return "redirect:/admin";
+            @RequestParam String diagnosis,
+            @RequestParam String treatment,
+            @RequestParam Date date) {
+        hospital.addMedicalRecord(hospital.getNextRecordId(), patientId, diagnosis, treatment, date);
+        return "redirect:/admin";
     }
 
     // POST: Delete record
@@ -118,12 +117,12 @@ public class AdminController {
         return "redirect:/admin";
     }
 
-        // POST: Add a new bill
+    // POST: Add a new bill
     @PostMapping("/add-bill")
     public String addBill(@RequestParam int patientID,
-                        @RequestParam double amount,
-                        @RequestParam Date billingDate,
-                        Model model) {
+            @RequestParam double amount,
+            @RequestParam Date billingDate,
+            Model model) {
         // Validate the amount
         if (amount <= 0) {
             model.addAttribute("error", "Amount must be greater than 0.");
@@ -142,7 +141,7 @@ public class AdminController {
         return "redirect:/admin";
     }
 
-        // POST: Delete a bill
+    // POST: Delete a bill
     @PostMapping("/delete-bill")
     public String deleteBill(@RequestParam int id) {
         // Find and remove the bill by ID

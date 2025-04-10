@@ -10,6 +10,7 @@ import com.hospital.Hospital;
 public class PatientRegistrationController {
 
     private Hospital hospital = new Hospital();
+
     @GetMapping("/register")
     public String showRegistrationForm() {
         hospital.fetchPatients();
@@ -23,8 +24,7 @@ public class PatientRegistrationController {
             @RequestParam("gender") String gender,
             @RequestParam("address") String address,
             @RequestParam("phoneNumber") String phoneNumber,
-            Model model
-    ) {
+            Model model) {
         // Validate full name: only letters and spaces
         if (!name.matches("^[A-Za-z]+( [A-Za-z]+)*$")) {
             model.addAttribute("error", "Invalid name. Use letters and spaces only.");
@@ -43,7 +43,7 @@ public class PatientRegistrationController {
             return "patient-registration";
         }
 
-        //TODO: handle registration of duplicate phone number
+        // TODO: handle registration of duplicate phone number
         // Check for duplicate phone number
         if (hospital.phoneExists(phoneNumber)) {
             model.addAttribute("error", "Phone number is already registered.");

@@ -23,10 +23,10 @@ public class DashboardController {
         if (patient != null) {
             model.addAttribute("patient", patient);
             model.addAttribute("appointments", patient.FetchUserAppointments());
-            model.addAttribute("records", patient.FetchUserRecords());            
+            model.addAttribute("records", patient.FetchUserRecords());
             hospital.fetchDoctors();
             model.addAttribute("doctors", hospital.getDoctors()); // Pass doctors list for dropdown
-            
+
             return "dashboard"; // Pass the updated model to the template
         } else {
             model.addAttribute("error", "No patient logged in");
@@ -34,12 +34,13 @@ public class DashboardController {
         }
     }
 
-    // Handle the form submission for adding a new appointment with the selected doctor
+    // Handle the form submission for adding a new appointment with the selected
+    // doctor
     @PostMapping("/appointments/add")
     public String addAppointment(@RequestParam Date date,
-                                @RequestParam String time,
-                                @RequestParam String Docname, // Doctor ID selected from the dropdown
-                                Model model) {
+            @RequestParam String time,
+            @RequestParam String Docname, // Doctor ID selected from the dropdown
+            Model model) {
         Patient patient = Session.getInstance().getCurrentPatient();
 
         if (patient != null) {
@@ -48,12 +49,16 @@ public class DashboardController {
             }
 
             Time sqlTime = Time.valueOf(time);
-            
+
             // Create a new appointment with the selected doctor ID
-            Appointment appointment = new Appointment(hospital.getNextAppointmentId(), patient.getPatientID(), hospital.findDoctorByName(Docname).getSpecialty(), date, sqlTime, hospital.findDoctorByName(Docname).getDoctorID());
-            hospital.scheduleAppointment(hospital.getNextAppointmentId(), patient.getPatientID(),  hospital.findDoctorByName(Docname).getSpecialty(), date, sqlTime,  hospital.findDoctorByName(Docname).getDoctorID());
+            Appointment appointment = new Appointment(hospital.getNextAppointmentId(), patient.getPatientID(),
+                    hospital.findDoctorByName(Docname).getSpecialty(), date, sqlTime,
+                    hospital.findDoctorByName(Docname).getDoctorID());
+            hospital.scheduleAppointment(hospital.getNextAppointmentId(), patient.getPatientID(),
+                    hospital.findDoctorByName(Docname).getSpecialty(), date, sqlTime,
+                    hospital.findDoctorByName(Docname).getDoctorID());
             patient.addAppointment(appointment);
-            
+
             return "redirect:/dashboard"; // Redirect to dashboard after appointment is added
         } else {
             model.addAttribute("error", "No patient logged in");

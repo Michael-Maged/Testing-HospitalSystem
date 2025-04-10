@@ -3,13 +3,13 @@ package com.hospital;
 import java.util.Date;
 
 public class Bill {
-    int patientID ;
+    int patientID;
     int billId;
     double amount;
     Date billingDate;
 
-    public Bill(int patientID ,int billId, double amount , Date billingDate) {
-        this.patientID = patientID; 
+    public Bill(int patientID, int billId, double amount, Date billingDate) {
+        this.patientID = patientID;
         this.billId = billId;
         this.amount = amount;
         this.billingDate = billingDate;
@@ -50,5 +50,5 @@ public class Bill {
     public void setPatientID(int patientID) {
         this.patientID = patientID;
     }
-  
+
 }
