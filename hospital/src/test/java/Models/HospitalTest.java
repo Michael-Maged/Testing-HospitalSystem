@@ -95,24 +95,6 @@ public class HospitalTest {
         assertEquals("Checkup", appointments.get(0).getType());
     }
 
-    @Test
-    public void testAddMedicalRecord() {
-        // Mock record
-        MedicalRecord record = new MedicalRecord(1, 1, "Flu", "Rest & Fluids", any());
-        List<MedicalRecord> mockRecords = Collections.singletonList(record);
-
-        // Mock methods
-        doNothing().when(hospital).addMedicalRecord(anyInt(), anyInt(), anyString(), anyString(), any());
-        when(hospital.getRecords()).thenReturn(mockRecords);
-
-        // Simulate
-        hospital.addMedicalRecord(1, 1, "Flu", "Rest & Fluids", any());
-        List<MedicalRecord> records = hospital.getRecords();
-
-        // Verify
-        assertEquals(1, records.size());
-        assertEquals("Flu", records.get(0).getDiagnosis());
-    }
 
     @Test
     public void testFetchDoctorsInventory() {

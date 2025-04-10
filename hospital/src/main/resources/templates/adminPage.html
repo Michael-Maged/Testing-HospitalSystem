@@ -1,5 +1,6 @@
 <!DOCTYPE html>
 <html xmlns:th="http://www.thymeleaf.org">
+
 <head>
     <title>Admin Dashboard</title>
     <style>
@@ -10,19 +11,23 @@
             padding: 20px;
         }
 
-            /* Add a transparent overlay */
-    body::before {
-        content: "";
-        position: fixed;
-        top: 0;
-        left: 0;
-        width: 100%;
-        height: 100%;
-        background: url('/image.png') no-repeat center center fixed; /* Set the background image */
-        background-size: cover; /* Ensure the image covers the entire background */
-        opacity: 0.3; /* Set transparency (80% visible) */
-        z-index: -1; /* Place it behind the content */
-    }
+        /* Add a transparent overlay */
+        body::before {
+            content: "";
+            position: fixed;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            background: url('/image.png') no-repeat center center fixed;
+            /* Set the background image */
+            background-size: cover;
+            /* Ensure the image covers the entire background */
+            opacity: 0.3;
+            /* Set transparency (80% visible) */
+            z-index: -1;
+            /* Place it behind the content */
+        }
 
         .container {
             max-width: 1000px;
@@ -30,7 +35,7 @@
             background: white;
             padding: 30px;
             border-radius: 10px;
-            box-shadow: 0 0 10px rgba(0,0,0,0.1);
+            box-shadow: 0 0 10px rgba(0, 0, 0, 0.1);
         }
 
         h1 {
@@ -56,7 +61,8 @@
             margin: 8px 0 4px;
         }
 
-        input, select {
+        input,
+        select {
             padding: 8px;
             width: 100%;
             box-sizing: border-box;
@@ -82,7 +88,8 @@
             margin-top: 10px;
         }
 
-        th, td {
+        th,
+        td {
             border: 1px solid #ccc;
             padding: 7px;
             text-align: left;
@@ -110,44 +117,51 @@
     <style>
         .flex-container {
             display: flex;
-            gap: 20px; /* Space between the sidebar and main content */
+            gap: 20px;
+            /* Space between the sidebar and main content */
         }
-    
+
         .patient-list {
-            flex: 1; /* Sidebar takes up 1 part of the available space */
+            flex: 1;
+            /* Sidebar takes up 1 part of the available space */
             background: #f9f9f9;
             padding: 20px;
             border-radius: 10px;
             box-shadow: 0 0 10px rgba(0, 0, 0, 0.1);
-            max-height: 80vh; /* Limit height */
-            overflow-y: auto; /* Add scroll if content overflows */
+            max-height: 80vh;
+            /* Limit height */
+            overflow-y: auto;
+            /* Add scroll if content overflows */
         }
-    
+
         .main-content {
-            flex: 3; /* Main content takes up 3 parts of the available space */
+            flex: 3;
+            /* Main content takes up 3 parts of the available space */
         }
-    
+
         .patient-list h2 {
             margin-bottom: 15px;
             color: #007bff;
         }
-    
+
         .patient-list table {
             width: 100%;
             border-collapse: collapse;
         }
-    
-        .patient-list th, .patient-list td {
+
+        .patient-list th,
+        .patient-list td {
             border: 1px solid #ccc;
             padding: 8px;
             text-align: left;
         }
-    
+
         .patient-list th {
             background: #e9ecef;
         }
     </style>
 </head>
+
 <body>
     <div class="flex-container">
         <!-- Left Sidebar: Patient List -->
@@ -172,201 +186,207 @@
                 </tbody>
             </table>
         </div>
-<div class="container">
-    <h1>Admin Dashboard</h1>
 
-    <!-- Doctor Management -->
-    <section>
-        <h2>Manage Doctors</h2>
+        <div class="container">
+            <h1>Admin Dashboard</h1>
 
-        <!-- Display Error Message -->
-        <div th:if="${errorDoctors}" class="error" th:text="${errorDoctors}"></div>
+            <!-- Doctor Management -->
+            <section>
+                <h2>Manage Doctors</h2>
 
-        <form th:action="@{/admin/add-doctor}" method="post">
-            <label for="doctorName">Name:</label>
-            <input type="text" id="doctorName" name="name" required>
+                <!-- Display Error Message -->
+                <div th:if="${errorDoctors}" class="error" th:text="${errorDoctors}"></div>
 
-            <label for="age">Age:</label>
-            <input type="number" id="age" name="age" required>
+                <form th:action="@{/admin/add-doctor}" method="post">
+                    <label for="doctorName">Name:</label>
+                    <input type="text" id="doctorName" name="name" required>
 
-            <label for="gender">Gender:</label>
-            <select id="gender" name="gender" required>
-                <option value="" selected>Select Gender</option>
-                <option value="Male">Male</option>
-                <option value="Female">Female</option>
-            </select>
+                    <label for="age">Age:</label>
+                    <input type="number" id="age" name="age" required>
 
-            <label for="specialty">Specialty:</label>
-            <select id="specialty" name="specialty" required>
-                <option value="" selected>Select Specialty</option>
-                <option th:each="department : ${departments}" th:value="${department}" th:text="${department}"></option>
-            </select>
+                    <label for="gender">Gender:</label>
+                    <select id="gender" name="gender" required>
+                        <option value="" selected>Select Gender</option>
+                        <option value="Male">Male</option>
+                        <option value="Female">Female</option>
+                    </select>
 
-            <button type="submit" class="btn">Add Doctor</button>
-        </form>
+                    <label for="specialty">Specialty:</label>
+                    <select id="specialty" name="specialty" required>
+                        <option value="" selected>Select Specialty</option>
+                        <option th:each="department : ${departments}" th:value="${department}" th:text="${department}">
+                        </option>
+                    </select>
 
-        <table>
-            <thead>
-            <tr>
-                <th>Doctor Name</th>
-                <th>Specialty</th>
-                <th>Action</th>
-            </tr>
-            </thead>
-            <tbody>
-            <tr th:each="doctor : ${doctors}">
-                <td th:text="${doctor.name}"></td>
-                <td th:text="${doctor.specialty}"></td>
-                <td>
-                    <form th:action="@{/admin/delete-doctor}" method="post">
-                        <input type="hidden" name="id" th:value="${doctor.doctorID}">
-                        <button type="submit" class="btn delete-btn">Delete</button>
-                    </form>
-                </td>
-            </tr>
-            </tbody>
-        </table>
-    </section>
+                    <button type="submit" class="btn">Add Doctor</button>
+                </form>
 
-    <!-- Inventory Management -->
-    <section>
-        <h2>Manage Inventory</h2>
+                <table>
+                    <thead>
+                        <tr>
+                            <th>Doctor Name</th>
+                            <th>Specialty</th>
+                            <th>Action</th>
+                        </tr>
+                    </thead>
+                    <tbody>
+                        <tr th:each="doctor : ${doctors}">
+                            <td th:text="${doctor.name}"></td>
+                            <td th:text="${doctor.specialty}"></td>
+                            <td>
+                                <form th:action="@{/admin/delete-doctor}" method="post">
+                                    <input type="hidden" name="id" th:value="${doctor.doctorID}">
+                                    <button type="submit" class="btn delete-btn">Delete</button>
+                                </form>
+                            </td>
+                        </tr>
+                    </tbody>
+                </table>
+            </section>
 
-        <!-- Display Error Message -->
-        <div th:if="${errorInventory}" class="error" th:text="${errorInventory}"></div>
+            <!-- Inventory Management -->
+            <section>
+                <h2>Manage Inventory</h2>
 
-        <form th:action="@{/admin/add-inventory}" method="post">
+                <!-- Display Error Message -->
+                <div th:if="${errorInventory}" class="error" th:text="${errorInventory}"></div>
 
-            <label for="itemName">Item Name:</label>
-            <input type="text" id="name" name="name" required>
+                <form th:action="@{/admin/add-inventory}" method="post">
 
-            <label for="quantity">Quantity:</label>
-            <input type="number" id="quantity" name="quantity" required>
+                    <label for="itemName">Item Name:</label>
+                    <input type="text" id="name" name="name" required>
 
-            <button type="submit" class="btn">Add Item</button>
-        </form>
+                    <label for="quantity">Quantity:</label>
+                    <input type="number" id="quantity" name="quantity" required>
 
-        <table>
-            <thead>
-            <tr>
-                <th>Item Name</th>
-                <th>Quantity</th>
-                <th>Action</th>
-            </tr>
-            </thead>
-            <tbody>
-            <tr th:each="item : ${inventory}">
-                <td th:text="${item.name}"></td>
-                <td th:text="${item.quantity}"></td>
-                <td>
-                    <form th:action="@{/admin/delete-inventory}" method="post">
-                        <input type="hidden" name="id" th:value="${item.itemId}">
-                        <button type="submit" class="btn delete-btn">Delete</button>
-                    </form>
-                </td>
-            </tr>
-            </tbody>
-        </table>
-    </section>
+                    <button type="submit" class="btn">Add Item</button>
+                </form>
 
-    <!-- Medical Record Management -->
-    <section>
-        <h2>Add Medical Record</h2>
+                <table>
+                    <thead>
+                        <tr>
+                            <th>Item Name</th>
+                            <th>Quantity</th>
+                            <th>Action</th>
+                        </tr>
+                    </thead>
+                    <tbody>
+                        <tr th:each="item : ${inventory}">
+                            <td th:text="${item.name}"></td>
+                            <td th:text="${item.quantity}"></td>
+                            <td>
+                                <form th:action="@{/admin/delete-inventory}" method="post">
+                                    <input type="hidden" name="id" th:value="${item.itemId}">
+                                    <button type="submit" class="btn delete-btn">Delete</button>
+                                </form>
+                            </td>
+                        </tr>
+                    </tbody>
+                </table>
+            </section>
 
-        <!-- Display Error Message -->
-        <div th:if="${errorMedical}" class="error" th:text="${errorMedical}"></div>
+            <!-- Medical Record Management -->
+            <section>
+                <h2>Add Medical Record</h2>
 
-        <form th:action="@{/admin/add-medical-record}" method="post">
-            <label for="patientId">Patient ID:</label>
-            <input type="number" id="patientId" name="patientId" required>
+                <!-- Display Error Message -->
+                <div th:if="${errorMedical}" class="error" th:text="${errorMedical}"></div>
 
-            <label for="diagnosis">Diagnosis:</label>
-            <input type="text" id="diagnosis" name="diagnosis" required>
+                <form th:action="@{/admin/add-medical-record}" method="post">
+                    <label for="patientId">Patient ID:</label>
+                    <input type="number" id="patientId" name="patientId" required>
 
-            <label for="treatment">Treatment:</label>
-            <input type="text" id="treatment" name="treatment" required>
+                    <label for="diagnosis">Diagnosis:</label>
+                    <input type="text" id="diagnosis" name="diagnosis" required>
 
-            <label for="date">Date:</label>
-            <input type="date" id="date" name="date" required>
+                    <label for="treatment">Treatment:</label>
+                    <input type="text" id="treatment" name="treatment" required>
 
-            <button type="submit" class="btn">Add Medical Record</button>
-        </form>
+                    <label for="date">Date:</label>
+                    <input type="date" id="date" name="date" required>
 
-        <table>
-            <thead>
-            <tr>
-                <th>Patient Name</th>
-                <th>Diagnosis</th>
-                <th>Treatment</th>
-                <th>Date</th>
-                <th>Action</th>
-            </tr>
-            </thead>
-            <tbody>
-            <tr th:each="record : ${records}">
-                <td th:text="${record.patientID}">Patient ID</td>
-                <td th:text="${record.diagnosis}">Diagnosis</td>
-                <td th:text="${record.treatment}">Treatment</td>
-                <td th:text="${record.date}">Date</td>
-                <td>
-                    <form th:action="@{/admin/delete-record}" method="post">
-                        <input type="hidden" name="id" th:value="${record.recordID}">
-                        <button type="submit" class="btn delete-btn">Delete</button>
-                    </form>
-                </td>
-            </tr>
-            </tbody>
-        </table>
-    </section>
-    <section>
-        <h2>Add Bill</h2>
-    
-        <!-- Display Error Message -->
-        <div th:if="${errorBill}" class="error" th:text="${errorBill}"></div>
-    
-        <form th:action="@{/admin/add-bill}" method="post">
-            <label for="patientId">Patient ID:</label>
-            <input type="number" id="patientId" name="patientID" required>
-    
-            <label for="amount">Amount:</label>
-            <input type="number" id="amount" name="amount" step="0.01" required>
-    
-            <label for="billingDate">Billing Date:</label>
-            <input type="date" id="billingDate" name="billingDate" required>
-    
-            <button type="submit" class="btn">Add Bill</button>
-        </form>
-    </section>
-    
-    <section>
-        <h2>View Bills</h2>
-    
-        <table>
-            <thead>
-                <tr>
-                    <th>Patient ID</th>
-                    <th>Patient Name</th>
-                    <th>Amount</th>
-                    <th>Billing Date</th>
-                    <th>Action</th>
-                </tr>
-            </thead>
-            <tbody>
-                <tr th:each="bill : ${bills}">
-                    <td th:text="${bill.patientID}">Patient ID</td>
-                    <td><span th:text="${hospital.findPatientById(bill.patientID) != null ? hospital.findPatientById(bill.patientID).name : 'Patient not found'}"></span></td>
-                    <td th:text="${bill.amount}">Amount</td>
-                    <td th:text="${bill.billingDate}">Billing Date</td>
-                    <td>
-                        <form th:action="@{/admin/delete-bill}" method="post">
-                            <input type="hidden" name="id" th:value="${bill.billId}">
-                            <button type="submit" class="btn delete-btn">Delete</button>
-                        </form>
-                    </td>
-                </tr>
-            </tbody>
-        </table>
-    </section>
-</div>
+                    <button type="submit" class="btn">Add Medical Record</button>
+                </form>
+
+                <table>
+                    <thead>
+                        <tr>
+                            <th>Patient Name</th>
+                            <th>Diagnosis</th>
+                            <th>Treatment</th>
+                            <th>Date</th>
+                            <th>Action</th>
+                        </tr>
+                    </thead>
+                    <tbody>
+                        <tr th:each="record : ${records}">
+                            <td th:text="${record.patientID}">Patient ID</td>
+                            <td th:text="${record.diagnosis}">Diagnosis</td>
+                            <td th:text="${record.treatment}">Treatment</td>
+                            <td th:text="${record.date}">Date</td>
+                            <td>
+                                <form th:action="@{/admin/delete-record}" method="post">
+                                    <input type="hidden" name="id" th:value="${record.recordID}">
+                                    <button type="submit" class="btn delete-btn">Delete</button>
+                                </form>
+                            </td>
+                        </tr>
+                    </tbody>
+                </table>
+            </section>
+            <section>
+                <h2>Add Bill</h2>
+
+                <!-- Display Error Message -->
+                <div th:if="${errorBill}" class="error" th:text="${errorBill}"></div>
+
+                <form th:action="@{/admin/add-bill}" method="post">
+                    <label for="patientId">Patient ID:</label>
+                    <input type="number" id="patientId" name="patientID" required>
+
+                    <label for="amount">Amount:</label>
+                    <input type="number" id="amount" name="amount" step="0.01" required>
+
+                    <label for="billingDate">Billing Date:</label>
+                    <input type="date" id="billingDate" name="billingDate" required>
+
+                    <button type="submit" class="btn">Add Bill</button>
+                </form>
+            </section>
+
+            <section>
+                <h2>View Bills</h2>
+
+                <table>
+                    <thead>
+                        <tr>
+                            <th>Patient ID</th>
+                            <th>Patient Name</th>
+                            <th>Amount</th>
+                            <th>Billing Date</th>
+                            <th>Action</th>
+                        </tr>
+                    </thead>
+                    <tbody>
+                        <tr th:each="bill : ${bills}">
+                            <td th:text="${bill.patientID}">Patient ID</td>
+                            <td><span
+                                    th:text="${hospital.findPatientById(bill.patientID) != null ? hospital.findPatientById(bill.patientID).name : 'Patient not found'}"></span>
+                            </td>
+                            <td th:text="${bill.amount}">Amount</td>
+                            <td th:text="${bill.billingDate}">Billing Date</td>
+                            <td>
+                                <form th:action="@{/admin/delete-bill}" method="post">
+                                    <input type="hidden" name="id" th:value="${bill.billId}">
+                                    <button type="submit" class="btn delete-btn">Delete</button>
+                                </form>
+                            </td>
+                        </tr>
+                    </tbody>
+                </table>
+            </section>
+        </div>
+    </div>
 </body>
+
 </html>
