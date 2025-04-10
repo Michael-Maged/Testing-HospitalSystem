@@ -99,29 +99,28 @@ public class Admin {
 
     // Add Medical Record
     public void addMedicalRecord(int recordID, int patientID, String diagnosis, String treatment, Date date) {
-        String query = "INSERT INTO MedicalRecords (recordID, patientID, diagnosis, treatment) VALUES (?, ?, ?, ?)";
-
+        String query = "INSERT INTO MedicalRecords (recordID , patientID, diagnosis, treatment, date) VALUES (?, ?, ?, ?, ?)";
         try (Connection conn = DriverManager.getConnection(URL, USER, PASSWORD);
                 PreparedStatement stmt = conn.prepareStatement(query)) {
-
+            // Set parameters
             stmt.setInt(1, recordID);
             stmt.setInt(2, patientID);
             stmt.setString(3, diagnosis);
             stmt.setString(4, treatment);
             stmt.setDate(5, date);
 
+            // Execute the query
             int rowsAffected = stmt.executeUpdate();
             if (rowsAffected > 0) {
-                System.out.println("Medical record added successfully!");
+                System.out.println(" Medical record has been added successfully!");
             } else {
-                System.out.println("Failed to add medical record.");
+                System.out.println(" Failed to add the medical record.");
             }
 
         } catch (SQLException e) {
             e.printStackTrace();
         }
     }
-
     // Delete Medical Record
     public void deleteMedicalRecord(int recordID) {
         String query = "DELETE FROM MedicalRecords WHERE recordID = ?";

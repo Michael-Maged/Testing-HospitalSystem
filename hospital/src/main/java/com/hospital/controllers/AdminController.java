@@ -104,9 +104,16 @@ public class AdminController {
     public String addMedicalRecord(@RequestParam int patientId,
             @RequestParam String diagnosis,
             @RequestParam String treatment,
-            @RequestParam Date date) {
-        hospital.addMedicalRecord(hospital.getNextRecordId(), patientId, diagnosis, treatment, date);
-        return "redirect:/admin";
+            @RequestParam Date date,
+            Model model) {
+            // Check if the patient exists
+            Patient patient = hospital.findPatientById(patientId);
+            if (patient == null) {
+                model.addAttribute("error", "Patient ID not found.");
+                return "redirect:/admin";
+            }
+            admin.addMedicalRecord(hospital.getNextRecordId(), patientId, diagnosis, treatment, date);
+            return "redirect:/admin";
     }
 
     // POST: Delete record

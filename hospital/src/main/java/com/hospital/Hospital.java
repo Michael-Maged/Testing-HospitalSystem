@@ -151,7 +151,7 @@ public class Hospital {
                 int patientID = rs.getInt("patientID");
                 double amount = rs.getFloat("amount");
                 Date date = rs.getDate("billDate");
-                bills.add(new Bill(billId, patientID, amount, date));
+                bills.add(new Bill(patientID,billId, amount, date));
             }
             System.out.println("Fetched Bills from DB.");
 
@@ -275,29 +275,6 @@ public class Hospital {
         }
     }
 
-    public void addMedicalRecord(int recordID, int patientID, String diagnosis, String treatment, Date date) {
-        String query = "INSERT INTO MedicalRecords (recordID , patientID, diagnosis, treatment, date) VALUES (?, ?, ?, ?, ?)";
-        try (Connection conn = DriverManager.getConnection(URL, USER, PASSWORD);
-                PreparedStatement stmt = conn.prepareStatement(query)) {
-            // Set parameters
-            stmt.setInt(1, recordID);
-            stmt.setInt(2, patientID);
-            stmt.setString(3, diagnosis);
-            stmt.setString(4, treatment);
-            stmt.setDate(5, date);
-
-            // Execute the query
-            int rowsAffected = stmt.executeUpdate();
-            if (rowsAffected > 0) {
-                System.out.println(" Medical record has been added successfully!");
-            } else {
-                System.out.println(" Failed to add the medical record.");
-            }
-
-        } catch (SQLException e) {
-            e.printStackTrace();
-        }
-    }
 
     public void showPatients() {
         for (Patient p : patients) {

@@ -106,8 +106,72 @@
             margin-bottom: 15px;
         }
     </style>
+    <!-- patient part style    -->
+    <style>
+        .flex-container {
+            display: flex;
+            gap: 20px; /* Space between the sidebar and main content */
+        }
+    
+        .patient-list {
+            flex: 1; /* Sidebar takes up 1 part of the available space */
+            background: #f9f9f9;
+            padding: 20px;
+            border-radius: 10px;
+            box-shadow: 0 0 10px rgba(0, 0, 0, 0.1);
+            max-height: 80vh; /* Limit height */
+            overflow-y: auto; /* Add scroll if content overflows */
+        }
+    
+        .main-content {
+            flex: 3; /* Main content takes up 3 parts of the available space */
+        }
+    
+        .patient-list h2 {
+            margin-bottom: 15px;
+            color: #007bff;
+        }
+    
+        .patient-list table {
+            width: 100%;
+            border-collapse: collapse;
+        }
+    
+        .patient-list th, .patient-list td {
+            border: 1px solid #ccc;
+            padding: 8px;
+            text-align: left;
+        }
+    
+        .patient-list th {
+            background: #e9ecef;
+        }
+    </style>
 </head>
 <body>
+    <div class="flex-container">
+        <!-- Left Sidebar: Patient List -->
+        <div class="patient-list">
+            <h2>Patients</h2>
+            <table>
+                <thead>
+                    <tr>
+                        <th>ID</th>
+                        <th>Name</th>
+                        <th>Phone</th>
+                        <th>Age</th>
+                    </tr>
+                </thead>
+                <tbody>
+                    <tr th:each="patient : ${patients}">
+                        <td th:text="${patient.patientID}">ID</td>
+                        <td th:text="${patient.name}">Name</td>
+                        <td th:text="${patient.phoneNumber}">Phone</td>
+                        <td th:text="${patient.age}">Age</td>
+                    </tr>
+                </tbody>
+            </table>
+        </div>
 <div class="container">
     <h1>Admin Dashboard</h1>
 
@@ -290,7 +354,7 @@
             <tbody>
                 <tr th:each="bill : ${bills}">
                     <td th:text="${bill.patientID}">Patient ID</td>
-                    <td th:text="${hospital.findPatientById(bill.patientID).name}">Patient Name</td>
+                    <td><span th:text="${hospital.findPatientById(bill.patientID) != null ? hospital.findPatientById(bill.patientID).name : 'Patient not found'}"></span></td>
                     <td th:text="${bill.amount}">Amount</td>
                     <td th:text="${bill.billingDate}">Billing Date</td>
                     <td>

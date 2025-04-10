@@ -27,12 +27,13 @@
         z-index: -1; /* Place it behind the content */
     }
         .login-box h2 { margin-bottom: 20px; }
-        .form-input { margin-bottom: 15px; width: 100%; }
+        .form-input { margin-bottom: 15px; width: 100%; box-sizing: border-box; }
         .form-input input {
             width: 100%;
             padding: 10px;
             border: 1px solid #ccc;
             border-radius: 4px;
+            box-sizing: border-box;
         }
         .btn {
             background: #007bff;
@@ -43,8 +44,19 @@
             border-radius: 4px;
             cursor: pointer;
             text-align: center;
+            display: inline-block;
+            margin: 5px 0; /* Added margin for better spacing */
+            box-sizing: border-box;
         }
         .btn:hover { background: #0056b3; }
+
+        .btn-home {
+        background: #6c757d; /* Different color for the Home button */
+        }
+
+        .btn-home:hover {
+            background: #5a6268;
+        }
         .error { color: red; margin-bottom: 10px; }
     </style>
 </head>
@@ -68,7 +80,7 @@
     </form>
 
     <div style="text-align: center; margin-top: 15px;">
-        <a th:href="@{/}" class="btn" style="display: inline-block; text-decoration: none;">Home</a>
+        <a th:href="@{/}" class="btn btn-home" style="text-decoration: none;">Home</a>
     </div>
 </div>
 
