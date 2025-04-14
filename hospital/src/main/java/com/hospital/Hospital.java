@@ -216,8 +216,7 @@ public class Hospital {
     public void loginPatient(String phone, String name) {
         String query = "SELECT * FROM patients WHERE phone = ? AND name = ?";
 
-        try (
-                PreparedStatement stmt = conn.prepareStatement(query)) {
+        try (PreparedStatement stmt = conn.prepareStatement(query)) {
 
             // Set parameters
             stmt.setString(1, phone);
@@ -239,6 +238,8 @@ public class Hospital {
                 // Return the populated Patient object
                 Patient loggedInPatient = new Patient(patientID, patientName, age, gender, address, phoneNumber);
                 Session.getInstance().setCurrentPatient(loggedInPatient);
+            }else {
+                Session.getInstance().setCurrentPatient(null); // No matching patient found 
             }
 
         } catch (SQLException e) {
