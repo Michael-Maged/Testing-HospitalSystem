@@ -19,6 +19,7 @@ public class Patient {
     private ArrayList<Appointment> appointments;
     private ArrayList<MedicalRecord> records;
     private ArrayList<Bill> bills;
+    public Connection conn = null;
 
     // Constructor
     public Patient(int patientID, String name, int age, String gender, String address, String phoneNumber) {
@@ -31,6 +32,11 @@ public class Patient {
         this.appointments = new ArrayList<>();
         this.bills = new ArrayList<>();
         this.records = new ArrayList<>();
+        try {
+            this.conn = DriverManager.getConnection("jdbc:sqlserver://localhost:1433;databaseName=HOSPITAL;encrypt=false", "testing", "mypass");
+        } catch (SQLException e) {
+            e.printStackTrace();
+        }
 
     }
 
@@ -71,6 +77,11 @@ public class Patient {
         return records;
     }
 
+    public Connection getConn() {
+        return conn;
+    }
+
+
     public ArrayList<Appointment> FetchUserAppointments() {
         appointments.clear();
 
@@ -78,9 +89,7 @@ public class Patient {
         String query = "SELECT appID, docID ,type, date, time FROM Appointments WHERE patientID = ?";
 
         // Connect to the database and execute the query
-        try (Connection conn = DriverManager.getConnection(
-                "jdbc:sqlserver://localhost:1433;databaseName=HOSPITAL;encrypt=false", "testing", "mypass");
-                PreparedStatement stmt = conn.prepareStatement(query)) {
+        try (PreparedStatement stmt = conn.prepareStatement(query)) {
 
             // Set the patient ID as the parameter for the query
             stmt.setInt(1, this.patientID);
@@ -114,9 +123,7 @@ public class Patient {
 
         String query = "SELECT * FROM MedicalRecords WHERE patientID = ?";
 
-        try (Connection conn = DriverManager.getConnection(
-                "jdbc:sqlserver://localhost:1433;databaseName=HOSPITAL;encrypt=false", "testing", "mypass");
-                PreparedStatement stmt = conn.prepareStatement(query)) {
+        try (PreparedStatement stmt = conn.prepareStatement(query)) {
 
             // Set the patientID parameter
             stmt.setInt(1, this.patientID);
@@ -161,6 +168,10 @@ public class Patient {
 
     public void setPhoneNumber(String phoneNumber) {
         this.phoneNumber = phoneNumber;
+    }
+
+    public void setConn(Connection conn) {
+        this.conn = conn;
     }
 
     public void addAppointment(Appointment appointment) {
