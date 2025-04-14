@@ -8,11 +8,27 @@ public class Admin {
     private static final String USER = "testing";
     private static final String PASSWORD = "mypass";
 
+    public Connection conn = null;
+    public Admin() {
+        try {
+            conn = DriverManager.getConnection(URL, USER, PASSWORD);
+        } catch (SQLException e) {
+            e.printStackTrace();
+        }
+    }
+
+    public Admin(Connection connection) {
+        try {
+            this.conn = connection;
+        } catch (Exception e) {
+            e.printStackTrace();
+        }
+    }
+
     public void addDoctor(int docID, String name, int age, String gender, String specialty) {
         String query = "INSERT INTO Doctors (docID, name, age, gender, specialty) VALUES (?, ?, ?, ?, ?)";
 
-        try (Connection conn = DriverManager.getConnection(URL, USER, PASSWORD);
-                PreparedStatement stmt = conn.prepareStatement(query)) {
+        try (PreparedStatement stmt = conn.prepareStatement(query)) {
 
             stmt.setInt(1, docID);
             stmt.setString(2, name);
@@ -36,7 +52,7 @@ public class Admin {
     public void deleteDoctor(int docID) {
         String query = "DELETE FROM Doctors WHERE docID = ?";
 
-        try (Connection conn = DriverManager.getConnection(URL, USER, PASSWORD);
+        try (
                 PreparedStatement stmt = conn.prepareStatement(query)) {
 
             stmt.setInt(1, docID);
@@ -57,7 +73,7 @@ public class Admin {
     public void addInventoryItem(int itemID, String name, int quantity) {
         String query = "INSERT INTO Inventory (itemID, name, quantity) VALUES (?, ?, ?)";
 
-        try (Connection conn = DriverManager.getConnection(URL, USER, PASSWORD);
+        try (
                 PreparedStatement stmt = conn.prepareStatement(query)) {
 
             stmt.setInt(1, itemID);
@@ -80,7 +96,7 @@ public class Admin {
     public void deleteInventoryItem(int itemID) {
         String query = "DELETE FROM Inventory WHERE itemID = ?";
 
-        try (Connection conn = DriverManager.getConnection(URL, USER, PASSWORD);
+        try (
                 PreparedStatement stmt = conn.prepareStatement(query)) {
 
             stmt.setInt(1, itemID);
@@ -100,7 +116,7 @@ public class Admin {
     // Add Medical Record
     public void addMedicalRecord(int recordID, int patientID, String diagnosis, String treatment, Date date) {
         String query = "INSERT INTO MedicalRecords (recordID , patientID, diagnosis, treatment, date) VALUES (?, ?, ?, ?, ?)";
-        try (Connection conn = DriverManager.getConnection(URL, USER, PASSWORD);
+        try (
                 PreparedStatement stmt = conn.prepareStatement(query)) {
             // Set parameters
             stmt.setInt(1, recordID);
@@ -125,7 +141,7 @@ public class Admin {
     public void deleteMedicalRecord(int recordID) {
         String query = "DELETE FROM MedicalRecords WHERE recordID = ?";
 
-        try (Connection conn = DriverManager.getConnection(URL, USER, PASSWORD);
+        try (
                 PreparedStatement stmt = conn.prepareStatement(query)) {
 
             stmt.setInt(1, recordID);
@@ -146,7 +162,7 @@ public class Admin {
     public void addBill(int patientID, double amount, Date billDate) {
         String query = "INSERT INTO Bills (patientID, amount, billDate) VALUES (?,?, ?)";
 
-        try (Connection conn = DriverManager.getConnection(URL, USER, PASSWORD);
+        try (
                 PreparedStatement stmt = conn.prepareStatement(query)) {
 
             stmt.setInt(1, patientID);
@@ -169,7 +185,7 @@ public class Admin {
     public void deleteBill(int billId) {
         String query = "DELETE FROM Bills WHERE billId = ?";
 
-        try (Connection conn = DriverManager.getConnection(URL, USER, PASSWORD);
+        try (
                 PreparedStatement stmt = conn.prepareStatement(query)) {
 
             stmt.setInt(1, billId);
