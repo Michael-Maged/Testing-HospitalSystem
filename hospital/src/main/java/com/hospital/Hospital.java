@@ -22,14 +22,30 @@ public class Hospital {
     List<InventoryItem> inventory = new ArrayList<>();
     List<Doctor> doctors = new ArrayList<>();
     List<Bill> bills = new ArrayList<>();
+    Connection conn;
+
+    public Hospital() {
+        try {
+            conn = DriverManager.getConnection(URL, USER, PASSWORD);
+        } catch (SQLException e) {
+            e.printStackTrace();
+        }
+    }
+
+    public Hospital(Connection connection) {
+        try {
+            this.conn = connection;
+        } catch (Exception e) {
+            e.printStackTrace();
+        }
+    }
 
     // --- Inventory ---
 
     public void fetchInventoryItems() {
         inventory.clear();
         String query = "SELECT * FROM Inventory";
-        try (Connection conn = DriverManager.getConnection(URL, USER, PASSWORD);
-                Statement stmt = conn.createStatement();
+        try (   Statement stmt = conn.createStatement();
                 ResultSet rs = stmt.executeQuery(query)) {
 
             while (rs.next()) {
@@ -49,7 +65,7 @@ public class Hospital {
         records.clear();
         String query = "SELECT * FROM MedicalRecords";
 
-        try (Connection conn = DriverManager.getConnection(URL, USER, PASSWORD);
+        try (
                 PreparedStatement stmt = conn.prepareStatement(query);
                 ResultSet rs = stmt.executeQuery()) {
 
@@ -72,7 +88,7 @@ public class Hospital {
     public void fetchDoctors() {
         doctors.clear();
         String query = "SELECT * FROM Doctors";
-        try (Connection conn = DriverManager.getConnection(URL, USER, PASSWORD);
+        try (
                 Statement stmt = conn.createStatement();
                 ResultSet rs = stmt.executeQuery(query)) {
 
@@ -94,7 +110,7 @@ public class Hospital {
     public void fetchPatients() {
         patients.clear();
         String query = "SELECT * FROM Patients";
-        try (Connection conn = DriverManager.getConnection(URL, USER, PASSWORD);
+        try (
                 Statement stmt = conn.createStatement();
                 ResultSet rs = stmt.executeQuery(query)) {
 
@@ -118,7 +134,7 @@ public class Hospital {
     public void fetchAppointments() {
         appointments.clear();
         String query = "SELECT * FROM Appointments";
-        try (Connection conn = DriverManager.getConnection(URL, USER, PASSWORD);
+        try (
                 Statement stmt = conn.createStatement();
                 ResultSet rs = stmt.executeQuery(query)) {
 
@@ -142,7 +158,7 @@ public class Hospital {
     public void fetchBills() {
         bills.clear();
         String query = "SELECT * FROM Bills";
-        try (Connection conn = DriverManager.getConnection(URL, USER, PASSWORD);
+        try (
                 Statement stmt = conn.createStatement();
                 ResultSet rs = stmt.executeQuery(query)) {
 
@@ -163,7 +179,7 @@ public class Hospital {
     public void registerPatient(String name, int age, String gender, String address, String phone) {
         int newId = this.getNextPatientId();
         String query = "INSERT INTO Patients (patientID, name, age, gender, address, phone) VALUES (?, ?, ?, ?, ?, ?)";
-        try (Connection conn = DriverManager.getConnection(URL, USER, PASSWORD);
+        try (
                 PreparedStatement stmt = conn.prepareStatement(query)) {
 
             // Set parameters
@@ -200,7 +216,7 @@ public class Hospital {
     public void loginPatient(String phone, String name) {
         String query = "SELECT * FROM patients WHERE phone = ? AND name = ?";
 
-        try (Connection conn = DriverManager.getConnection(URL, USER, PASSWORD);
+        try (
                 PreparedStatement stmt = conn.prepareStatement(query)) {
 
             // Set parameters
@@ -232,7 +248,7 @@ public class Hospital {
 
     public void scheduleAppointment(int appID, int patientID, String type, Date date, Time time, int docID) {
         String query = "INSERT INTO Appointments (appID , patientID, docID, type, date, time) VALUES (?, ?, ?, ?, ?, ?)";
-        try (Connection conn = DriverManager.getConnection(URL, USER, PASSWORD);
+        try (
                 PreparedStatement stmt = conn.prepareStatement(query)) {
             // Set parameters
             stmt.setInt(1, appID);
@@ -258,7 +274,7 @@ public class Hospital {
     public void cancelAppointment(int appID) {
         String query = "DELETE FROM Appointments WHERE appID = ?";
 
-        try (Connection conn = DriverManager.getConnection(URL, USER, PASSWORD);
+        try (
                 PreparedStatement stmt = conn.prepareStatement(query)) {
 
             stmt.setInt(1, appID);
@@ -286,7 +302,7 @@ public class Hospital {
         int newId = 0;
         String query = "SELECT MAX(patientID) + 1 AS next_id FROM Patients";
 
-        try (Connection conn = DriverManager.getConnection(URL, USER, PASSWORD);
+        try (
                 Statement stmt = conn.createStatement();
                 ResultSet rs = stmt.executeQuery(query)) {
 
@@ -309,7 +325,7 @@ public class Hospital {
         int newId = 0;
         String query = "SELECT MAX(docID) + 1 AS next_id FROM Doctors";
 
-        try (Connection conn = DriverManager.getConnection(URL, USER, PASSWORD);
+        try (
                 Statement stmt = conn.createStatement();
                 ResultSet rs = stmt.executeQuery(query)) {
 
@@ -331,7 +347,7 @@ public class Hospital {
         int newId = 0;
         String query = "SELECT MAX(itemID) + 1 AS next_id FROM Inventory";
 
-        try (Connection conn = DriverManager.getConnection(URL, USER, PASSWORD);
+        try (
                 Statement stmt = conn.createStatement();
                 ResultSet rs = stmt.executeQuery(query)) {
 
@@ -353,7 +369,7 @@ public class Hospital {
         int newId = 1; // Start from 1 by default
         String query = "SELECT MAX(appID) AS max_id FROM Appointments";
 
-        try (Connection conn = DriverManager.getConnection(URL, USER, PASSWORD);
+        try (
                 PreparedStatement pstmt = conn.prepareStatement(query);
                 ResultSet rs = pstmt.executeQuery()) {
 
@@ -375,7 +391,7 @@ public class Hospital {
         int newId = 0;
         String query = "SELECT MAX(recordID) + 1 AS next_id FROM MedicalRecords";
 
-        try (Connection conn = DriverManager.getConnection(URL, USER, PASSWORD);
+        try (
                 Statement stmt = conn.createStatement();
                 ResultSet rs = stmt.executeQuery(query)) {
 
@@ -397,7 +413,7 @@ public class Hospital {
         int newId = 0;
         String query = "SELECT MAX(billId) + 1 AS next_id FROM Bills";
 
-        try (Connection conn = DriverManager.getConnection(URL, USER, PASSWORD);
+        try (
                 Statement stmt = conn.createStatement();
                 ResultSet rs = stmt.executeQuery(query)) {
 
@@ -483,5 +499,10 @@ public class Hospital {
         }
         return null; // Return null if no doctor with the given ID is found
     }
+
+    public void setConnection(Connection connection) {
+        this.conn = connection;
+    }
+    
 
 }

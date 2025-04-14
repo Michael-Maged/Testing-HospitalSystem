@@ -1,42 +1,44 @@
 package Models;
 
-import org.junit.jupiter.api.BeforeEach;
-import org.junit.jupiter.api.AfterEach;
-import org.junit.jupiter.api.Test;
+import org.junit.jupiter.api.*;
 import org.mockito.Mock;
 import org.mockito.MockitoAnnotations;
 
-import com.hospital.Appointment;
-import com.hospital.MedicalRecord;
-import com.hospital.Patient;
-import com.hospital.Hospital;
-import com.hospital.Session;
+import com.hospital.*;
+import java.sql.*;
+import java.util.List;
 
-import java.sql.Date;
-import java.sql.Time;
-import java.util.*;
-
-import static org.mockito.Mockito.*;
 import static org.junit.jupiter.api.Assertions.*;
+import static org.mockito.ArgumentMatchers.anyString;
+import static org.mockito.Mockito.*;
 
 public class HospitalTest {
 
     @Mock
-    private Hospital hospital;
+    private Connection mockConnection;
 
-    private AutoCloseable mocks; // for closing mocks after each test
+    @Mock
+    private PreparedStatement mockPreparedStatement;
+
+    @Mock
+    private ResultSet mockResultSet;
+
+    private AutoCloseable mocks; // For closing mocks after each test
+    private Hospital hospital;
 
     @BeforeEach
     public void setUp() {
-        // Initialize mocks
+        // Initialize mocks and the Hospital instance
+        mockConnection = mock(Connection.class);
         mocks = MockitoAnnotations.openMocks(this);
+        hospital = new Hospital();
+
+        // Reset mocks to ensure a clean state before each test
+        reset(mockConnection, mockPreparedStatement, mockResultSet);
     }
 
     @AfterEach
     public void tearDown() throws Exception {
-        // Clear session between tests
-        Session.getInstance().setCurrentPatient(null);
-
         // Close mocks to avoid memory leaks
         if (mocks != null) {
             mocks.close();
@@ -44,87 +46,76 @@ public class HospitalTest {
     }
 
     @Test
-    public void testRegisterAndLoginPatient() {
-        // Create a mock patient and patient list
-        Patient patient = new Patient(1, "Alice", 22, "Female", "Cairo", "0111222333");
-        List<Patient> mockPatients = new ArrayList<>();
-        mockPatients.add(patient);
+    public void testFetchDoctors() throws Exception {
+        // Mock database behavior
+        when(mockConnection.createStatement()).thenReturn(mock(Statement.class));
+        when(mockConnection.createStatement().executeQuery("SELECT * FROM Doctors")).thenReturn(mockResultSet);
 
-        // Mock register and fetch
-        doNothing().when(hospital).registerPatient(anyString(), anyInt(), anyString(), anyString(), anyString());
-        when(hospital.getPatients()).thenReturn(mockPatients);
+        when(mockResultSet.next()).thenReturn(true).thenReturn(false); // Simulate one doctor
+        when(mockResultSet.getInt("docID")).thenReturn(1);
+        when(mockResultSet.getString("name")).thenReturn("Dr. John");
+        when(mockResultSet.getInt("age")).thenReturn(45);
+        when(mockResultSet.getString("gender")).thenReturn("Male");
+        when(mockResultSet.getString("specialty")).thenReturn("Cardiology");
 
-        // Simulate method calls
-        hospital.registerPatient("Alice", 22, "Female", "Cairo", "0111222333");
-        List<Patient> patients = hospital.getPatients();
-
-        // Verify the list
-        assertEquals(1, patients.size());
-        assertEquals("Alice", patients.get(0).getName());
-
-        // Mock loginPatient (does nothing)
-        doNothing().when(hospital).loginPatient(anyString(), anyString());
-
-        // Call login
-        hospital.loginPatient("0111222333", "Alice");
-
-        // Since the real login logic is mocked, manually set the session
-        Session.getInstance().setCurrentPatient(patient);
-
-        // Verify session
-        assertNotNull(Session.getInstance().getCurrentPatient());
-        assertEquals("Alice", Session.getInstance().getCurrentPatient().getName());
-    }
-
-    @Test
-    public void testScheduleAppointment() {
-        // Mock appointment list
-        Appointment appointment = new Appointment(1, 1, "Checkup", Date.valueOf("2025-04-09"), Time.valueOf("12:30:00"), 1);
-        List<Appointment> mockAppointments = Collections.singletonList(appointment);
-
-        // Mock methods
-        doNothing().when(hospital).scheduleAppointment(anyInt(), anyInt(), anyString(), any(), any(), anyInt());
-        when(hospital.getAppointments()).thenReturn(mockAppointments);
-
-        // Simulate method calls
-        hospital.scheduleAppointment(1, 1, "Checkup", Date.valueOf("2025-04-09"), Time.valueOf("12:30:00"), 1);
-        List<Appointment> appointments = hospital.getAppointments();
-
-        // Verify
-        assertEquals(1, appointments.size());
-        assertEquals("Checkup", appointments.get(0).getType());
-    }
-
-
-    @Test
-    public void testFetchDoctorsInventory() {
-        // Mock lists
-        List<String> mockDoctors = Collections.singletonList("Dr. Smith");
-        List<String> mockInventory = Collections.singletonList("Bandages");
-
-        // Simulate
+        hospital = new Hospital(mockConnection);
+        // Call the method
         hospital.fetchDoctors();
-        hospital.fetchInventoryItems();
 
-        // Verify
-        assertNotNull(hospital.getDoctors());
-        assertNotNull(hospital.getInventory());
+        // Verify the results
+        List<Doctor> doctors = hospital.getDoctors();
+        assertEquals(1, doctors.size());
+        assertEquals("Dr. John", doctors.get(0).getName());
+        assertEquals(45, doctors.get(0).getAge());
+        assertEquals("Male", doctors.get(0).getGender());
+        assertEquals("Cardiology", doctors.get(0).getSpecialty());
     }
 
     @Test
-    public void testFindByIdGeneric() {
-        // Create patient
-        Patient patient = new Patient(101, "Test", 23, "Female", "Somewhere", "010999999");
-        List<Patient> testList = Collections.singletonList(patient);
+    public void testFetchPatients() throws Exception {
+        // Mock database behavior
+        Statement mockStatement = mock(Statement.class);
+        when(mockConnection.createStatement()).thenReturn(mockStatement);
+        when(mockStatement.executeQuery("SELECT * FROM Patients")).thenReturn(mockResultSet);
 
-        // Mock findById
-        when(hospital.findById(testList, 101)).thenReturn(patient);
+        when(mockResultSet.next()).thenReturn(true).thenReturn(false); // Simulate one patient
+        when(mockResultSet.getInt("patientID")).thenReturn(1);
+        when(mockResultSet.getString("name")).thenReturn("John Doe");
+        when(mockResultSet.getInt("age")).thenReturn(30);
+        when(mockResultSet.getString("gender")).thenReturn("Male");
+        when(mockResultSet.getString("address")).thenReturn("123 Street");
+        when(mockResultSet.getString("phone")).thenReturn("555-1234");
 
-        // Call
-        Patient result = hospital.findById(testList, 101);
+        hospital = new Hospital(mockConnection);
+        // Call the method
+        hospital.fetchPatients();
 
-        // Verify
-        assertNotNull(result);
-        assertEquals("Test", result.getName());
+        // Verify the results
+        List<Patient> patients = hospital.getPatients();
+        assertEquals(1, patients.size());
+        assertEquals("John Doe", patients.get(0).getName());
+        assertEquals(30, patients.get(0).getAge());
+        assertEquals("Male", patients.get(0).getGender());
+        assertEquals("123 Street", patients.get(0).getAddress());
+        assertEquals("555-1234", patients.get(0).getPhoneNumber());
     }
+
+    @Test
+    public void testGetNextPatientId() throws Exception {
+        hospital = new Hospital(mockConnection);
+        // Mock database behavior
+        when(mockConnection.createStatement()).thenReturn(mock(Statement.class));
+        when(mockConnection.createStatement().executeQuery("SELECT MAX(patientID) + 1 AS next_id FROM Patients"))
+                .thenReturn(mockResultSet);
+
+        when(mockResultSet.next()).thenReturn(true);
+        when(mockResultSet.getInt("next_id")).thenReturn(5);
+
+        // Call the method
+        int nextId = hospital.getNextPatientId();
+
+        // Verify the result
+        assertEquals(5, nextId);
+    }
+
 }
