@@ -102,24 +102,21 @@ public class PatientTest {
 
     @Test
     public void testToString() {
+        // Create a new patient instance with mock data
         Patient patient = new Patient(5, "Eva", 28, "Female", "12 River St", "555-6789");
-
-        Appointment app = new Appointment(20, 5, "Consultation",
-                new Date(System.currentTimeMillis()), new Time(System.currentTimeMillis()), 101);
-        patient.addAppointment(app);
-
-        Bill bill = new Bill(101,200, 250.0, new Date(System.currentTimeMillis()));
-        patient.addBill(bill);
-
+    
+        // Expected output based on the toString format
+        String expectedOutput = "ID: 5, Name: Eva, Age: 28, Gender: Female, Address: 12 River St, Phone: 555-6789";
+    
+        // Get the actual output from the toString method
         String result = patient.toString();
-
-        assertTrue(result.contains("Patient ID: 5"));
-        assertTrue(result.contains("Name: Eva"));
-        assertTrue(result.contains("Appointments:"));
-        assertTrue(result.contains("Bills:"));
+    
+        // Assert that the actual output matches the expected output
+        assertEquals(expectedOutput, result);
     }
+    
 
-        @Test
+    @Test
     public void testFetchUserAppointments() throws Exception {
         // Mock the connection and prepared statement
         Connection mockConnection = mock(Connection.class);

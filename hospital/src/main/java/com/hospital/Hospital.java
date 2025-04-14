@@ -295,7 +295,7 @@ public class Hospital {
 
     public void showPatients() {
         for (Patient p : patients) {
-            p.toString();
+            System.out.println(p.toString());
         }
     }
 

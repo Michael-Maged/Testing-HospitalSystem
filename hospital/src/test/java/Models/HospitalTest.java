@@ -5,12 +5,16 @@ import org.mockito.Mock;
 import org.mockito.MockitoAnnotations;
 
 import com.hospital.*;
+
+import java.io.ByteArrayOutputStream;
+import java.io.PrintStream;
 import java.sql.*;
 import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.List;
 
 import static org.junit.jupiter.api.Assertions.*;
+import static org.mockito.ArgumentMatchers.anyString;
 import static org.mockito.Mockito.*;
 
 public class HospitalTest {
@@ -714,4 +718,89 @@ public class HospitalTest {
         assertEquals(200.0, bills.get(1).getAmount(), 0.01);
     }
 
+    @Test
+    public void testFindPatientById() {
+        // Add mock patients
+        Patient patient1 = new Patient(1, "Alice", 25, "Female", "123 Main St", "555-1234");
+        Patient patient2 = new Patient(2, "Bob", 30, "Male", "456 Elm St", "555-5678");
+        hospital.getPatients().add(patient1);
+        hospital.getPatients().add(patient2);
+
+        // Test finding an existing patient
+        Patient foundPatient = hospital.findPatientById(1);
+        assertNotNull(foundPatient);
+        assertEquals("Alice", foundPatient.getName());
+
+        // Test finding a non-existing patient
+        assertNull(hospital.findPatientById(3));
+    }
+
+    @Test
+    public void testFindDoctorById() {
+        // Add mock doctors
+        Doctor doctor1 = new Doctor(101, "Dr. Smith", 45, "Male", "Cardiology");
+        Doctor doctor2 = new Doctor(102, "Dr. Johnson", 50, "Female", "Neurology");
+        hospital.getDoctors().add(doctor1);
+        hospital.getDoctors().add(doctor2);
+
+        // Test finding an existing doctor
+        Doctor foundDoctor = hospital.findDoctorById(101);
+        assertNotNull(foundDoctor);
+        assertEquals("Dr. Smith", foundDoctor.getName());
+
+        // Test finding a non-existing doctor
+        assertNull(hospital.findDoctorById(103));
+    }
+
+    @Test
+    public void testFindDoctorByName() {
+        // Add mock doctors
+        Doctor doctor1 = new Doctor(101, "Dr. Smith", 45, "Male", "Cardiology");
+        Doctor doctor2 = new Doctor(102, "Dr. Johnson", 50, "Female", "Neurology");
+        hospital.getDoctors().add(doctor1);
+        hospital.getDoctors().add(doctor2);
+
+        // Test finding an existing doctor by name
+        Doctor foundDoctor = hospital.findDoctorByName("Dr. Johnson");
+        assertNotNull(foundDoctor);
+        assertEquals(102, foundDoctor.getDoctorID());
+
+        // Test finding a non-existing doctor by name
+        assertNull(hospital.findDoctorByName("Dr. Brown"));
+    }
+
+    @Test
+    public void testShowPatients() {
+        // Mock data: Create some sample patients
+        Patient patient1 = new Patient(1, "John Doe", 30, "Male", "123 Street", "555-1234");
+        Patient patient2 = new Patient(2, "Jane Doe", 25, "Female", "456 Avenue", "555-5678");
+    
+        // Add patients to the hospital's patient list
+        hospital.getPatients().add(patient1);
+        hospital.getPatients().add(patient2);
+    
+        // Capture the output of the showPatients method
+        ByteArrayOutputStream outContent = new ByteArrayOutputStream();
+        PrintStream originalOut = System.out;
+        System.setOut(new PrintStream(outContent));
+    
+        // Call the method
+        hospital.showPatients();
+    
+        // Reset System.out
+        System.setOut(originalOut);
+    
+        // Normalize line endings and trim
+        String expectedOutput = "ID: 1, Name: John Doe, Age: 30, Gender: Male, Address: 123 Street, Phone: 555-1234\n" +
+                                "ID: 2, Name: Jane Doe, Age: 25, Gender: Female, Address: 456 Avenue, Phone: 555-5678";
+        String actualOutput = outContent.toString().replace("\r\n", "\n").trim();
+    
+        // Debug output if needed
+        // System.out.println("Expected: [" + expectedOutput + "]");
+        // System.out.println("Actual:   [" + actualOutput + "]");
+    
+        // Verify the output
+        assertEquals(expectedOutput, actualOutput);
+    }
+    
 }
