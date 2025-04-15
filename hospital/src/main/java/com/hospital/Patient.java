@@ -188,25 +188,10 @@ public class Patient {
 
     @Override
     public String toString() {
-        StringBuilder sb = new StringBuilder();
-
-        sb.append("Patient ID: ").append(patientID).append("\n");
-        sb.append("Name: ").append(name).append("\n");
-        sb.append("Age: ").append(age).append("\n");
-        sb.append("Gender: ").append(gender).append("\n");
-        sb.append("Address: ").append(address).append("\n");
-        sb.append("Phone Number: ").append(phoneNumber).append("\n");
-
-        sb.append("\nAppointments:\n");
-        for (Appointment a : appointments) {
-            sb.append(a.toString()).append("\n");
-        }
-
-        sb.append("\nBills:\n");
-        for (Bill b : bills) {
-            sb.append(b.toString()).append("\n");
-        }
-
-        return sb.toString();
+        return String.format(
+            "ID: %d, Name: %s, Age: %d, Gender: %s, Address: %s, Phone: %s",
+            this.patientID, this.name, this.age, this.gender, this.address, this.phoneNumber
+        );
     }
+
 }

@@ -43,7 +43,6 @@ public class PatientRegistrationController {
             return "patient-registration";
         }
 
-        // TODO: handle registration of duplicate phone number
         // Check for duplicate phone number
         if (hospital.phoneExists(phoneNumber)) {
             model.addAttribute("error", "Phone number is already registered.");
