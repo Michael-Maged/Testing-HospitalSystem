@@ -50,11 +50,7 @@ public class PatientLoginControllerTest {
         String name = "Test User";
         String phone = "1234567890";
 
-        doAnswer(ignored -> {
-            Session.getInstance().setCurrentPatient(mockPatient);
-            return null;
-        }).when(mockHospital).loginPatient(phone, name);
-
+    
         String view = controller.handleLogin(name, phone, mockModel);
         assertEquals("redirect:/dashboard", view);
     }
@@ -65,12 +61,7 @@ public class PatientLoginControllerTest {
 
         String name = "Wrong";
         String phone = "000";
-
-        doAnswer(ignored -> {
-            Session.getInstance().setCurrentPatient(null);
-            return null;
-        }).when(mockHospital).loginPatient(phone, name);
-
+        
         String view = controller.handleLogin(name, phone, mockModel);
 
         assertEquals("patient-login", view);
