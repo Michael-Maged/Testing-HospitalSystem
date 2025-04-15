@@ -22,7 +22,7 @@ public class Patient {
     public Connection conn = null;
 
     // Constructor
-    public Patient(int patientID, String name, int age, String gender, String address, String phoneNumber2) {
+    public Patient(int patientID, String name, int age, String gender, String address, String phoneNumber) {
         this.patientID = patientID;
         this.name = name;
         this.age = age;
