@@ -99,8 +99,82 @@ class AdminControllerTest {
         assertEquals("redirect:/admin", result);
     }
 
+   
     @Test
-    void testAddInventory_ValidInput() {
-when(hospital.getNextInventoryId());
-    }
+void testAddInventory_ValidInput() {
+    when(hospital.getNextInventoryId()).thenReturn(1);
+    String result = controller.addInventory("Bandage", 10, model);
+    assertEquals("redirect:/admin", result);
+}
+
+@Test
+void testDeleteInventory_RemovesItem() {
+    InventoryItem item = new InventoryItem(1, "Bandage", 5);
+    List<InventoryItem> inventory = new ArrayList<>(Collections.singletonList(item));
+    when(hospital.getInventory()).thenReturn(inventory);
+    when(hospital.findById(inventory, 1)).thenReturn(item);
+
+    String result = controller.deleteInventory(1);
+    assertEquals("redirect:/admin", result);
+}
+
+@Test
+void testAddMedicalRecord_InvalidPatientId() {
+    when(hospital.findPatientById(999)).thenReturn(null);
+    String result = controller.addMedicalRecord(999, "Flu", "Rest", new java.sql.Date(System.currentTimeMillis()), model);
+    assertEquals("redirect:/admin", result);
+}
+
+@Test
+void testAddMedicalRecord_ValidInput() {
+    Patient patient = new Patient(1, "John", 25, "Male", "12345", "67890");
+    when(hospital.getNextRecordId()).thenReturn(1);
+    when(hospital.getRecords()).thenReturn(new ArrayList<>());
+    when(hospital.findById(hospital.getRecords(), 1)).thenReturn(null);
+    when(hospital.findPatientById(1)).thenReturn(patient);
+    when(hospital.getNextRecordId()).thenReturn(1);
+
+    String result = controller.addMedicalRecord(1, "Cold", "Medication", new java.sql.Date(System.currentTimeMillis()), model);
+    assertEquals("redirect:/admin", result);
+}
+
+@Test
+void testDeleteRecord_RemovesRecord() {
+    MedicalRecord record = new MedicalRecord(1, 1, "Flu", "Rest", new java.sql.Date(System.currentTimeMillis()));
+    List<MedicalRecord> records = new ArrayList<>(Collections.singletonList(record));
+    when(hospital.getRecords()).thenReturn(records);
+    when(hospital.findById(records, 1)).thenReturn(record);
+
+    String result = controller.deleteRecord(1);
+    assertEquals("redirect:/admin", result);
+}
+
+@Test
+void testAddBill_InvalidAmount() {
+    String result = controller.addBill(1, -100.0, new java.sql.Date(System.currentTimeMillis()), model);
+    assertEquals("redirect:/admin", result);
+}
+
+@Test
+void testAddBill_InvalidPatientId() {
+    when(hospital.findPatientById(999)).thenReturn(null);
+    String result = controller.addBill(999, 100.0, new java.sql.Date(System.currentTimeMillis()), model);
+    assertEquals("redirect:/admin", result);
+}
+
+@Test
+void testAddBill_ValidInput() {
+    Patient patient = new Patient(1, "Jane", 30, "Female", "98765", null);
+    when(hospital.findPatientById(1)).thenReturn(patient);
+
+    String result = controller.addBill(1, 200.0, new java.sql.Date(System.currentTimeMillis()), model);
+    assertEquals("redirect:/admin", result);
+}
+
+@Test
+void testDeleteBill_DeletesSuccessfully() {
+    String result = controller.deleteBill(1);
+    assertEquals("redirect:/admin", result);
+}
+
 }

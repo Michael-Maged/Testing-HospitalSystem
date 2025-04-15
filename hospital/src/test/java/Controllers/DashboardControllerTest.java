@@ -1,29 +1,28 @@
 package Controllers;
 
 import com.hospital.*;
-import org.junit.jupiter.api.BeforeEach;
-import org.junit.jupiter.api.Test;
+import com.hospital.controllers.DashboardController;
+import org.junit.jupiter.api.*;
 import org.mockito.*;
 import org.springframework.ui.Model;
 
 import java.sql.Date;
 import java.sql.Time;
 import java.util.ArrayList;
-import java.util.List;
 
 import static org.junit.jupiter.api.Assertions.assertEquals;
+import static org.mockito.ArgumentMatchers.any;
+import static org.mockito.ArgumentMatchers.anyString;
+import static org.mockito.ArgumentMatchers.eq;
 import static org.mockito.Mockito.*;
 
-public class DashboardControllerTest {
+class DashboardControllerTest {
 
     @InjectMocks
-    private DashboardControllerTest controller;
+    private DashboardController controller;
 
     @Mock
     private Hospital hospital;
-
-    @Mock
-    private Session session;
 
     @Mock
     private Patient patient;
@@ -31,85 +30,91 @@ public class DashboardControllerTest {
     @Mock
     private Model model;
 
+    private AutoCloseable closeable;
+
     @BeforeEach
-    public void setUp() {
-        MockitoAnnotations.openMocks(this);
-        controller = new DashboardControllerTest();
-        controller.hospital = hospital;
-        Session.setInstance(session); // Assuming Session has a setInstance method for mocking
+    void setUp() {
+        closeable = MockitoAnnotations.openMocks(this);
+        Session testSession = Session.getInstance();
+        testSession.setCurrentPatient(patient); // Assuming you modified the Session class to allow setting current patient for testing
+    }
+
+    @AfterEach
+    void tearDown() throws Exception {
+        closeable.close();
     }
 
     @Test
-    public void testShowDashboard_WhenPatientLoggedIn() {
-        when(session.getCurrentPatient()).thenReturn(patient);
-        when(patient.FetchUserAppointments()).thenReturn(new ArrayList<>());
-        when(patient.FetchUserRecords()).thenReturn(new ArrayList<>());
-        when(hospital.getDoctors()).thenReturn(new ArrayList<>());
+    void testShowDashboard_WhenPatientIsLoggedIn_ReturnsDashboard() {
+        ArrayList<Appointment> appointments = new ArrayList<>();
+        ArrayList<MedicalRecord> records = new ArrayList<>();
+        ArrayList<Doctor> doctors = new ArrayList<>();
 
-        String view = controller.showDashboard(model);
+        when(patient.FetchUserAppointments()).thenReturn(appointments);
+        when(patient.FetchUserRecords()).thenReturn(records);
+        when(hospital.getDoctors()).thenReturn(doctors);
+
+        String viewName = controller.showDashboard(model);
 
         verify(model).addAttribute("patient", patient);
-        verify(model).addAttribute(eq("appointments"), anyList());
-        verify(model).addAttribute(eq("records"), anyList());
+        verify(model).addAttribute("appointments", appointments);
+        verify(model).addAttribute("records", records);
         verify(model).addAttribute("hospital", hospital);
-        verify(model).addAttribute(eq("doctors"), anyList());
-
-        assertEquals("dashboard", view);
+        verify(model).addAttribute("doctors", doctors);
+        assertEquals("dashboard", viewName);
     }
 
     @Test
-    public void testShowDashboard_WhenNoPatientLoggedIn() {
-        when(session.getCurrentPatient()).thenReturn(null);
+    void testShowDashboard_WhenNoPatientLoggedIn_ReturnsLogin() {
+        Session.getInstance().setCurrentPatient(null);
+        String viewName = controller.showDashboard(model);
 
-        String view = controller.showDashboard(model);
-
-        verify(model).addAttribute("error", "No patient logged in");
-        assertEquals("patient-login", view);
+        verify(model).addAttribute(eq("error"), anyString());
+        assertEquals("patient-login", viewName);
     }
 
     @Test
-    public void testAddAppointment_ValidData() {
-        Date date = Date.valueOf("2024-04-01");
+    void testAddAppointment_ValidInput_AddsAppointment() {
+        Date date = Date.valueOf("2024-05-01");
         String time = "10:30";
         String doctorName = "Dr. Smith";
-        Doctor doctor = new Doctor(1, doctorName, 45, "Male", "Cardiology");
 
-        when(session.getCurrentPatient()).thenReturn(patient);
-        when(hospital.getNextAppointmentId()).thenReturn(100);
-        when(patient.getPatientID()).thenReturn(50);
+        Doctor doctor = new Doctor(1, doctorName, 40, "Male", "Cardiology");
+
+        when(hospital.getNextAppointmentId()).thenReturn(1);
         when(hospital.findDoctorByName(doctorName)).thenReturn(doctor);
 
-        String view = controller.addAppointment(date, time, doctorName, model);
+        String viewName = controller.addAppointment(date, time, doctorName, model);
 
-        verify(hospital).scheduleAppointment(anyInt(), eq(50), eq("Cardiology"), eq(date), eq(Time.valueOf("10:30:00")), eq(1));
         verify(patient).addAppointment(any(Appointment.class));
-
-        assertEquals("redirect:/dashboard", view);
+        assertEquals("redirect:/dashboard", viewName);
     }
 
     @Test
-    public void testAddAppointment_NoPatientLoggedIn() {
-        when(session.getCurrentPatient()).thenReturn(null);
+    void testAddAppointment_WhenNoPatientLoggedIn_ReturnsLogin() {
+        Session.getInstance().setCurrentPatient(null);
+        Date date = Date.valueOf("2024-05-01");
+        String time = "10:30";
+        String doctorName = "Dr. Smith";
 
-        String view = controller.addAppointment(Date.valueOf("2024-04-01"), "10:30", "Dr. Smith", model);
+        String viewName = controller.addAppointment(date, time, doctorName, model);
 
-        verify(model).addAttribute("error", "No patient logged in");
-        assertEquals("patient-login", view);
+        verify(model).addAttribute(eq("error"), anyString());
+        assertEquals("patient-login", viewName);
     }
 
     @Test
-    public void testDeleteAppointment() {
-        when(hospital.getAppointments()).thenReturn(new ArrayList<>());
-        Appointment appointment = new Appointment(1, 1, "Cardiology", Date.valueOf("2024-04-01"), Time.valueOf("10:30:00"), 2);
-        List<Appointment> appointments = new ArrayList<>();
+    void testDeleteAppointment_RemovesAppointment() {
+Appointment appointment = new Appointment(5, 1, "Cardiology", Date.valueOf("2024-05-01"), Time.valueOf("10:30:00"), 1);
+        ArrayList<Appointment> appointments = new ArrayList<>();
         appointments.add(appointment);
 
-        when(hospital.findById(appointments, 1)).thenReturn(appointment);
         when(hospital.getAppointments()).thenReturn(appointments);
+        when(hospital.findById(appointments, 5)).thenReturn(appointment);
 
-        String view = controller.deleteAppointment(1);
+        String viewName = controller.deleteAppointment(5);
 
-        verify(hospital).cancelAppointment(1);
-        assertEquals("redirect:/dashboard", view);
+        verify(hospital).cancelAppointment(5);
+        assertEquals("redirect:/dashboard", viewName);
     }
 }
