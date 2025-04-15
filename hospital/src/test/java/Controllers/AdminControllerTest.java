@@ -7,7 +7,6 @@ import org.mockito.*;
 import org.springframework.ui.Model;
 import org.springframework.web.servlet.mvc.support.RedirectAttributes;
 
-import java.sql.Date;
 import java.util.*;
 
 import static org.junit.jupiter.api.Assertions.*;
