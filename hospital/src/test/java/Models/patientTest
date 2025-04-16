@@ -1,0 +1,190 @@
+package Models;
+import org.junit.jupiter.api.BeforeEach;
+import org.junit.jupiter.api.Test;
+import static org.junit.jupiter.api.Assertions.*;
+import org.junit.runner.RunWith;
+import org.mockito.Mock;
+import org.powermock.modules.junit4.PowerMockRunner;
+import org.powermock.api.mockito.PowerMockito;
+import java.sql.Connection;
+import java.sql.SQLException;
+import java.sql.*;
+import java.util.ArrayList;
+
+/*import static org.mockito.Mockito.*;
+
+import org.junit.jupiter.api.extension.ExtendWith;
+
+import org.mockito.junit.jupiter.MockitoExtension;*/
+
+
+@RunWith(PowerMockRunner.class)
+@PrepareForTest(DriverManager.class)
+class patientTest{
+    Patient patient;
+
+    @Mock private Connection mockConn;
+    @Mock private PreparedStatement mockStatement;
+    @Mock private ResultSet mockResultSet;
+
+    //declared f el class level 3shan a reuse f kolo
+    @BeforeEach
+    void setup()
+    {
+        patient = new Patient(1,"Noha Elsayed",20,"Female","Golf ,villa 1133","123-456");
+        patient.setConn(mockConn);
+    }
+
+    @Test
+    void TestConstructorInitialization()
+    {
+        assertEquals(1,patient.getPatientID());
+        assertEquals("Noha Elsayed",patient.getName());
+        assertEquals(20,patient.getAge());
+        assertEquals("Female",patient.getGender());
+        assertEquals("Golf ,Villa 1133",patient.getAddress());
+        assertEquals("123-456",patient.getPhoneNumber());
+        assertNotNull(patient.getAppointments()); //app list is empty but not null??
+        assertNotNull(patient.getMedicalRecords());
+        assertNotNull(patient.getBills());
+        assertNotNull(patient.getConn()); // check hwar db 
+    }
+
+    @Test
+    void testConstructorHandlesSQLException() throws Exception 
+    {
+        // Mock the static method of DriverManager.getConnection to throw SQLException
+        PowerMockito.mockStatic(DriverManager.class);
+        when(DriverManager.getConnection(anyString(), anyString(), anyString()))
+            .thenThrow(new SQLException("Database connection error"));
+
+        // Now test the constructor
+        Patient patient = new Patient(1, "Farah Fady", 20, "Female", "123 Street", "555-1234");
+
+        // Assert that the connection is null because of the exception
+        assertNull(patient.getConn());
+    }
+
+    @Test  //missing test el patientID
+    void TestSettersGetters()
+    {   
+        patient.setName("Carol Moheb");
+        patient.setAge(21);
+        patient.setGender("Female");
+        patient.setAddress("Heliopolis,Villa 24");
+        patient.setPhoneNumber("500-321");
+
+        assertEquals("Carol Moheb", patient.getName());
+        assertEquals(21, patient.getAge());
+        assertEquals("Female", patient.getGender());
+        assertEquals("Heliopolis,Villa 24", patient.getAddress());
+        assertEquals("500-321", patient.getPhoneNumber());
+    }
+
+    @Test 
+    void TestAddandGetAppt()
+    {
+        Appointment app = new Appointment(1, 1, "Checkup", new Date(0), new Time(0), 1);
+        patient.addAppointment(app);
+        assertTrue(patient.getAppointments().contains(app));
+
+    }
+
+    @Test 
+    void TestAddandGetBills()
+    {
+        Bill bill = new Bill(1, 1, 100.0, new Date(0));
+        patient.addBill(bill);
+        assertTrue(patient.getBills().contains(bill));
+
+    }
+
+    @Test 
+    void TestAddandGetRecords()
+    {
+        MedicalRecord record = new MedicalRecord(1, 1, "Flu", "Rest", new Date(0));
+        patient.addrecord(record);
+        assertTrue(patient.getMedicalRecords().contains(record));
+
+    }
+
+    // Tests the setConn() method by setting the connection to null and back again,
+    // ensuring the Patient object's connection can be updated dynamically
+    @Test
+    void testSetandGetConnection() {
+        Connection originalConn = patient.getConn();
+        patient.setConn(null);
+        // Verify that the connection is set to null
+        assertNull(patient.getConn());
+        
+        // Reset the connection to the original
+        patient.setConn(originalConn);
+        assertNotNull(patient.getConn());
+    }
+
+    @Test
+    void TestToString()
+    {
+    String expected = "ID: 1, Name: Noha Elsayed, Age: 20, Gender: Female, Address: Golf ,villa 1133, Phone: 123-456";
+    assertEquals(expected, patient.toString());
+    }
+
+    @Test
+    void testFetchUserAppointments_successfulFetch() throws SQLException {
+        when(mockConn.prepareStatement(anyString())).thenReturn(mockStatement);
+        when(mockStatement.executeQuery()).thenReturn(mockResultSet);
+        when(mockResultSet.next()).thenReturn(true).thenReturn(false); // One result
+        when(mockResultSet.getInt("appID")).thenReturn(1);
+        when(mockResultSet.getInt("docID")).thenReturn(101);
+        when(mockResultSet.getString("type")).thenReturn("Checkup");
+        when(mockResultSet.getDate("date")).thenReturn(Date.valueOf("2023-04-15"));
+        when(mockResultSet.getTime("time")).thenReturn(Time.valueOf("10:30:00"));
+
+        ArrayList<Appointment> appointments = patient.FetchUserAppointments();
+
+        assertEquals(1, appointments.size());
+        assertEquals("Checkup", appointments.get(0).getType());
+    }
+
+    @Test
+    void testFetchUserAppointments_handlesSQLException() throws SQLException {
+        when(mockConn.prepareStatement(anyString())).thenThrow(new SQLException("DB error"));
+
+        ArrayList<Appointment> appointments = patient.FetchUserAppointments();
+
+        assertTrue(appointments.isEmpty());
+    }
+
+ 
+    @Test
+    void testFetchUserRecords_successfulFetch() throws SQLException {
+        when(mockConn.prepareStatement(anyString())).thenReturn(mockStatement);
+        when(mockStatement.executeQuery()).thenReturn(mockResultSet);
+        when(mockResultSet.next()).thenReturn(true).thenReturn(false); // One result
+        when(mockResultSet.getInt("recordID")).thenReturn(1);
+        when(mockResultSet.getString("diagnosis")).thenReturn("Flu");
+        when(mockResultSet.getDate("date")).thenReturn(Date.valueOf("2023-04-15"));
+
+        ArrayList<MedicalRecord> records = patient.FetchUserRecords();
+
+        assertEquals(1, records.size());
+        assertEquals("Flu", records.get(0).getDiagnosis());
+    }
+
+    @Test
+    void testFetchUserRecords_handlesSQLException() throws SQLException {
+        when(mockConn.prepareStatement(anyString())).thenThrow(new SQLException("DB error"));
+
+        ArrayList<MedicalRecord> records = patient.FetchUserRecords();
+
+        assertTrue(records.isEmpty());
+    }
+
+   
+}
+
+
+
+   
+
+
