@@ -1,73 +1,58 @@
 package Models;
-import org.junit.jupiter.api.BeforeEach;
-import org.junit.jupiter.api.Test;
+import com.hospital.*;
+import org.junit.jupiter.api.*;
 import static org.junit.jupiter.api.Assertions.*;
-import org.junit.runner.RunWith;
 import org.mockito.Mock;
-import org.powermock.modules.junit4.PowerMockRunner;
-import org.powermock.api.mockito.PowerMockito;
-import java.sql.Connection;
-import java.sql.SQLException;
-import java.sql.*;
+import org.mockito.junit.jupiter.MockitoExtension; 
+import static org.mockito.Mockito.*;
 import java.util.ArrayList;
-
-/*import static org.mockito.Mockito.*;
+import java.sql.*;
 
 import org.junit.jupiter.api.extension.ExtendWith;
 
-import org.mockito.junit.jupiter.MockitoExtension;*/
+@ExtendWith(MockitoExtension.class)  // JUnit 5 extension for Mockito
+class patient_Test {
 
-
-@RunWith(PowerMockRunner.class)
-@PrepareForTest(DriverManager.class)
-class patientTest{
     Patient patient;
 
     @Mock private Connection mockConn;
     @Mock private PreparedStatement mockStatement;
     @Mock private ResultSet mockResultSet;
 
-    //declared f el class level 3shan a reuse f kolo
     @BeforeEach
-    void setup()
-    {
-        patient = new Patient(1,"Noha Elsayed",20,"Female","Golf ,villa 1133","123-456");
+    void setup() {
+        patient = new Patient(1, "Noha Elsayed", 20, "Female", "Golf ,villa 1133", "123-456");
         patient.setConn(mockConn);
     }
 
     @Test
-    void TestConstructorInitialization()
-    {
-        assertEquals(1,patient.getPatientID());
-        assertEquals("Noha Elsayed",patient.getName());
-        assertEquals(20,patient.getAge());
-        assertEquals("Female",patient.getGender());
-        assertEquals("Golf ,Villa 1133",patient.getAddress());
-        assertEquals("123-456",patient.getPhoneNumber());
-        assertNotNull(patient.getAppointments()); //app list is empty but not null??
+    void TestConstructorInitialization() {
+        assertEquals(1, patient.getPatientID());
+        assertEquals("Noha Elsayed", patient.getName());
+        assertEquals(20, patient.getAge());
+        assertEquals("Female", patient.getGender());
+        assertEquals("Golf ,Villa 1133", patient.getAddress());
+        assertEquals("123-456", patient.getPhoneNumber());
+        assertNotNull(patient.getAppointments());
         assertNotNull(patient.getMedicalRecords());
         assertNotNull(patient.getBills());
-        assertNotNull(patient.getConn()); // check hwar db 
+        assertNotNull(patient.getConn());
     }
 
     @Test
-    void testConstructorHandlesSQLException() throws Exception 
-    {
-        // Mock the static method of DriverManager.getConnection to throw SQLException
-        PowerMockito.mockStatic(DriverManager.class);
-        when(DriverManager.getConnection(anyString(), anyString(), anyString()))
-            .thenThrow(new SQLException("Database connection error"));
-
-        // Now test the constructor
-        Patient patient = new Patient(1, "Farah Fady", 20, "Female", "123 Street", "555-1234");
-
+    void testConstructorHandlesSQLException() throws SQLException {
+        // Mock the connection to throw an exception for DriverManager.getConnection
+        when(mockConn.prepareStatement(anyString())).thenThrow(new SQLException("Database connection error"));
+        
+        // Now test the constructor by creating the patient instance
+        Patient p = new Patient(1, "Farah Fady", 20, "Female", "123 Street", "555-1234");
+        
         // Assert that the connection is null because of the exception
-        assertNull(patient.getConn());
+        assertNull(p.getConn());
     }
 
-    @Test  //missing test el patientID
-    void TestSettersGetters()
-    {   
+    @Test
+    void TestSettersGetters() {
         patient.setName("Carol Moheb");
         patient.setAge(21);
         patient.setGender("Female");
@@ -81,52 +66,41 @@ class patientTest{
         assertEquals("500-321", patient.getPhoneNumber());
     }
 
-    @Test 
-    void TestAddandGetAppt()
-    {
+    @Test
+    void TestAddandGetAppt() {
         Appointment app = new Appointment(1, 1, "Checkup", new Date(0), new Time(0), 1);
         patient.addAppointment(app);
         assertTrue(patient.getAppointments().contains(app));
-
     }
 
-    @Test 
-    void TestAddandGetBills()
-    {
+    @Test
+    void TestAddandGetBills() {
         Bill bill = new Bill(1, 1, 100.0, new Date(0));
         patient.addBill(bill);
         assertTrue(patient.getBills().contains(bill));
-
     }
 
-    @Test 
-    void TestAddandGetRecords()
-    {
+    @Test
+    void TestAddandGetRecords() {
         MedicalRecord record = new MedicalRecord(1, 1, "Flu", "Rest", new Date(0));
         patient.addrecord(record);
         assertTrue(patient.getMedicalRecords().contains(record));
-
     }
 
-    // Tests the setConn() method by setting the connection to null and back again,
-    // ensuring the Patient object's connection can be updated dynamically
     @Test
     void testSetandGetConnection() {
         Connection originalConn = patient.getConn();
         patient.setConn(null);
-        // Verify that the connection is set to null
         assertNull(patient.getConn());
         
-        // Reset the connection to the original
         patient.setConn(originalConn);
         assertNotNull(patient.getConn());
     }
 
     @Test
-    void TestToString()
-    {
-    String expected = "ID: 1, Name: Noha Elsayed, Age: 20, Gender: Female, Address: Golf ,villa 1133, Phone: 123-456";
-    assertEquals(expected, patient.toString());
+    void TestToString() {
+        String expected = "ID: 1, Name: Noha Elsayed, Age: 20, Gender: Female, Address: Golf ,villa 1133, Phone: 123-456";
+        assertEquals(expected, patient.toString());
     }
 
     @Test
@@ -155,7 +129,6 @@ class patientTest{
         assertTrue(appointments.isEmpty());
     }
 
- 
     @Test
     void testFetchUserRecords_successfulFetch() throws SQLException {
         when(mockConn.prepareStatement(anyString())).thenReturn(mockStatement);
@@ -179,12 +152,4 @@ class patientTest{
 
         assertTrue(records.isEmpty());
     }
-
-   
 }
-
-
-
-   
-
-
