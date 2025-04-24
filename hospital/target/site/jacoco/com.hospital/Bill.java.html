@@ -1,0 +1,55 @@
+<?xml version="1.0" encoding="UTF-8"?><!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Strict//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-strict.dtd"><html xmlns="http://www.w3.org/1999/xhtml" lang="en"><head><meta http-equiv="Content-Type" content="text/html;charset=UTF-8"/><link rel="stylesheet" href="../jacoco-resources/report.css" type="text/css"/><link rel="shortcut icon" href="../jacoco-resources/report.gif" type="image/gif"/><title>Bill.java</title><link rel="stylesheet" href="../jacoco-resources/prettify.css" type="text/css"/><script type="text/javascript" src="../jacoco-resources/prettify.js"></script></head><body onload="window['PR_TAB_WIDTH']=4;prettyPrint()"><div class="breadcrumb" id="breadcrumb"><span class="info"><a href="../jacoco-sessions.html" class="el_session">Sessions</a></span><a href="../index.html" class="el_report">junitlab</a> &gt; <a href="index.source.html" class="el_package">com.hospital</a> &gt; <span class="el_source">Bill.java</span></div><h1>Bill.java</h1><pre class="source lang-java linenums">package com.hospital;
+
+import java.util.Date;
+
+public class Bill {
+    int patientID;
+    int billId;
+    double amount;
+    Date billingDate;
+
+<span class="fc" id="L11">    public Bill(int patientID, int billId, double amount, Date billingDate) {</span>
+<span class="fc" id="L12">        this.patientID = patientID;</span>
+<span class="fc" id="L13">        this.billId = billId;</span>
+<span class="fc" id="L14">        this.amount = amount;</span>
+<span class="fc" id="L15">        this.billingDate = billingDate;</span>
+<span class="fc" id="L16">    }</span>
+
+    public String toString() {
+<span class="fc" id="L19">        return (&quot;Bill ID: &quot; + billId + &quot;, Amount: $&quot; + amount + &quot;Billing Date: &quot; + billingDate);</span>
+    }
+
+    public int getBillId() {
+<span class="fc" id="L23">        return billId;</span>
+    }
+
+    public void setBillId(int billId) {
+<span class="fc" id="L27">        this.billId = billId;</span>
+<span class="fc" id="L28">    }</span>
+
+    public double getAmount() {
+<span class="fc" id="L31">        return amount;</span>
+    }
+
+    public void setAmount(double amount) {
+<span class="fc" id="L35">        this.amount = amount;</span>
+<span class="fc" id="L36">    }</span>
+
+    public Date getBillingDate() {
+<span class="fc" id="L39">        return billingDate;</span>
+    }
+
+    public void setBillingDate(Date billingDate) {
+<span class="fc" id="L43">        this.billingDate = billingDate;</span>
+<span class="fc" id="L44">    }</span>
+
+    public int getPatientID() {
+<span class="fc" id="L47">        return patientID;</span>
+    }
+
+    public void setPatientID(int patientID) {
+<span class="fc" id="L51">        this.patientID = patientID;</span>
+<span class="fc" id="L52">    }</span>
+
+}
+</pre><div class="footer"><span class="right">Created with <a href="http://www.jacoco.org/jacoco">JaCoCo</a> 0.8.10.202304240956</span></div></body></html>

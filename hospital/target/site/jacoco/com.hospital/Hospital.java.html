@@ -1,0 +1,510 @@
+<?xml version="1.0" encoding="UTF-8"?><!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Strict//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-strict.dtd"><html xmlns="http://www.w3.org/1999/xhtml" lang="en"><head><meta http-equiv="Content-Type" content="text/html;charset=UTF-8"/><link rel="stylesheet" href="../jacoco-resources/report.css" type="text/css"/><link rel="shortcut icon" href="../jacoco-resources/report.gif" type="image/gif"/><title>Hospital.java</title><link rel="stylesheet" href="../jacoco-resources/prettify.css" type="text/css"/><script type="text/javascript" src="../jacoco-resources/prettify.js"></script></head><body onload="window['PR_TAB_WIDTH']=4;prettyPrint()"><div class="breadcrumb" id="breadcrumb"><span class="info"><a href="../jacoco-sessions.html" class="el_session">Sessions</a></span><a href="../index.html" class="el_report">junitlab</a> &gt; <a href="index.source.html" class="el_package">com.hospital</a> &gt; <span class="el_source">Hospital.java</span></div><h1>Hospital.java</h1><pre class="source lang-java linenums">package com.hospital;
+
+import java.util.*;
+import java.sql.*;
+import java.sql.Date;
+
+public class Hospital {
+    private static final String URL = &quot;jdbc:sqlserver://localhost:1433;databaseName=HOSPITAL;encrypt=false&quot;;
+    private static final String USER = &quot;testing&quot;;
+    private static final String PASSWORD = &quot;mypass&quot;;
+
+<span class="fc" id="L12">    final List&lt;String&gt; departments = Arrays.asList(</span>
+            &quot;Cardiology&quot;, // Heart-related health issues
+            &quot;Orthopedics&quot;, // Bone and joint problems
+            &quot;Pediatrics&quot;, // Child health
+            &quot;Neurology&quot;, // Brain and nervous system
+            &quot;Dermatology&quot; // Skin-related issues
+    );
+<span class="fc" id="L19">    List&lt;Patient&gt; patients = new ArrayList&lt;&gt;();</span>
+<span class="fc" id="L20">    List&lt;Appointment&gt; appointments = new ArrayList&lt;&gt;();</span>
+<span class="fc" id="L21">    List&lt;MedicalRecord&gt; records = new ArrayList&lt;&gt;();</span>
+<span class="fc" id="L22">    List&lt;InventoryItem&gt; inventory = new ArrayList&lt;&gt;();</span>
+<span class="fc" id="L23">    List&lt;Doctor&gt; doctors = new ArrayList&lt;&gt;();</span>
+<span class="fc" id="L24">    List&lt;Bill&gt; bills = new ArrayList&lt;&gt;();</span>
+    Connection conn;
+
+<span class="fc" id="L27">    public Hospital() {</span>
+        try {
+<span class="fc" id="L29">            conn = DriverManager.getConnection(URL, USER, PASSWORD);</span>
+<span class="nc" id="L30">        } catch (SQLException e) {</span>
+<span class="nc" id="L31">            e.printStackTrace();</span>
+<span class="fc" id="L32">        }</span>
+<span class="fc" id="L33">    }</span>
+
+<span class="fc" id="L35">    public Hospital(Connection connection) {</span>
+        try {
+<span class="fc" id="L37">            this.conn = connection;</span>
+<span class="nc" id="L38">        } catch (Exception e) {</span>
+<span class="nc" id="L39">            e.printStackTrace();</span>
+<span class="fc" id="L40">        }</span>
+<span class="fc" id="L41">    }</span>
+
+    // --- Inventory ---
+
+    public void fetchInventoryItems() {
+<span class="fc" id="L46">        inventory.clear();</span>
+<span class="fc" id="L47">        String query = &quot;SELECT * FROM Inventory&quot;;</span>
+<span class="fc" id="L48">        try (   Statement stmt = conn.createStatement();</span>
+<span class="fc" id="L49">                ResultSet rs = stmt.executeQuery(query)) {</span>
+
+<span class="fc bfc" id="L51" title="All 2 branches covered.">            while (rs.next()) {</span>
+<span class="fc" id="L52">                int itemID = rs.getInt(&quot;itemID&quot;);</span>
+<span class="fc" id="L53">                String name = rs.getString(&quot;name&quot;);</span>
+<span class="fc" id="L54">                int quantity = rs.getInt(&quot;quantity&quot;);</span>
+<span class="fc" id="L55">                inventory.add(new InventoryItem(itemID, name, quantity));</span>
+<span class="fc" id="L56">            }</span>
+<span class="fc" id="L57">            System.out.println(&quot;Fetched inventory items from DB.&quot;);</span>
+
+<span class="nc" id="L59">        } catch (SQLException e) {</span>
+<span class="nc" id="L60">            e.printStackTrace();</span>
+<span class="fc" id="L61">        }</span>
+<span class="fc" id="L62">    }</span>
+
+    public void fetchMedicalRecords() {
+<span class="fc" id="L65">        records.clear();</span>
+<span class="fc" id="L66">        String query = &quot;SELECT * FROM MedicalRecords&quot;;</span>
+
+        try (
+<span class="fc" id="L69">                PreparedStatement stmt = conn.prepareStatement(query);</span>
+<span class="fc" id="L70">                ResultSet rs = stmt.executeQuery()) {</span>
+
+<span class="fc bfc" id="L72" title="All 2 branches covered.">            while (rs.next()) {</span>
+<span class="fc" id="L73">                int recordID = rs.getInt(&quot;recordID&quot;);</span>
+<span class="fc" id="L74">                int patientID = rs.getInt(&quot;patientID&quot;);</span>
+<span class="fc" id="L75">                String diagnosis = rs.getString(&quot;diagnosis&quot;);</span>
+<span class="fc" id="L76">                String treatment = rs.getString(&quot;treatment&quot;);</span>
+<span class="fc" id="L77">                Date date = rs.getDate(&quot;Date&quot;);</span>
+
+<span class="fc" id="L79">                records.add(new MedicalRecord(recordID, patientID, diagnosis, treatment, date));</span>
+<span class="fc" id="L80">            }</span>
+<span class="fc" id="L81">            System.out.println(&quot;Fetched all medical records.&quot;);</span>
+
+<span class="nc" id="L83">        } catch (SQLException e) {</span>
+<span class="nc" id="L84">            e.printStackTrace();</span>
+<span class="fc" id="L85">        }</span>
+<span class="fc" id="L86">    }</span>
+
+    public void fetchDoctors() {
+<span class="fc" id="L89">        doctors.clear();</span>
+<span class="fc" id="L90">        String query = &quot;SELECT * FROM Doctors&quot;;</span>
+        try (
+<span class="fc" id="L92">                Statement stmt = conn.createStatement();</span>
+<span class="fc" id="L93">                ResultSet rs = stmt.executeQuery(query)) {</span>
+
+<span class="fc bfc" id="L95" title="All 2 branches covered.">            while (rs.next()) {</span>
+<span class="fc" id="L96">                int doctorID = rs.getInt(&quot;docID&quot;);</span>
+<span class="fc" id="L97">                String name = rs.getString(&quot;name&quot;);</span>
+<span class="fc" id="L98">                int age = rs.getInt(&quot;age&quot;);</span>
+<span class="fc" id="L99">                String gender = rs.getString(&quot;gender&quot;);</span>
+<span class="fc" id="L100">                String specialty = rs.getString(&quot;specialty&quot;);</span>
+<span class="fc" id="L101">                doctors.add(new Doctor(doctorID, name, age, gender, specialty));</span>
+<span class="fc" id="L102">            }</span>
+<span class="fc" id="L103">            System.out.println(&quot;Fetched doctors from DB.&quot;);</span>
+
+<span class="nc" id="L105">        } catch (SQLException e) {</span>
+<span class="nc" id="L106">            e.printStackTrace();</span>
+<span class="fc" id="L107">        }</span>
+<span class="fc" id="L108">    }</span>
+
+    public void fetchPatients() {
+<span class="fc" id="L111">        patients.clear();</span>
+<span class="fc" id="L112">        String query = &quot;SELECT * FROM Patients&quot;;</span>
+        try (
+<span class="fc" id="L114">                Statement stmt = conn.createStatement();</span>
+<span class="fc" id="L115">                ResultSet rs = stmt.executeQuery(query)) {</span>
+
+<span class="fc bfc" id="L117" title="All 2 branches covered.">            while (rs.next()) {</span>
+<span class="fc" id="L118">                int patientID = rs.getInt(&quot;patientID&quot;);</span>
+<span class="fc" id="L119">                String name = rs.getString(&quot;name&quot;);</span>
+<span class="fc" id="L120">                int age = rs.getInt(&quot;age&quot;);</span>
+<span class="fc" id="L121">                String gender = rs.getString(&quot;gender&quot;);</span>
+<span class="fc" id="L122">                String address = rs.getString(&quot;address&quot;);</span>
+<span class="fc" id="L123">                String phone = rs.getString(&quot;phone&quot;);</span>
+
+<span class="fc" id="L125">                patients.add(new Patient(patientID, name, age, gender, address, phone));</span>
+<span class="fc" id="L126">            }</span>
+<span class="fc" id="L127">            System.out.println(&quot;Fetched patients from DB.&quot;);</span>
+
+<span class="nc" id="L129">        } catch (SQLException e) {</span>
+<span class="nc" id="L130">            e.printStackTrace();</span>
+<span class="fc" id="L131">        }</span>
+<span class="fc" id="L132">    }</span>
+
+    public void fetchAppointments() {
+<span class="fc" id="L135">        appointments.clear();</span>
+<span class="fc" id="L136">        String query = &quot;SELECT * FROM Appointments&quot;;</span>
+        try (
+<span class="fc" id="L138">                Statement stmt = conn.createStatement();</span>
+<span class="fc" id="L139">                ResultSet rs = stmt.executeQuery(query)) {</span>
+
+<span class="fc bfc" id="L141" title="All 2 branches covered.">            while (rs.next()) {</span>
+<span class="fc" id="L142">                int appID = rs.getInt(&quot;appID&quot;);</span>
+<span class="fc" id="L143">                int patientID = rs.getInt(&quot;patientID&quot;);</span>
+<span class="fc" id="L144">                String type = rs.getString(&quot;type&quot;);</span>
+<span class="fc" id="L145">                int Docid = rs.getInt(&quot;docID&quot;);</span>
+<span class="fc" id="L146">                Date date = rs.getDate(&quot;date&quot;);</span>
+<span class="fc" id="L147">                Time time = rs.getTime(&quot;time&quot;);</span>
+
+<span class="fc" id="L149">                appointments.add(new Appointment(appID, patientID, type, date, time, Docid));</span>
+<span class="fc" id="L150">            }</span>
+<span class="fc" id="L151">            System.out.println(&quot;Fetched appointments from DB.&quot;);</span>
+
+<span class="nc" id="L153">        } catch (SQLException e) {</span>
+<span class="nc" id="L154">            e.printStackTrace();</span>
+<span class="fc" id="L155">        }</span>
+<span class="fc" id="L156">    }</span>
+
+    public void fetchBills() {
+<span class="fc" id="L159">        bills.clear();</span>
+<span class="fc" id="L160">        String query = &quot;SELECT * FROM Bills&quot;;</span>
+        try (
+<span class="fc" id="L162">                Statement stmt = conn.createStatement();</span>
+<span class="fc" id="L163">                ResultSet rs = stmt.executeQuery(query)) {</span>
+
+<span class="fc bfc" id="L165" title="All 2 branches covered.">            while (rs.next()) {</span>
+<span class="fc" id="L166">                int billId = rs.getInt(&quot;billId&quot;);</span>
+<span class="fc" id="L167">                int patientID = rs.getInt(&quot;patientID&quot;);</span>
+<span class="fc" id="L168">                double amount = rs.getFloat(&quot;amount&quot;);</span>
+<span class="fc" id="L169">                Date date = rs.getDate(&quot;billDate&quot;);</span>
+<span class="fc" id="L170">                bills.add(new Bill(patientID,billId, amount, date));</span>
+<span class="fc" id="L171">            }</span>
+<span class="fc" id="L172">            System.out.println(&quot;Fetched Bills from DB.&quot;);</span>
+
+<span class="nc" id="L174">        } catch (SQLException e) {</span>
+<span class="nc" id="L175">            e.printStackTrace();</span>
+<span class="fc" id="L176">        }</span>
+<span class="fc" id="L177">    }</span>
+
+    public void registerPatient(String name, int age, String gender, String address, String phone) {
+<span class="fc" id="L180">        int newId = this.getNextPatientId();</span>
+<span class="fc" id="L181">        String query = &quot;INSERT INTO Patients (patientID, name, age, gender, address, phone) VALUES (?, ?, ?, ?, ?, ?)&quot;;</span>
+        try (
+<span class="fc" id="L183">                PreparedStatement stmt = conn.prepareStatement(query)) {</span>
+
+            // Set parameters
+<span class="fc" id="L186">            stmt.setInt(1, newId); // Automatically generated ID</span>
+<span class="fc" id="L187">            stmt.setString(2, name);</span>
+<span class="fc" id="L188">            stmt.setInt(3, age);</span>
+<span class="fc" id="L189">            stmt.setString(4, gender);</span>
+<span class="fc" id="L190">            stmt.setString(5, address);</span>
+<span class="fc" id="L191">            stmt.setString(6, phone);</span>
+
+            // Execute the query
+<span class="fc" id="L194">            int rowsAffected = stmt.executeUpdate();</span>
+<span class="fc bfc" id="L195" title="All 2 branches covered.">            if (rowsAffected &gt; 0) {</span>
+<span class="fc" id="L196">                System.out.println(&quot;Patient registered successfully!&quot;);</span>
+            } else {
+<span class="fc" id="L198">                System.out.println(&quot;Failed to register patient.&quot;);</span>
+            }
+
+<span class="nc" id="L201">        } catch (SQLException e) {</span>
+<span class="nc" id="L202">            e.printStackTrace();</span>
+<span class="fc" id="L203">        }</span>
+<span class="fc" id="L204">    }</span>
+
+    public boolean phoneExists(String phoneNumber) {
+<span class="fc bfc" id="L207" title="All 2 branches covered.">        for (Patient d : patients) {</span>
+<span class="fc" id="L208">            System.out.println(d.toString());</span>
+<span class="fc bfc" id="L209" title="All 2 branches covered.">            if (d.getPhoneNumber().equals(phoneNumber))</span>
+<span class="fc" id="L210">                return true;</span>
+<span class="fc" id="L211">        }</span>
+<span class="fc" id="L212">        return false;</span>
+
+    }
+
+    public void loginPatient(String phone, String name) {
+<span class="fc" id="L217">        String query = &quot;SELECT * FROM patients WHERE phone = ? AND name = ?&quot;;</span>
+
+<span class="fc" id="L219">        try (PreparedStatement stmt = conn.prepareStatement(query)) {</span>
+
+            // Set parameters
+<span class="fc" id="L222">            stmt.setString(1, phone);</span>
+<span class="fc" id="L223">            stmt.setString(2, name);</span>
+
+            // Execute the query and get the result
+<span class="fc" id="L226">            ResultSet rs = stmt.executeQuery();</span>
+
+            // Check if a matching patient was found
+<span class="fc bfc" id="L229" title="All 2 branches covered.">            if (rs.next()) {</span>
+                // Create a new Patient object and populate it with the data from the result set
+<span class="fc" id="L231">                int patientID = rs.getInt(&quot;patientID&quot;);</span>
+<span class="fc" id="L232">                String patientName = rs.getString(&quot;name&quot;);</span>
+<span class="fc" id="L233">                int age = rs.getInt(&quot;age&quot;);</span>
+<span class="fc" id="L234">                String gender = rs.getString(&quot;gender&quot;);</span>
+<span class="fc" id="L235">                String address = rs.getString(&quot;address&quot;);</span>
+<span class="fc" id="L236">                String phoneNumber = rs.getString(&quot;phone&quot;);</span>
+
+                // Return the populated Patient object
+<span class="fc" id="L239">                Patient loggedInPatient = new Patient(patientID, patientName, age, gender, address, phoneNumber);</span>
+<span class="fc" id="L240">                Session.getInstance().setCurrentPatient(loggedInPatient);</span>
+<span class="fc" id="L241">            }else {</span>
+<span class="fc" id="L242">                Session.getInstance().setCurrentPatient(null); // No matching patient found </span>
+            }
+
+<span class="nc" id="L245">        } catch (SQLException e) {</span>
+<span class="nc" id="L246">            e.printStackTrace(); // Return null in case of error</span>
+<span class="fc" id="L247">        }</span>
+<span class="fc" id="L248">    }</span>
+
+    public void scheduleAppointment(int appID, int patientID, String type, Date date, Time time, int docID) {
+<span class="fc" id="L251">        String query = &quot;INSERT INTO Appointments (appID , patientID, docID, type, date, time) VALUES (?, ?, ?, ?, ?, ?)&quot;;</span>
+        try (
+<span class="fc" id="L253">                PreparedStatement stmt = conn.prepareStatement(query)) {</span>
+            // Set parameters
+<span class="fc" id="L255">            stmt.setInt(1, appID);</span>
+<span class="fc" id="L256">            stmt.setInt(2, patientID);</span>
+<span class="fc" id="L257">            stmt.setInt(3, docID);</span>
+<span class="fc" id="L258">            stmt.setString(4, type);</span>
+<span class="fc" id="L259">            stmt.setDate(5, date);</span>
+<span class="fc" id="L260">            stmt.setTime(6, time);</span>
+
+            // Execute the query
+<span class="fc" id="L263">            int rowsAffected = stmt.executeUpdate();</span>
+<span class="fc bfc" id="L264" title="All 2 branches covered.">            if (rowsAffected &gt; 0) {</span>
+<span class="fc" id="L265">                System.out.println(&quot;Reservation is done  successfully!&quot;);</span>
+            } else {
+<span class="fc" id="L267">                System.out.println(&quot;Reservation is failed!&quot;);</span>
+            }
+
+<span class="nc" id="L270">        } catch (SQLException e) {</span>
+<span class="nc" id="L271">            e.printStackTrace();</span>
+<span class="fc" id="L272">        }</span>
+<span class="fc" id="L273">    }</span>
+
+    public void cancelAppointment(int appID) {
+<span class="fc" id="L276">        String query = &quot;DELETE FROM Appointments WHERE appID = ?&quot;;</span>
+
+        try (
+<span class="fc" id="L279">                PreparedStatement stmt = conn.prepareStatement(query)) {</span>
+
+<span class="fc" id="L281">            stmt.setInt(1, appID);</span>
+
+<span class="fc" id="L283">            int rowsAffected = stmt.executeUpdate();</span>
+<span class="fc bfc" id="L284" title="All 2 branches covered.">            if (rowsAffected &gt; 0) {</span>
+<span class="fc" id="L285">                System.out.println(&quot;Doctor deleted successfully!&quot;);</span>
+            } else {
+<span class="fc" id="L287">                System.out.println(&quot;No doctor found with the given ID.&quot;);</span>
+            }
+
+<span class="nc" id="L290">        } catch (SQLException e) {</span>
+<span class="nc" id="L291">            e.printStackTrace();</span>
+<span class="fc" id="L292">        }</span>
+<span class="fc" id="L293">    }</span>
+
+
+    public void showPatients() {
+<span class="fc bfc" id="L297" title="All 2 branches covered.">        for (Patient p : patients) {</span>
+<span class="fc" id="L298">            System.out.println(p.toString());</span>
+<span class="fc" id="L299">        }</span>
+<span class="fc" id="L300">    }</span>
+
+    public int getNextPatientId() {
+<span class="fc" id="L303">        int newId = 0;</span>
+<span class="fc" id="L304">        String query = &quot;SELECT MAX(patientID) + 1 AS next_id FROM Patients&quot;;</span>
+
+        try (
+<span class="fc" id="L307">                Statement stmt = conn.createStatement();</span>
+<span class="fc" id="L308">                ResultSet rs = stmt.executeQuery(query)) {</span>
+
+<span class="pc bpc" id="L310" title="1 of 2 branches missed.">            if (rs.next()) {</span>
+<span class="fc" id="L311">                newId = rs.getInt(&quot;next_id&quot;);</span>
+<span class="fc bfc" id="L312" title="All 2 branches covered.">                if (newId == 0) {</span>
+                    // If there are no patients, start from 1
+<span class="fc" id="L314">                    newId = 1;</span>
+                }
+            }
+
+<span class="nc" id="L318">        } catch (SQLException e) {</span>
+<span class="nc" id="L319">            e.printStackTrace();</span>
+<span class="fc" id="L320">        }</span>
+
+<span class="fc" id="L322">        return newId;</span>
+    }
+
+    public int getNextDoctorId() {
+<span class="fc" id="L326">        int newId = 0;</span>
+<span class="fc" id="L327">        String query = &quot;SELECT MAX(docID) + 1 AS next_id FROM Doctors&quot;;</span>
+
+        try (
+<span class="fc" id="L330">                Statement stmt = conn.createStatement();</span>
+<span class="fc" id="L331">                ResultSet rs = stmt.executeQuery(query)) {</span>
+
+<span class="pc bpc" id="L333" title="1 of 2 branches missed.">            if (rs.next()) {</span>
+<span class="fc" id="L334">                newId = rs.getInt(&quot;next_id&quot;);</span>
+<span class="pc bpc" id="L335" title="1 of 2 branches missed.">                if (newId == 0) {</span>
+<span class="nc" id="L336">                    newId = 1;</span>
+                }
+            }
+
+<span class="nc" id="L340">        } catch (SQLException e) {</span>
+<span class="nc" id="L341">            e.printStackTrace();</span>
+<span class="fc" id="L342">        }</span>
+
+<span class="fc" id="L344">        return newId;</span>
+    }
+
+    public int getNextInventoryId() {
+<span class="fc" id="L348">        int newId = 0;</span>
+<span class="fc" id="L349">        String query = &quot;SELECT MAX(itemID) + 1 AS next_id FROM Inventory&quot;;</span>
+
+        try (
+<span class="fc" id="L352">                Statement stmt = conn.createStatement();</span>
+<span class="fc" id="L353">                ResultSet rs = stmt.executeQuery(query)) {</span>
+
+<span class="pc bpc" id="L355" title="1 of 2 branches missed.">            if (rs.next()) {</span>
+<span class="fc" id="L356">                newId = rs.getInt(&quot;next_id&quot;);</span>
+<span class="pc bpc" id="L357" title="1 of 2 branches missed.">                if (newId == 0) {</span>
+<span class="nc" id="L358">                    newId = 1;</span>
+                }
+            }
+
+<span class="nc" id="L362">        } catch (SQLException e) {</span>
+<span class="nc" id="L363">            e.printStackTrace();</span>
+<span class="fc" id="L364">        }</span>
+
+<span class="fc" id="L366">        return newId;</span>
+    }
+
+    public int getNextAppointmentId() {
+<span class="fc" id="L370">        int newId = 1; // Start from 1 by default</span>
+<span class="fc" id="L371">        String query = &quot;SELECT MAX(appID) AS max_id FROM Appointments&quot;;</span>
+
+        try (
+<span class="fc" id="L374">                PreparedStatement pstmt = conn.prepareStatement(query);</span>
+<span class="fc" id="L375">                ResultSet rs = pstmt.executeQuery()) {</span>
+
+<span class="pc bpc" id="L377" title="1 of 2 branches missed.">            if (rs.next()) {</span>
+<span class="fc" id="L378">                int maxId = rs.getInt(&quot;max_id&quot;);</span>
+<span class="pc bpc" id="L379" title="1 of 2 branches missed.">                if (!rs.wasNull()) {</span>
+<span class="fc" id="L380">                    newId = maxId + 1;</span>
+                }
+            }
+
+<span class="nc" id="L384">        } catch (SQLException e) {</span>
+<span class="nc" id="L385">            e.printStackTrace(); // Better to log this in production</span>
+<span class="fc" id="L386">        }</span>
+
+<span class="fc" id="L388">        return newId;</span>
+    }
+
+    public int getNextRecordId() {
+<span class="fc" id="L392">        int newId = 0;</span>
+<span class="fc" id="L393">        String query = &quot;SELECT MAX(recordID) + 1 AS next_id FROM MedicalRecords&quot;;</span>
+
+        try (
+<span class="fc" id="L396">                Statement stmt = conn.createStatement();</span>
+<span class="fc" id="L397">                ResultSet rs = stmt.executeQuery(query)) {</span>
+
+<span class="pc bpc" id="L399" title="1 of 2 branches missed.">            if (rs.next()) {</span>
+<span class="fc" id="L400">                newId = rs.getInt(&quot;next_id&quot;);</span>
+<span class="fc bfc" id="L401" title="All 2 branches covered.">                if (newId == 0) {</span>
+<span class="fc" id="L402">                    newId = 1;</span>
+                }
+            }
+
+<span class="nc" id="L406">        } catch (SQLException e) {</span>
+<span class="nc" id="L407">            e.printStackTrace();</span>
+<span class="fc" id="L408">        }</span>
+
+<span class="fc" id="L410">        return newId;</span>
+    }
+
+    public int getNextBillId() {
+<span class="fc" id="L414">        int newId = 0;</span>
+<span class="fc" id="L415">        String query = &quot;SELECT MAX(billId) + 1 AS next_id FROM Bills&quot;;</span>
+
+        try (
+<span class="fc" id="L418">                Statement stmt = conn.createStatement();</span>
+<span class="fc" id="L419">                ResultSet rs = stmt.executeQuery(query)) {</span>
+
+<span class="pc bpc" id="L421" title="1 of 2 branches missed.">            if (rs.next()) {</span>
+<span class="fc" id="L422">                newId = rs.getInt(&quot;next_id&quot;);</span>
+<span class="fc bfc" id="L423" title="All 2 branches covered.">                if (newId == 0) {</span>
+<span class="fc" id="L424">                    newId = 1;</span>
+                }
+            }
+
+<span class="nc" id="L428">        } catch (SQLException e) {</span>
+<span class="nc" id="L429">            e.printStackTrace();</span>
+<span class="fc" id="L430">        }</span>
+
+<span class="fc" id="L432">        return newId;</span>
+    }
+
+    public List&lt;Patient&gt; getPatients() {
+<span class="fc" id="L436">        return patients;</span>
+    }
+
+    public List&lt;Appointment&gt; getAppointments() {
+<span class="fc" id="L440">        return appointments;</span>
+    }
+
+    public List&lt;MedicalRecord&gt; getRecords() {
+<span class="fc" id="L444">        return records;</span>
+    }
+
+    public List&lt;InventoryItem&gt; getInventory() {
+<span class="fc" id="L448">        return inventory;</span>
+    }
+
+    public List&lt;Doctor&gt; getDoctors() {
+<span class="fc" id="L452">        return doctors;</span>
+    }
+
+    public List&lt;String&gt; getDepartments() {
+<span class="nc" id="L456">        return departments;</span>
+    }
+
+    public List&lt;Bill&gt; getBills() {
+<span class="fc" id="L460">        return bills;</span>
+    }
+
+    public &lt;T&gt; T findById(List&lt;T&gt; list, int id) {
+<span class="nc bnc" id="L464" title="All 2 branches missed.">        for (T item : list) {</span>
+            try {
+<span class="nc" id="L466">                int itemId = (int) item.getClass().getMethod(&quot;getId&quot;).invoke(item);</span>
+<span class="nc bnc" id="L467" title="All 2 branches missed.">                if (itemId == id) {</span>
+<span class="nc" id="L468">                    return item;</span>
+                }
+<span class="nc" id="L470">            } catch (Exception e) {</span>
+<span class="nc" id="L471">                e.printStackTrace();</span>
+<span class="nc" id="L472">            }</span>
+<span class="nc" id="L473">        }</span>
+<span class="nc" id="L474">        return null;</span>
+    }
+
+    public Doctor findDoctorByName(String name) {
+<span class="fc bfc" id="L478" title="All 2 branches covered.">        for (Doctor doctor : doctors) {</span>
+<span class="fc bfc" id="L479" title="All 2 branches covered.">            if (name.equals(doctor.getName())) {</span>
+<span class="fc" id="L480">                return doctor;</span>
+            }
+<span class="fc" id="L482">        }</span>
+<span class="fc" id="L483">        System.out.println(&quot;errrrrrrrrrrrrrrrrrrrrrrrrrrrrrr&quot; + doctors.size());</span>
+<span class="fc" id="L484">        return null;</span>
+    }
+
+    public Patient findPatientById(int patientID) {
+<span class="fc bfc" id="L488" title="All 2 branches covered.">        for (Patient patient : patients) {</span>
+<span class="fc bfc" id="L489" title="All 2 branches covered.">            if (patient.getPatientID() == patientID) {</span>
+<span class="fc" id="L490">                return patient;</span>
+            }
+<span class="fc" id="L492">        }</span>
+<span class="fc" id="L493">        return null; // Return null if no patient with the given ID is found</span>
+    }
+    public Doctor findDoctorById(int doctorID) {
+<span class="fc bfc" id="L496" title="All 2 branches covered.">        for (Doctor dr : doctors) {</span>
+<span class="fc bfc" id="L497" title="All 2 branches covered.">            if (dr.getDoctorID() == doctorID) {</span>
+<span class="fc" id="L498">                return dr;</span>
+            }
+<span class="fc" id="L500">        }</span>
+<span class="fc" id="L501">        return null; // Return null if no doctor with the given ID is found</span>
+    }
+
+    public void setConnection(Connection connection) {
+<span class="nc" id="L505">        this.conn = connection;</span>
+<span class="nc" id="L506">    }</span>
+    
+
+}
+</pre><div class="footer"><span class="right">Created with <a href="http://www.jacoco.org/jacoco">JaCoCo</a> 0.8.10.202304240956</span></div></body></html>
