@@ -7,6 +7,7 @@ import java.util.regex.*;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.*;
+import org.springframework.web.servlet.mvc.support.RedirectAttributes;
 
 @Controller
 @RequestMapping("/admin")
@@ -43,16 +44,16 @@ public class AdminController {
             @RequestParam String name,
             @RequestParam String gender,
             @RequestParam String specialty,
-            Model model) {
+            RedirectAttributes redirectAttributes) {
         // Validate doctor name
         if (!NAME_PATTERN.matcher(name).matches()) {
-            model.addAttribute("errorDoctors", "Doctor name should only contain letters and spaces.");
+            redirectAttributes.addFlashAttribute("errorDoctors", "Doctor name should only contain letters and spaces.");
             return "redirect:/admin";
         }
 
         // Validate doctor age (must be greater than 25)
         if (age <= 25) {
-            model.addAttribute("errorDoctors", "Doctor's age should be greater than 25.");
+            redirectAttributes.addFlashAttribute("errorDoctors", "Doctor's age should be greater than 25.");
             return "redirect:/admin";
         }
 
@@ -73,16 +74,16 @@ public class AdminController {
     @PostMapping("/add-inventory")
     public String addInventory(@RequestParam String name,
             @RequestParam int quantity,
-            Model model) {
+            RedirectAttributes redirectAttributes) {
         // Validate item name
         if (!ITEM_NAME_PATTERN.matcher(name).matches()) {
-            model.addAttribute("errorInventory", "Item name should only contain letters and spaces.");
+            redirectAttributes.addFlashAttribute("errorInventory", "Item name should only contain letters and spaces.");
             return "redirect:/admin";
         }
 
         // Validate item quantity (should be 0 or more)
         if (quantity < 0) {
-            model.addAttribute("errorInventory", "Item quantity should be 0 or more.");
+            redirectAttributes.addFlashAttribute("errorInventory", "Item quantity should be 0 or more.");
             return "redirect:/admin";
         }
 
@@ -105,11 +106,11 @@ public class AdminController {
             @RequestParam String diagnosis,
             @RequestParam String treatment,
             @RequestParam Date date,
-            Model model) {
+            RedirectAttributes redirectAttributes) {
             // Check if the patient exists
             Patient patient = hospital.findPatientById(patientId);
             if (patient == null) {
-                model.addAttribute("errorMedical", "Patient ID not found.");
+                redirectAttributes.addFlashAttribute("errorMedical", "Patient ID not found.");
                 return "redirect:/admin";
             }
             admin.addMedicalRecord(hospital.getNextRecordId(), patientId, diagnosis, treatment, date);
@@ -129,17 +130,17 @@ public class AdminController {
     public String addBill(@RequestParam int patientID,
             @RequestParam double amount,
             @RequestParam Date billingDate,
-            Model model) {
+            RedirectAttributes redirectAttributes) {
             // Validate the amount
         if (amount <= 0) {
-            model.addAttribute("errorBill", "Amount must be greater than 0.");
+            redirectAttributes.addFlashAttribute("errorBill", "Amount must be greater than 0.");
             return "redirect:/admin";
         }
 
         // Check if the patient exists
         Patient patient = hospital.findPatientById(patientID);
         if (patient == null) {
-            model.addAttribute("errorBill", "Patient ID not found.");
+            redirectAttributes.addFlashAttribute("errorBill", "Patient ID not found.");
             return "redirect:/admin";
         }
 
