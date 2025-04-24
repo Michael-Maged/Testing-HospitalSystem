@@ -224,6 +224,7 @@
                 <table>
                     <thead>
                         <tr>
+                            <th>Doctor ID</th>
                             <th>Doctor Name</th>
                             <th>Specialty</th>
                             <th>Action</th>
@@ -231,6 +232,7 @@
                     </thead>
                     <tbody>
                         <tr th:each="doctor : ${doctors}">
+                            <td th:text="${doctor.doctorID}"></td>
                             <td th:text="${doctor.name}"></td>
                             <td th:text="${doctor.specialty}"></td>
                             <td>
@@ -311,6 +313,7 @@
                 <table>
                     <thead>
                         <tr>
+                            <th>Patient ID</th>
                             <th>Patient Name</th>
                             <th>Diagnosis</th>
                             <th>Treatment</th>
@@ -320,6 +323,7 @@
                     </thead>
                     <tbody>
                         <tr th:each="record : ${records}">
+                            <td th:text="${record.patientID}">Patient ID</td>
                             <td th:text="${hospital.findPatientById(record.patientID).name}">Patient Name</td>
                             <td th:text="${record.diagnosis}">Diagnosis</td>
                             <td th:text="${record.treatment}">Treatment</td>
