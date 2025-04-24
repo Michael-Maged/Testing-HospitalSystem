@@ -1,0 +1,57 @@
+<?xml version="1.0" encoding="UTF-8"?><!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Strict//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-strict.dtd"><html xmlns="http://www.w3.org/1999/xhtml" lang="en"><head><meta http-equiv="Content-Type" content="text/html;charset=UTF-8"/><link rel="stylesheet" href="../jacoco-resources/report.css" type="text/css"/><link rel="shortcut icon" href="../jacoco-resources/report.gif" type="image/gif"/><title>PatientRegistrationController.java</title><link rel="stylesheet" href="../jacoco-resources/prettify.css" type="text/css"/><script type="text/javascript" src="../jacoco-resources/prettify.js"></script></head><body onload="window['PR_TAB_WIDTH']=4;prettyPrint()"><div class="breadcrumb" id="breadcrumb"><span class="info"><a href="../jacoco-sessions.html" class="el_session">Sessions</a></span><a href="../index.html" class="el_report">junitlab</a> &gt; <a href="index.source.html" class="el_package">com.hospital.controllers</a> &gt; <span class="el_source">PatientRegistrationController.java</span></div><h1>PatientRegistrationController.java</h1><pre class="source lang-java linenums">package com.hospital.controllers;
+
+import org.springframework.stereotype.Controller;
+import org.springframework.ui.Model;
+import org.springframework.web.bind.annotation.*;
+
+import com.hospital.Hospital;
+
+@Controller
+<span class="fc" id="L10">public class PatientRegistrationController {</span>
+
+<span class="fc" id="L12">    private Hospital hospital = new Hospital();</span>
+
+    @GetMapping(&quot;/register&quot;)
+    public String showRegistrationForm() {
+<span class="fc" id="L16">        hospital.fetchPatients();</span>
+<span class="fc" id="L17">        return &quot;patient-registration&quot;;</span>
+    }
+
+    @PostMapping(&quot;/register&quot;)
+    public String registerPatient(
+            @RequestParam(&quot;name&quot;) String name,
+            @RequestParam(&quot;age&quot;) int age,
+            @RequestParam(&quot;gender&quot;) String gender,
+            @RequestParam(&quot;address&quot;) String address,
+            @RequestParam(&quot;phoneNumber&quot;) String phoneNumber,
+            Model model) {
+        // Validate full name: only letters and spaces
+<span class="fc bfc" id="L29" title="All 2 branches covered.">        if (!name.matches(&quot;^[A-Za-z]+( [A-Za-z]+)*$&quot;)) {</span>
+<span class="fc" id="L30">            model.addAttribute(&quot;error&quot;, &quot;Invalid name. Use letters and spaces only.&quot;);</span>
+<span class="fc" id="L31">            return &quot;patient-registration&quot;;</span>
+        }
+
+        // Validate age &gt; 0
+<span class="fc bfc" id="L35" title="All 2 branches covered.">        if (age &lt;= 0) {</span>
+<span class="fc" id="L36">            model.addAttribute(&quot;error&quot;, &quot;Age must be a positive number.&quot;);</span>
+<span class="fc" id="L37">            return &quot;patient-registration&quot;;</span>
+        }
+
+        // Validate phone number: 11 digits, starts with 012 or 010
+<span class="fc bfc" id="L41" title="All 2 branches covered.">        if (!phoneNumber.matches(&quot;^01[20][0-9]{8}$&quot;)) {</span>
+<span class="fc" id="L42">            model.addAttribute(&quot;error&quot;, &quot;Phone number must be 11 digits and start with 012 or 010.&quot;);</span>
+<span class="fc" id="L43">            return &quot;patient-registration&quot;;</span>
+        }
+
+        // Check for duplicate phone number
+<span class="fc bfc" id="L47" title="All 2 branches covered.">        if (hospital.phoneExists(phoneNumber)) {</span>
+<span class="fc" id="L48">            model.addAttribute(&quot;error&quot;, &quot;Phone number is already registered.&quot;);</span>
+<span class="fc" id="L49">            return &quot;patient-registration&quot;;</span>
+        }
+
+        // Register if all is valid
+<span class="fc" id="L53">        hospital.registerPatient(name, age, gender, address, phoneNumber);</span>
+<span class="fc" id="L54">        return &quot;patient-login&quot;;</span>
+    }
+}
+</pre><div class="footer"><span class="right">Created with <a href="http://www.jacoco.org/jacoco">JaCoCo</a> 0.8.10.202304240956</span></div></body></html>

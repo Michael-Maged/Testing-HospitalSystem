@@ -1,0 +1,76 @@
+<?xml version="1.0" encoding="UTF-8"?><!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Strict//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-strict.dtd"><html xmlns="http://www.w3.org/1999/xhtml" lang="en"><head><meta http-equiv="Content-Type" content="text/html;charset=UTF-8"/><link rel="stylesheet" href="../jacoco-resources/report.css" type="text/css"/><link rel="shortcut icon" href="../jacoco-resources/report.gif" type="image/gif"/><title>Appointment.java</title><link rel="stylesheet" href="../jacoco-resources/prettify.css" type="text/css"/><script type="text/javascript" src="../jacoco-resources/prettify.js"></script></head><body onload="window['PR_TAB_WIDTH']=4;prettyPrint()"><div class="breadcrumb" id="breadcrumb"><span class="info"><a href="../jacoco-sessions.html" class="el_session">Sessions</a></span><a href="../index.html" class="el_report">junitlab</a> &gt; <a href="index.source.html" class="el_package">com.hospital</a> &gt; <span class="el_source">Appointment.java</span></div><h1>Appointment.java</h1><pre class="source lang-java linenums">package com.hospital;
+
+import java.sql.Time;
+import java.util.*;
+
+public class Appointment {
+    int appID;
+    int patientID;
+    int docID;
+    String type;
+    Date date;
+    Time time;
+
+<span class="fc" id="L14">    public Appointment(int appID, int patientID, String type, Date date, Time time, int docID) {</span>
+<span class="fc" id="L15">        this.appID = appID;</span>
+<span class="fc" id="L16">        this.patientID = patientID;</span>
+<span class="fc" id="L17">        this.docID = docID;</span>
+<span class="fc" id="L18">        this.type = type;</span>
+<span class="fc" id="L19">        this.date = date;</span>
+<span class="fc" id="L20">        this.time = time;</span>
+<span class="fc" id="L21">    }</span>
+
+    public int getAppID() {
+<span class="fc" id="L24">        return appID;</span>
+    }
+
+    public void setAppID(int appID) {
+<span class="fc" id="L28">        this.appID = appID;</span>
+<span class="fc" id="L29">    }</span>
+
+    public int getPatientID() {
+<span class="fc" id="L32">        return patientID;</span>
+    }
+
+    public void setPatientID(int patientID) {
+<span class="fc" id="L36">        this.patientID = patientID;</span>
+<span class="fc" id="L37">    }</span>
+
+    public int getDocID() {
+<span class="fc" id="L40">        return docID;</span>
+    }
+
+    public void setDocID(int docID) {
+<span class="fc" id="L44">        this.docID = docID;</span>
+<span class="fc" id="L45">    }</span>
+
+    public String getType() {
+<span class="fc" id="L48">        return type;</span>
+    }
+
+    public void setType(String type) {
+<span class="fc" id="L52">        this.type = type;</span>
+<span class="fc" id="L53">    }</span>
+
+    public Date getDate() {
+<span class="fc" id="L56">        return date;</span>
+    }
+
+    public void setDate(Date date) {
+<span class="fc" id="L60">        this.date = date;</span>
+<span class="fc" id="L61">    }</span>
+
+    public Time getTime() {
+<span class="fc" id="L64">        return time;</span>
+    }
+
+    public void setTime(Time time) {
+<span class="fc" id="L68">        this.time = time;</span>
+<span class="fc" id="L69">    }</span>
+
+    @Override
+    public String toString() {
+<span class="fc" id="L73">        return &quot;Appointment for patient &quot; + patientID + &quot; with Dr. &quot; + docID + &quot; on &quot; + date;</span>
+    }
+}
+</pre><div class="footer"><span class="right">Created with <a href="http://www.jacoco.org/jacoco">JaCoCo</a> 0.8.10.202304240956</span></div></body></html>

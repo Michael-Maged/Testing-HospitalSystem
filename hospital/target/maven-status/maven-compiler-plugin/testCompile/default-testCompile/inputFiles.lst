@@ -1,9 +1,14 @@
-C:\Users\nohas\Desktop\sem6\testing\projectTest\Testing-HospitalSystem\hospital\src\test\java\Models\SessionTest.java
-C:\Users\nohas\Desktop\sem6\testing\projectTest\Testing-HospitalSystem\hospital\src\test\java\Models\AdminTest.java
-C:\Users\nohas\Desktop\sem6\testing\projectTest\Testing-HospitalSystem\hospital\src\test\java\Models\AppointmentTest.java
-C:\Users\nohas\Desktop\sem6\testing\projectTest\Testing-HospitalSystem\hospital\src\test\java\Controllers\PatientControllerTest.java
-C:\Users\nohas\Desktop\sem6\testing\projectTest\Testing-HospitalSystem\hospital\src\test\java\Models\DoctorTest.java
-C:\Users\nohas\Desktop\sem6\testing\projectTest\Testing-HospitalSystem\hospital\src\test\java\Models\PatientTest.java
-C:\Users\nohas\Desktop\sem6\testing\projectTest\Testing-HospitalSystem\hospital\src\test\java\Models\BillTest.java
-C:\Users\nohas\Desktop\sem6\testing\projectTest\Testing-HospitalSystem\hospital\src\test\java\Models\InventoryItemTest.java
-C:\Users\nohas\Desktop\sem6\testing\projectTest\Testing-HospitalSystem\hospital\src\test\java\Models\MedicalRecordTest.java
+C:\Users\Michael Maged\Desktop\term 6\Testing\Project\Testing-HospitalSystem\hospital\src\test\java\Controllers\HomepageControllerTest.java
+C:\Users\Michael Maged\Desktop\term 6\Testing\Project\Testing-HospitalSystem\hospital\src\test\java\Models\BillTest.java
+C:\Users\Michael Maged\Desktop\term 6\Testing\Project\Testing-HospitalSystem\hospital\src\test\java\Controllers\AdminControllerTest.java
+C:\Users\Michael Maged\Desktop\term 6\Testing\Project\Testing-HospitalSystem\hospital\src\test\java\Models\PatientTest.java
+C:\Users\Michael Maged\Desktop\term 6\Testing\Project\Testing-HospitalSystem\hospital\src\test\java\Controllers\DashboardControllerTest.java
+C:\Users\Michael Maged\Desktop\term 6\Testing\Project\Testing-HospitalSystem\hospital\src\test\java\Controllers\PatientRegistrationControllerTest.java
+C:\Users\Michael Maged\Desktop\term 6\Testing\Project\Testing-HospitalSystem\hospital\src\test\java\Models\InventoryItemTest.java
+C:\Users\Michael Maged\Desktop\term 6\Testing\Project\Testing-HospitalSystem\hospital\src\test\java\Models\MedicalRecordTest.java
+C:\Users\Michael Maged\Desktop\term 6\Testing\Project\Testing-HospitalSystem\hospital\src\test\java\Models\AdminTest.java
+C:\Users\Michael Maged\Desktop\term 6\Testing\Project\Testing-HospitalSystem\hospital\src\test\java\Models\HospitalTest.java
+C:\Users\Michael Maged\Desktop\term 6\Testing\Project\Testing-HospitalSystem\hospital\src\test\java\Controllers\PatientLoginControllerTest.java
+C:\Users\Michael Maged\Desktop\term 6\Testing\Project\Testing-HospitalSystem\hospital\src\test\java\Models\SessionTest.java
+C:\Users\Michael Maged\Desktop\term 6\Testing\Project\Testing-HospitalSystem\hospital\src\test\java\Models\AppointmentTest.java
+C:\Users\Michael Maged\Desktop\term 6\Testing\Project\Testing-HospitalSystem\hospital\src\test\java\Models\DoctorTest.java
