@@ -64,7 +64,11 @@ public class AdminController {
 
     // POST: Delete doctor
     @PostMapping("/delete-doctor")
-    public String deleteDoctor(@RequestParam int id) {
+    public String deleteDoctor(@RequestParam int id, RedirectAttributes redirectAttributes) {
+        if(hospital.getAppointments().stream().anyMatch(a -> a.getDocID() == id)) {
+            redirectAttributes.addFlashAttribute("errorDoctors", "Doctor has appointments and cannot be deleted.");
+            return "redirect:/admin";
+        }
         admin.deleteDoctor(id);
         hospital.getDoctors().remove(hospital.findById(hospital.getDoctors(), id));
         return "redirect:/admin";

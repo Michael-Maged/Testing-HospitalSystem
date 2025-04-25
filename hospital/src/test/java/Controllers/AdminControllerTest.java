@@ -83,7 +83,7 @@ class AdminControllerTest {
         when(hospital.getDoctors()).thenReturn(doctors);
         when(hospital.findById(doctors, 1)).thenReturn(doctor);
 
-        String result = controller.deleteDoctor(1);
+        String result = controller.deleteDoctor(1,redirectAttributes);
         assertEquals("redirect:/admin", result);
     }
 
