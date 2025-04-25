@@ -1,0 +1,15 @@
+com\hospital\Doctor.class
+com\hospital\Admin.class
+com\hospital\Appointment.class
+com\hospital\controllers\AdminController.class
+com\hospital\InventoryItem.class
+com\hospital\Bill.class
+com\hospital\controllers\PatientLoginController.class
+com\hospital\controllers\PatientRegistrationController.class
+com\hospital\MedicalRecord.class
+com\hospital\Hospital.class
+com\hospital\controllers\HomepageController.class
+com\hospital\Patient.class
+com\hospital\HospitalManagementApplication.class
+com\hospital\Session.class
+com\hospital\controllers\DashboardController.class

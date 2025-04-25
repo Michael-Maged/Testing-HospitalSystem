@@ -4,5 +4,7 @@
     "java.project.sourcePaths": [],
     "java.project.referencedLibraries": [
         "d:\\Junior semester2\\Testing\\project\\junit-4.13.2-javadoc.jar"
-    ]
+    ],
+    "xml.validation.enabled": false
+
 }

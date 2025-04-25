@@ -410,6 +410,24 @@ public class Hospital {
         return newId;
     }
 
+    public void deletepastAppointments() {
+        String query = "DELETE FROM Appointments WHERE date < ?";
+        Date currentDate = new Date(System.currentTimeMillis());
+
+        try (PreparedStatement stmt = conn.prepareStatement(query)) {
+            stmt.setDate(1, currentDate);
+            int rowsAffected = stmt.executeUpdate();
+            if (rowsAffected > 0) {
+                System.out.println("Past appointments deleted successfully!");
+            } else {
+                System.out.println("No past appointments found.");
+            }
+
+        } catch (SQLException e) {
+            e.printStackTrace();
+        }
+    }
+
     public int getNextBillId() {
         int newId = 0;
         String query = "SELECT MAX(billId) + 1 AS next_id FROM Bills";

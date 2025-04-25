@@ -1,0 +1,15 @@
+Models\AdminTest.class
+Controllers\PatientLoginControllerTest$1.class
+Models\PatientTest.class
+Controllers\AdminControllerTest.class
+Controllers\PatientLoginControllerTest.class
+Models\BillTest.class
+Models\InventoryItemTest.class
+Models\HospitalTest.class
+Models\AppointmentTest.class
+Controllers\PatientRegistrationControllerTest.class
+Controllers\DashboardControllerTest.class
+Controllers\HomepageControllerTest.class
+Models\DoctorTest.class
+Models\MedicalRecordTest.class
+Models\SessionTest.class

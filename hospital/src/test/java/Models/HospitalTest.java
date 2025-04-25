@@ -14,7 +14,9 @@ import java.util.Arrays;
 import java.util.List;
 
 import static org.junit.jupiter.api.Assertions.*;
+import static org.mockito.ArgumentMatchers.any;
 import static org.mockito.ArgumentMatchers.anyString;
+import static org.mockito.ArgumentMatchers.eq;
 import static org.mockito.Mockito.*;
 
 public class HospitalTest {
@@ -802,5 +804,54 @@ public class HospitalTest {
         // Verify the output
         assertEquals(expectedOutput, actualOutput);
     }
+
+    @Test
+    void testDeletePastAppointments_withDeletedRows() throws SQLException {
+        // Mocks
+        Connection mockConnection = mock(Connection.class);
+        PreparedStatement mockPreparedStatement = mock(PreparedStatement.class);
     
+        // Behavior
+        when(mockConnection.prepareStatement("DELETE FROM Appointments WHERE date < ?"))
+                .thenReturn(mockPreparedStatement);
+        when(mockPreparedStatement.executeUpdate()).thenReturn(3);
+    
+        // Class under test
+        Hospital hospital = new Hospital(mockConnection);
+        hospital.deletepastAppointments();
+    
+        // Verifications
+        verify(mockPreparedStatement).setDate(eq(1), any(Date.class));
+        verify(mockPreparedStatement).executeUpdate();
+        verify(mockPreparedStatement).close();
+    }
+
+    @Test
+    void testDeletePastAppointments_withNoDeletedRows() throws SQLException {
+        Connection mockConnection = mock(Connection.class);
+        PreparedStatement mockStatement = mock(PreparedStatement.class);
+    
+        when(mockConnection.prepareStatement("DELETE FROM Appointments WHERE date < ?"))
+                .thenReturn(mockStatement);
+        when(mockStatement.executeUpdate()).thenReturn(0); // simulate no rows deleted
+        Hospital hospital = new Hospital(mockConnection);
+        hospital.deletepastAppointments();
+    
+        verify(mockStatement).setDate(eq(1), any(Date.class));
+        verify(mockStatement).executeUpdate();
+        verify(mockStatement).close();
+    }
+
+    @Test
+    void testDeletePastAppointments_sqlException() throws SQLException {
+        Connection mockConnection = mock(Connection.class);
+    
+        when(mockConnection.prepareStatement("DELETE FROM Appointments WHERE date < ?"))
+            .thenThrow(new SQLException("DB error"));
+        Hospital hospital = new Hospital(mockConnection);
+        hospital.deletepastAppointments();
+    
+        verify(mockConnection).prepareStatement("DELETE FROM Appointments WHERE date < ?");
+    }
+
 }

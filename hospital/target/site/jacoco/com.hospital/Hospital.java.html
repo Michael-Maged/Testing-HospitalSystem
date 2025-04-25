@@ -410,100 +410,118 @@ public class Hospital {
 <span class="fc" id="L410">        return newId;</span>
     }
 
+    public void deletepastAppointments() {
+<span class="fc" id="L414">        String query = &quot;DELETE FROM Appointments WHERE date &lt; ?&quot;;</span>
+<span class="fc" id="L415">        Date currentDate = new Date(System.currentTimeMillis());</span>
+
+<span class="fc" id="L417">        try (PreparedStatement stmt = conn.prepareStatement(query)) {</span>
+<span class="fc" id="L418">            stmt.setDate(1, currentDate);</span>
+<span class="fc" id="L419">            int rowsAffected = stmt.executeUpdate();</span>
+<span class="fc bfc" id="L420" title="All 2 branches covered.">            if (rowsAffected &gt; 0) {</span>
+<span class="fc" id="L421">                System.out.println(&quot;Past appointments deleted successfully!&quot;);</span>
+            } else {
+<span class="fc" id="L423">                System.out.println(&quot;No past appointments found.&quot;);</span>
+            }
+
+<span class="fc" id="L426">        } catch (SQLException e) {</span>
+<span class="fc" id="L427">            e.printStackTrace();</span>
+<span class="fc" id="L428">        }</span>
+<span class="fc" id="L429">    }</span>
+
     public int getNextBillId() {
-<span class="fc" id="L414">        int newId = 0;</span>
-<span class="fc" id="L415">        String query = &quot;SELECT MAX(billId) + 1 AS next_id FROM Bills&quot;;</span>
+<span class="fc" id="L432">        int newId = 0;</span>
+<span class="fc" id="L433">        String query = &quot;SELECT MAX(billId) + 1 AS next_id FROM Bills&quot;;</span>
 
         try (
-<span class="fc" id="L418">                Statement stmt = conn.createStatement();</span>
-<span class="fc" id="L419">                ResultSet rs = stmt.executeQuery(query)) {</span>
+<span class="fc" id="L436">                Statement stmt = conn.createStatement();</span>
+<span class="fc" id="L437">                ResultSet rs = stmt.executeQuery(query)) {</span>
 
-<span class="pc bpc" id="L421" title="1 of 2 branches missed.">            if (rs.next()) {</span>
-<span class="fc" id="L422">                newId = rs.getInt(&quot;next_id&quot;);</span>
-<span class="fc bfc" id="L423" title="All 2 branches covered.">                if (newId == 0) {</span>
-<span class="fc" id="L424">                    newId = 1;</span>
+<span class="pc bpc" id="L439" title="1 of 2 branches missed.">            if (rs.next()) {</span>
+<span class="fc" id="L440">                newId = rs.getInt(&quot;next_id&quot;);</span>
+<span class="fc bfc" id="L441" title="All 2 branches covered.">                if (newId == 0) {</span>
+<span class="fc" id="L442">                    newId = 1;</span>
                 }
             }
 
-<span class="nc" id="L428">        } catch (SQLException e) {</span>
-<span class="nc" id="L429">            e.printStackTrace();</span>
-<span class="fc" id="L430">        }</span>
+<span class="nc" id="L446">        } catch (SQLException e) {</span>
+<span class="nc" id="L447">            e.printStackTrace();</span>
+<span class="fc" id="L448">        }</span>
 
-<span class="fc" id="L432">        return newId;</span>
+<span class="fc" id="L450">        return newId;</span>
     }
 
     public List&lt;Patient&gt; getPatients() {
-<span class="fc" id="L436">        return patients;</span>
+<span class="fc" id="L454">        return patients;</span>
     }
 
     public List&lt;Appointment&gt; getAppointments() {
-<span class="fc" id="L440">        return appointments;</span>
+<span class="fc" id="L458">        return appointments;</span>
     }
 
     public List&lt;MedicalRecord&gt; getRecords() {
-<span class="fc" id="L444">        return records;</span>
+<span class="fc" id="L462">        return records;</span>
     }
 
     public List&lt;InventoryItem&gt; getInventory() {
-<span class="fc" id="L448">        return inventory;</span>
+<span class="fc" id="L466">        return inventory;</span>
     }
 
     public List&lt;Doctor&gt; getDoctors() {
-<span class="fc" id="L452">        return doctors;</span>
+<span class="fc" id="L470">        return doctors;</span>
     }
 
     public List&lt;String&gt; getDepartments() {
-<span class="nc" id="L456">        return departments;</span>
+<span class="nc" id="L474">        return departments;</span>
     }
 
     public List&lt;Bill&gt; getBills() {
-<span class="fc" id="L460">        return bills;</span>
+<span class="fc" id="L478">        return bills;</span>
     }
 
     public &lt;T&gt; T findById(List&lt;T&gt; list, int id) {
-<span class="nc bnc" id="L464" title="All 2 branches missed.">        for (T item : list) {</span>
+<span class="nc bnc" id="L482" title="All 2 branches missed.">        for (T item : list) {</span>
             try {
-<span class="nc" id="L466">                int itemId = (int) item.getClass().getMethod(&quot;getId&quot;).invoke(item);</span>
-<span class="nc bnc" id="L467" title="All 2 branches missed.">                if (itemId == id) {</span>
-<span class="nc" id="L468">                    return item;</span>
+<span class="nc" id="L484">                int itemId = (int) item.getClass().getMethod(&quot;getId&quot;).invoke(item);</span>
+<span class="nc bnc" id="L485" title="All 2 branches missed.">                if (itemId == id) {</span>
+<span class="nc" id="L486">                    return item;</span>
                 }
-<span class="nc" id="L470">            } catch (Exception e) {</span>
-<span class="nc" id="L471">                e.printStackTrace();</span>
-<span class="nc" id="L472">            }</span>
-<span class="nc" id="L473">        }</span>
-<span class="nc" id="L474">        return null;</span>
+<span class="nc" id="L488">            } catch (Exception e) {</span>
+<span class="nc" id="L489">                e.printStackTrace();</span>
+<span class="nc" id="L490">            }</span>
+<span class="nc" id="L491">        }</span>
+<span class="nc" id="L492">        return null;</span>
     }
 
     public Doctor findDoctorByName(String name) {
-<span class="fc bfc" id="L478" title="All 2 branches covered.">        for (Doctor doctor : doctors) {</span>
-<span class="fc bfc" id="L479" title="All 2 branches covered.">            if (name.equals(doctor.getName())) {</span>
-<span class="fc" id="L480">                return doctor;</span>
+<span class="fc bfc" id="L496" title="All 2 branches covered.">        for (Doctor doctor : doctors) {</span>
+<span class="fc bfc" id="L497" title="All 2 branches covered.">            if (name.equals(doctor.getName())) {</span>
+<span class="fc" id="L498">                return doctor;</span>
             }
-<span class="fc" id="L482">        }</span>
-<span class="fc" id="L483">        System.out.println(&quot;errrrrrrrrrrrrrrrrrrrrrrrrrrrrrr&quot; + doctors.size());</span>
-<span class="fc" id="L484">        return null;</span>
+<span class="fc" id="L500">        }</span>
+<span class="fc" id="L501">        System.out.println(&quot;errrrrrrrrrrrrrrrrrrrrrrrrrrrrrr&quot; + doctors.size());</span>
+<span class="fc" id="L502">        return null;</span>
     }
 
     public Patient findPatientById(int patientID) {
-<span class="fc bfc" id="L488" title="All 2 branches covered.">        for (Patient patient : patients) {</span>
-<span class="fc bfc" id="L489" title="All 2 branches covered.">            if (patient.getPatientID() == patientID) {</span>
-<span class="fc" id="L490">                return patient;</span>
+<span class="fc bfc" id="L506" title="All 2 branches covered.">        for (Patient patient : patients) {</span>
+<span class="fc bfc" id="L507" title="All 2 branches covered.">            if (patient.getPatientID() == patientID) {</span>
+<span class="fc" id="L508">                return patient;</span>
             }
-<span class="fc" id="L492">        }</span>
-<span class="fc" id="L493">        return null; // Return null if no patient with the given ID is found</span>
+<span class="fc" id="L510">        }</span>
+<span class="fc" id="L511">        return null; // Return null if no patient with the given ID is found</span>
     }
     public Doctor findDoctorById(int doctorID) {
-<span class="fc bfc" id="L496" title="All 2 branches covered.">        for (Doctor dr : doctors) {</span>
-<span class="fc bfc" id="L497" title="All 2 branches covered.">            if (dr.getDoctorID() == doctorID) {</span>
-<span class="fc" id="L498">                return dr;</span>
+<span class="fc bfc" id="L514" title="All 2 branches covered.">        for (Doctor dr : doctors) {</span>
+<span class="fc bfc" id="L515" title="All 2 branches covered.">            if (dr.getDoctorID() == doctorID) {</span>
+<span class="fc" id="L516">                return dr;</span>
             }
-<span class="fc" id="L500">        }</span>
-<span class="fc" id="L501">        return null; // Return null if no doctor with the given ID is found</span>
+<span class="fc" id="L518">        }</span>
+<span class="fc" id="L519">        return null; // Return null if no doctor with the given ID is found</span>
     }
 
     public void setConnection(Connection connection) {
-<span class="nc" id="L505">        this.conn = connection;</span>
-<span class="nc" id="L506">    }</span>
+<span class="nc" id="L523">        this.conn = connection;</span>
+<span class="nc" id="L524">    }</span>
     
 
 }

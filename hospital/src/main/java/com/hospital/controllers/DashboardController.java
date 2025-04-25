@@ -19,6 +19,7 @@ public class DashboardController {
     @GetMapping("/dashboard")
     public String showDashboard(Model model) {
         Patient patient = Session.getInstance().getCurrentPatient();
+        hospital.deletepastAppointments();
 
         if (patient != null) {
             model.addAttribute("patient", patient);
